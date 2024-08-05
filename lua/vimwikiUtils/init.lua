@@ -10,8 +10,8 @@ local ATOMIC_NOTES_DIR = "4_atomic_notes"
 
 local M = {}
 
-function M.vimwiki_link()
-    local opts = require("telescope.themes").get_dropdown { prompt_title = "wikiUtilLink" }
+function M.vimwikiUtils_link()
+    local opts = require("telescope.themes").get_dropdown { prompt_title = "VimwikiLink" }
     -- ignore tags
     opts.file_ignore_patterns = { TAG_DIR }
 
