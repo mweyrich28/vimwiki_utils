@@ -26,11 +26,10 @@ end
 
 function M.create_new_wiki(curr_file)
     local wiki_link = utils.format_md_link(curr_file)
-    
     local current_dir = vim.fn.fnamemodify(vim.fn.expand("%:p"), ":h")
     local wiki_md = current_dir .. "/" .. curr_file
-
     local markdown_name = curr_file.match(curr_file, "[^/]+$")
+
     utils.generate_header(wiki_md, markdown_name)
     return wiki_link
 end
@@ -62,6 +61,10 @@ function M.vimwiki_link()
             file_map[markdown_file] = string.match(path, wiki_suffix .. "/(.*)") -- map the displayed name to path relative to wiki
         end
     end
+
+    table.sort(processed_results, function(a, b)
+        return a:lower() < b:lower()
+    end)
 
     local note_md_name = ""
     local wiki_link = ""

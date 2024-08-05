@@ -72,7 +72,6 @@ end
 ---@return boolean
 function M.same_level(parent_note_path, child_note_path, wiki)
     local parent_note_wiki_path = M.convert_abs_to_rel(wiki, parent_note_path)
-    
     -- check if parent_note is located in same dir as child_note
     local dir_child_note = child_note_path.match(child_note_path, "(.*/)")  -- remove the last part of the file identifier (md)
     local dir_parent_note = parent_note_path.match(parent_note_wiki_path, "(.*/)")
@@ -81,9 +80,7 @@ function M.same_level(parent_note_path, child_note_path, wiki)
     if dir_child_note == dir_parent_note then
         return true
     end
-    
     return false
-    
 end
 
 
@@ -96,12 +93,18 @@ function M.convert_abs_to_rel(wiki, path)
     return parent_note_wiki_path
 end
 
+
 ---@param wiki string
 ---@param parent_note_abs_path string
 ---@return string
 function M.gen_rel_prefix(wiki, parent_note_abs_path)
     local curr_depht = M.get_depth(parent_note_abs_path)
     local wiki_depth = M.get_depth(wiki)
+
+    -- adjsut depth based on wiki path in vim.g.vimwiki_list
+    if string.sub(wiki, 1, 1) == "~" then
+        wiki_depth = wiki_depth + 1
+    end
 
     -- Count the number of directories to go up
     local relative_path = ""
