@@ -28,6 +28,10 @@ capabilities. It also comes with a predefined wiki structure which I use in my b
 │  ├── screenshot_1.png
 │  ├── screenshot_2.png
 │  └── ...
+├── templates/
+│  ├── template_1.md
+│  ├── template_2.md
+│  └── ...
 └── README.md
 ```
 
@@ -36,7 +40,9 @@ capabilities. It also comes with a predefined wiki structure which I use in my b
 1. `vimwikiUtils_link`: Allows you to quickly link to an existing file or to create a new file with a `TEMPLATE_HEADER`. 
    Press `<enter>` to create a `.md` link for the selected note or press `<C-b>` while in `insert`, to create a new note. 
    Based on what you typed into the `Telescope` prompt, the new note will be named after the input provided and automatically 
-   created in your designated notes directory with a specified `TEMPLATE_HEADER`.
+   created in your designated notes directory with a `template` which you can create in your `templates/` dir. For now 
+   templates support a `HEADER` token, which gets replaced with the formatted name of your newly created note and a `DATE` token, 
+   which gets replaced by the current date.
 2. (**COMING SOON**) `vimwikiUtils_sc`: Take screenshots on the fly by and embed them into the current markdown file. 
 3. (**COMING SOON**) `vimwikiUtils_rough_note`: Creates a rough_note.md in your `1_rough_notes/`
 4. (**COMING SOON**) `vimwikiUtils_edit_image`: Hovering over an embedded screenshot, opens [KolourPaint](https://apps.kde.org/kolourpaint/), a free 
