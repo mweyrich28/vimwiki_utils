@@ -3,14 +3,16 @@ local finders = require "telescope.finders"
 local conf = require("telescope.config").values
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
-local utils = require('vimwikiUtils.utils')
+local utils = require('vimwiki_utils.utils')
+
+
 
 local TAG_DIR = "3_tags"
 local ATOMIC_NOTES_DIR = "4_atomic_notes"
 
 local M = {}
 
-function M.vimwikiUtils_link()
+function M.vimwiki_utils_link()
     local opts = require("telescope.themes").get_dropdown { prompt_title = "VimwikiLink" }
     -- ignore tags
     opts.file_ignore_patterns = { TAG_DIR }
@@ -76,11 +78,18 @@ end
 
 function M.setup()
 
-    vim.api.nvim_create_user_command('vimwikiUtils_link', function()
-        M.vimwikiUtils_link()
+    vim.api.nvim_create_user_command('VimwikiUtilsLink', function()
+        M.vimwiki_utils_link()
     end, {})
 
-    vim.api.nvim_set_keymap('i', '<C-b>', ':vimwikiUtils_link<CR>', { noremap = true, silent = true })
+    -- vim.api.nvim_set_keymap('i', '<C-b>', '<cmd>VimwikiUtilsLink<CR>', { noremap = true, silent = true })
+    -- Create an autocommand to set keymap for viki files
+    vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'vimwiki',  -- Adjust this pattern if your filetype is named differently
+        callback = function()
+            vim.api.nvim_buf_set_keymap(0, 'i', '<C-b>', '<cmd>VimwikiUtilsLink<CR>', { noremap = true, silent = true })
+        end,
+    })
 end
 
 return M
