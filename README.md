@@ -26,11 +26,11 @@ The structure was inspired by this [YouTube video](https://www.youtube.com/watch
 │  ├── atomic_note_3.md
 │  └── ...
 ├── assets/
-│  ├── screenshots
+│  ├── screenshots/
 │  │  ├── screenshot_1.png
 │  │  ├── screenshot_2.png
 │  │  └── ...
-│  ├── gifs
+│  ├── gifs/
 │  └── ...
 ├── templates/
 │  ├── template_1.md
