@@ -1,6 +1,8 @@
 # vimwikiUtils
-## Introduction
+> [!NOTE] 
+> This is a work in progress
 
+## Introduction
 This plugin is an extension for [VimWiki](https://github.com/vimwiki/vimwiki), trying to add on to its many
 capabilities. It also comes with a predefined wiki structure which I use in my bioinformatics studies:
 ```bash
@@ -22,14 +24,19 @@ capabilities. It also comes with a predefined wiki structure which I use in my b
 │  ├── atomic_note_2.md
 │  ├── atomic_note_3.md
 │  └── ...
+├── assets/
+│  ├── screenshot_1.png
+│  ├── screenshot_2.png
+│  └── ...
 └── README.md
 ```
 
 ## Features
-> [!NOTE] 
-> This is a work in progress
 
-1. `vimwikiUtils_link`: Allows you to quickly link to an existing file or to create a new file with a `TEMPLATE_HEADER`.  
+1. `vimwikiUtils_link`: Allows you to quickly link to an existing file or to create a new file with a `TEMPLATE_HEADER`. 
+   Press `<enter>` to create a `.md` link for the selected note or press `<C-b>` while in `insert`, to create a new note. 
+   Based on what you typed into the `Telescope` prompt, the new note will be named after the input provided and automatically 
+   created in your designated notes directory with a specified `TEMPLATE_HEADER`.
 2. (**COMING SOON**) `vimwikiUtils_sc`: Take screenshots on the fly by and embed them into the current markdown file. 
 3. (**COMING SOON**) `vimwikiUtils_rough_note`: Creates a rough_note.md in your `1_rough_notes/`
 4. (**COMING SOON**) `vimwikiUtils_edit_image`: Hovering over an embedded screenshot, opens [KolourPaint](https://apps.kde.org/kolourpaint/), a free 
@@ -40,12 +47,12 @@ capabilities. It also comes with a predefined wiki structure which I use in my b
 
 ## Installation
 ### Prerequisites
-Make sure to also install [telescope](https://github.com/nvim-telescope/telescope.nvim) and (obviously) [VimWiki](https://github.com/vimwiki/vimwiki).
+Make sure to also install [Telescope](https://github.com/nvim-telescope/telescope.nvim) and (obviously) [VimWiki](https://github.com/vimwiki/vimwiki).
 
 ### Packer
 ```lua
     use {
-        'mweyrich28/vimwikiUtils',
+        'mweyrich28/vimwiki_utils',
         requires = {
             'nvim-telescope/telescope.nvim',
             'vimwiki/vimwiki'
@@ -56,5 +63,5 @@ Make sure to also install [telescope](https://github.com/nvim-telescope/telescop
 ## Getting Started
 For now I only implemented `vimwikiUtils_link`.
 ```lua
-    require('vimwikiUtils').setup()
+    require('vimwiki_utils').setup()
 ```
