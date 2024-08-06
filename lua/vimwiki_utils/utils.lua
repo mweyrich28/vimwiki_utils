@@ -1,4 +1,11 @@
+local pickers = require "telescope.pickers"
+local finders = require "telescope.finders"
+local conf = require("telescope.config").values
+local actions = require "telescope.actions"
+local action_state = require "telescope.actions.state"
+
 TEMPLATE_HEADER = "# %s\n> **date:** %s  \n> **tags:** \n> **material:**\n\n"
+TEMPLATE_DIR = "templates"
 
 local M = {}
 
@@ -14,6 +21,41 @@ function M.split_path(path)
 end
 
 
+function M.choose_template(callback)
+    local opts = require("telescope.themes").get_dropdown { prompt_title = "Templates" }
+
+    local wiki = vim.g.vimwiki_list[1].path
+    -- get all templates
+    local results = vim.fn.systemlist("find " ..  wiki .. TEMPLATE_DIR .. " -type f -name '*.md'")
+
+    local processed_results_table = M.format_results(TEMPLATE_DIR, wiki, results)
+    local processed_results = processed_results_table[1]
+    local file_map = processed_results_table[2]
+
+    pickers.new(opts, {
+        finder = finders.new_table({
+            results = processed_results
+        }),
+        sorter = conf.file_sorter(opts),
+        attach_mappings = function(prompt_bufnr, map)
+            actions.select_default:replace(function()
+                local selection = action_state.get_selected_entry()
+                local selected_template_name = selection[1]
+                local selected_template_path = file_map[selected_template_name]
+
+                    if callback then
+                        callback(selected_template_path)
+                    end
+
+                actions.close(prompt_bufnr)
+            end)
+            return true
+        end
+    }):find()
+
+end
+
+
 ---@param path string
 ---@return number
 function M.get_depth(path)
@@ -26,32 +68,99 @@ function M.get_depth(path)
 end
 
 
+---@param prefix string
+---@param wiki string
+---@param results table
+function M.format_results(prefix, wiki, results)
+    local processed_results = {}
+    local file_map = {}
+    local wiki_suffix = M.get_path_suffix(wiki)
+    for _, path in ipairs(results) do
+        local markdown_file = string.match(path, ".*/" .. prefix .. "/(.*)")
+        if markdown_file then
+            table.insert(processed_results, markdown_file)
+            -- map the displayed name to path relative to wiki
+            file_map[markdown_file] = string.match(path, wiki_suffix .. "/(.*)")
+        end
+    end
+
+    -- restore order to results
+    table.sort(processed_results, function(a, b)
+        return a:lower() < b:lower()
+    end)
+
+    return {processed_results, file_map}
+end
+
+
 ---@param filename string
 ---@param header string
-function M.generate_header(filename, header)
-    if filename == nil or header == nil then
-        print("Error: filename or header is nil.")
+---@param template_filename string
+function M.generate_header(new_filename, header, template_filename)
+    if template_filename == nil or new_filename == nil or header == nil then
+        print("Error: template_filename, new_filename, or header is nil.")
         return
     end
 
+    local template_file, err = io.open(template_filename, "r")
+    if template_file == nil then
+        print("Error opening template file: " .. err)
+        return
+    end
+
+    local template_content = template_file:read("*all")
+    template_file:close()
+
+    -- replace DATE
+    local formatted_date = os.date("%Y-%m-%d")
+    template_content = string.gsub(template_content, "DATE", formatted_date)
+
+    -- replace HEADER
     local name_formatted = string.gsub(header, "_", " ")
-    local vimwiki_header = string.format(
-        TEMPLATE_HEADER,
-        name_formatted,
-        os.date("%F")
-    )
+    template_content = string.gsub(template_content, "HEADER", name_formatted)
 
-    local file, err = io.open(filename .. ".md", "a")
-    if file == nil then
-        print("Error opening file: " .. err)
+    -- local formatted_content = string.format(
+    --     template_content,
+    --     name_formatted,
+    --     os.date("%F")
+    -- )
+
+    local new_file, err = io.open(new_filename .. ".md", "w")
+    if new_file == nil then
+        print("Error opening new file: " .. err)
         return
     end
 
-    -- Attempt to write the header to the file
-    local success, write_err = file:write(vimwiki_header)
+    local success, write_err = new_file:write(template_content)
     if not success then
-        print("Error writing to file: " .. write_err)
+        print("Error writing to new file: " .. write_err)
     end
+
+    new_file:close()
+
+    -- if filename == nil or header == nil then
+    --     print("Error: filename or header is nil.")
+    --     return
+    -- end
+    --
+    -- local name_formatted = string.gsub(header, "_", " ")
+    -- local vimwiki_header = string.format(
+    --     TEMPLATE_HEADER,
+    --     name_formatted,
+    --     os.date("%F")
+    -- )
+    --
+    -- local file, err = io.open(filename .. ".md", "a")
+    -- if file == nil then
+    --     print("Error opening file: " .. err)
+    --     return
+    -- end
+    --
+    -- -- Attempt to write the header to the file
+    -- local success, write_err = file:write(vimwiki_header)
+    -- if not success then
+    --     print("Error writing to file: " .. write_err)
+    -- end
 end
 
 
@@ -153,14 +262,15 @@ end
 ---@param curr_file string 
 ---@return string
 function M.create_new_wiki(curr_file)
-    local wiki_link = M.format_md_link(curr_file)
     local current_dir = vim.fn.fnamemodify(vim.fn.expand("%:p"), ":h")
     local wiki_md = current_dir .. "/" .. curr_file
     local markdown_name = curr_file.match(curr_file, "[^/]+$")
 
-    M.generate_header(wiki_md, markdown_name)
+    -- choosing a template
+    M.choose_template(function(template_path)
+        M.generate_header(wiki_md, markdown_name, template_path)
+    end)
 
-    return wiki_link
 end
 
 return M
