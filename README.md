@@ -54,8 +54,7 @@ Make sure to also install [telescope](https://github.com/nvim-telescope/telescop
 ```
 
 ## Getting Started
-For now I only implemented `vimwikiUtils_link`, you call the function using a keymap like this:
-
+For now I only implemented `vimwikiUtils_link`.
 ```lua
-vim.api.nvim_set_keymap('i', '<C-b>', "<cmd>:lua require'vimwikiUtils'.vimwikiUtils_link()<CR>", { noremap = true, silent = true })
+    require('vimwikiUtils').setup()
 ```

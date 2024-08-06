@@ -74,4 +74,13 @@ function M.vimwikiUtils_link()
     }):find()
 end
 
+function M.setup()
+
+    vim.api.nvim_create_user_command('vimwikiUtils_link', function()
+        M.vimwikiUtils_link()
+    end, {})
+
+    vim.api.nvim_set_keymap('i', '<C-b>', ':vimwikiUtils_link<CR>', { noremap = true, silent = true })
+end
+
 return M
