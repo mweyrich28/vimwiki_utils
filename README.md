@@ -1,10 +1,11 @@
 # vimwikiUtils
 > [!NOTE] 
-> This is a work in progress
+> This is a work in progress.
 
 ## Introduction
 This plugin is an extension for [VimWiki](https://github.com/vimwiki/vimwiki), trying to add on to its many
-capabilities. It also comes with a predefined wiki structure which I use in my bioinformatics studies:
+capabilities. It also comes with a predefined wiki structure which I use in my bioinformatics studies. 
+The structure was inspired by this [YouTube video](https://www.youtube.com/watch?v=hSTy_BInQs8&list=WL&index=1&t=1507s).
 ```bash
 /home/usr/zettelkasten/
 .
@@ -25,8 +26,11 @@ capabilities. It also comes with a predefined wiki structure which I use in my b
 │  ├── atomic_note_3.md
 │  └── ...
 ├── assets/
-│  ├── screenshot_1.png
-│  ├── screenshot_2.png
+│  ├── screenshots
+│  │  ├── screenshot_1.png
+│  │  ├── screenshot_2.png
+│  │  └── ...
+│  ├── gifs
 │  └── ...
 ├── templates/
 │  ├── template_1.md
@@ -36,20 +40,29 @@ capabilities. It also comes with a predefined wiki structure which I use in my b
 ```
 
 ## Features
+### `VimwikiUtilsLink` 
+Allows you to quickly link to an existing file or to create a new file based on a `template`:
 
-1. `vimwikiUtils_link`: Allows you to quickly link to an existing file or to create a new file with a `TEMPLATE_HEADER`. 
-   Press `<enter>` to create a `.md` link for the selected note or press `<C-b>` while in `insert`, to create a new note. 
-   Based on what you typed into the `Telescope` prompt, the new note will be named after the input provided and automatically 
-   created in your designated notes directory with a `template` which you can create in your `templates/` dir. For now 
-   templates support a `HEADER` token, which gets replaced with the formatted name of your newly created note and a `DATE` token, 
-   which gets replaced by the current date.
-2. (**COMING SOON**) `vimwikiUtils_sc`: Take screenshots on the fly by and embed them into the current markdown file. 
-3. (**COMING SOON**) `vimwikiUtils_rough_note`: Creates a rough_note.md in your `1_rough_notes/`
-4. (**COMING SOON**) `vimwikiUtils_edit_image`: Hovering over an embedded screenshot, opens [KolourPaint](https://apps.kde.org/kolourpaint/), a free 
-   and simple program to edit images.
-5. (**COMING SOON**) `vimwikiUtils_tags`: Easily create or link to existing `tags` in `3_tags/` which are meant to also 
-   provide a structure to your wiki. Also automatically write all `tagged` files by `tag.md` into `tag.md`.
-6. (**COMING SOON**) `vimwikiUtils_backlinks`: Find parent files linking to the currently opened file
+Press `<enter>` to create a `.md` link for the selected note or press `<C-b>` while in `insert`, to create a new note. 
+Based on what you typed into the `Telescope` prompt, the new note will be named after the input provided and automatically 
+created in your designated notes directory with a `template` which you can create in your `templates/` dir. For now,
+`templates` support a `HEADER` token, which gets replaced with the formatted name of your newly created note and a `DATE` token, 
+which gets replaced by the current date.
+
+### (**COMING SOON**) `VimwikiUtilsSc`
+Take screenshots on the fly by and embed them into the current markdown file. 
+
+### (**COMING SOON**) `VimwikiUtilsRoughNote`
+Creates a rough_note.md in your `1_rough_notes/`
+
+### (**COMING SOON**) `VimwikiUtilsEditImage`
+Hovering over an embedded screenshot, opens [KolourPaint](https://apps.kde.org/kolourpaint/), a free and simple program to edit images.
+
+### (**COMING SOON**) `VimwikiUtilsTags`
+Easily create or link to existing `tags` in `3_tags/` which are meant to also provide a structure to your wiki. Also automatically write all `tagged` files by `tag.md` into `tag.md`.
+
+### (**COMING SOON**) `VimwikiUtilsBacklinks`
+Find parent files linking to the currently opened file.
 
 ## Installation
 ### Prerequisites
