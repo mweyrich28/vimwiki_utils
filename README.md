@@ -71,8 +71,6 @@ Take screenshots on the fly by and embed them into the current markdown file.
 ### (**COMING SOON**) `VimwikiUtilsEditImage`
 Hovering over an embedded screenshot opens [KolourPaint](https://apps.kde.org/kolourpaint/), a free and simple program to edit images.
 
-## Customizability
-### (**COMING SOON**) Customizable names for (1_rough_notes, 2_source_material, 3_tags, 4_atomic_notes)
 
 
 # Installation
@@ -95,3 +93,6 @@ For now, I only implemented `vimwikiUtils_link`.
 ```lua
     require('vimwiki_utils').setup()
 ```
+
+## Customizability
+### (**COMING SOON**) Customizable names for (1_rough_notes, 2_source_material, 3_tags, 4_atomic_notes)
