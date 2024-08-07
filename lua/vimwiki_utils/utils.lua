@@ -20,6 +20,24 @@ function M.split_path(path)
     return parts
 end
 
+---@param search_pattern string 
+function M.generate_index(search_pattern)
+    local wiki = vim.g.vimwiki_list[1].path
+    local results = vim.fn.systemlist("rg --vimgrep " .. vim.fn.shellescape(search_pattern))
+
+    table.sort(results, function(a, b)
+        return a:lower() < b:lower()
+    end)
+
+    local index = "# Index"
+    vim.api.nvim_put({ index }, "l", true, true)
+    for _, result in ipairs(results) do
+        local file_path = string.gsub(result, ":.*", "") -- get path like 4_atomic_notes/MARKDOWN.md
+        local wiki_link = M.format_rel_md_link(file_path, wiki)
+        vim.api.nvim_put({ "- " .. wiki_link }, "l", true, true) -- listing all links
+    end
+end
+
 
 function M.choose_template(callback)
     local opts = require("telescope.themes").get_dropdown { prompt_title = "Templates" }
