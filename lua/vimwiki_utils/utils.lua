@@ -43,9 +43,9 @@ function M.choose_template(callback)
                 local selected_template_name = selection[1]
                 local selected_template_path = file_map[selected_template_name]
 
-                    if callback then
-                        callback(selected_template_path)
-                    end
+                if callback then
+                    callback(selected_template_path)
+                end
 
                 actions.close(prompt_bufnr)
             end)
@@ -93,74 +93,39 @@ function M.format_results(prefix, wiki, results)
 end
 
 
----@param filename string
----@param header string
+---@param abs_path_new_file string
+---@param header_new_file string
 ---@param template_filename string
-function M.generate_header(new_filename, header, template_filename)
-    if template_filename == nil or new_filename == nil or header == nil then
-        print("Error: template_filename, new_filename, or header is nil.")
-        return
-    end
-
-    local template_file, err = io.open(template_filename, "r")
-    if template_file == nil then
+function M.generate_header(abs_path_new_file, header_new_file, template_filename)
+    local file, err = io.open(template_filename, "r")
+    if file == nil then
         print("Error opening template file: " .. err)
         return
     end
 
-    local template_content = template_file:read("*all")
-    template_file:close()
+    local template_content = file:read("*all")
+    file:close()
 
     -- replace DATE
     local formatted_date = os.date("%Y-%m-%d")
     template_content = string.gsub(template_content, "DATE", formatted_date)
 
     -- replace HEADER
-    local name_formatted = string.gsub(header, "_", " ")
+    local name_formatted = string.gsub(header_new_file, "_", " ")
     template_content = string.gsub(template_content, "HEADER", name_formatted)
-
-    -- local formatted_content = string.format(
-    --     template_content,
-    --     name_formatted,
-    --     os.date("%F")
-    -- )
-
-    local new_file, err = io.open(new_filename .. ".md", "w")
-    if new_file == nil then
+    print(abs_path_new_file)
+    file, err = io.open(abs_path_new_file .. ".md", "w+")
+    if file == nil then
         print("Error opening new file: " .. err)
         return
     end
 
-    local success, write_err = new_file:write(template_content)
+    local success, write_err = file:write(template_content)
     if not success then
         print("Error writing to new file: " .. write_err)
     end
 
-    new_file:close()
-
-    -- if filename == nil or header == nil then
-    --     print("Error: filename or header is nil.")
-    --     return
-    -- end
-    --
-    -- local name_formatted = string.gsub(header, "_", " ")
-    -- local vimwiki_header = string.format(
-    --     TEMPLATE_HEADER,
-    --     name_formatted,
-    --     os.date("%F")
-    -- )
-    --
-    -- local file, err = io.open(filename .. ".md", "a")
-    -- if file == nil then
-    --     print("Error opening file: " .. err)
-    --     return
-    -- end
-    --
-    -- -- Attempt to write the header to the file
-    -- local success, write_err = file:write(vimwiki_header)
-    -- if not success then
-    --     print("Error writing to file: " .. write_err)
-    -- end
+    file:close()
 end
 
 
@@ -260,17 +225,23 @@ end
 
 
 ---@param curr_file string 
----@return string
-function M.create_new_wiki(curr_file)
+function M.create_new_note(curr_file)
     local current_dir = vim.fn.fnamemodify(vim.fn.expand("%:p"), ":h")
-    local wiki_md = current_dir .. "/" .. curr_file
+    local abs_path_new_note = current_dir .. "/" .. curr_file
     local markdown_name = curr_file.match(curr_file, "[^/]+$")
 
-    -- choosing a template
     M.choose_template(function(template_path)
-        M.generate_header(wiki_md, markdown_name, template_path)
+        M.generate_header(abs_path_new_note, markdown_name, template_path)
     end)
+end
 
+
+---@param path string 
+---@return string
+function M.normalize_wiki_path(path)
+    local wiki_suffix = M.get_path_suffix(path)
+    local normalized_path = string.match(path,  "(.-" .. wiki_suffix .. ")")
+    return normalized_path
 end
 
 return M
