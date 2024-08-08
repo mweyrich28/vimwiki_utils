@@ -1,8 +1,25 @@
+**Contents**
+- [VimwikiUtils](#vimwikiutils)
+    - [Introduction](#introduction)
+- [Features](#features)
+    - [Linking And Creating New Notes](#linking-and-creating-new-notes)
+        - [`VimwikiUtilsLink`](#vimwikiutilslink)
+        - [`VimwikiUtilsBacklinks`](#vimwikiutilsbacklinks)
+        - [`VimwikiUtilsRough`](#vimwikiutilsrough)
+    - [Organizing Notes](#organizing-notes)
+        - [(**COMING SOON**) `VimwikiUtilsEmbed`](#coming-soon-vimwikiutilsembed)
+        - [(**COMING SOON**) `VimwikiUtilsTags`](#coming-soon-vimwikiutilstags)
+    - [Embedding And Editing Of Screenshots](#embedding-and-editing-of-screenshots)
+        - [(**COMING SOON**) `VimwikiUtilsSc`](#coming-soon-vimwikiutilssc)
+        - [(**COMING SOON**) `VimwikiUtilsEditImage`](#coming-soon-vimwikiutilseditimage)
+- [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+    - [Packer](#packer)
+- [Getting Started](#getting-started)
+
 # VimwikiUtils
 > [!NOTE] 
 > This is a work in progress and my first time impelenting a plugin for nvim. 
-
-[[_TOC_]]
 
 ## Introduction
 This plugin is an extension for [VimWiki](https://github.com/vimwiki/vimwiki), trying to add to its many
@@ -62,7 +79,7 @@ Currently implemented pretty janky: The function calls `telescope.live_grep()` a
 While in `VimwikiUtilsBacklinks`, press `<A-CR>` (options + enter) to generate an index containing all files linking to the current note.
 
 ### `VimwikiUtilsRough`
-Press `<leader>nn` to create a rough_note.md in your `1_rough_notes/` based on a chosen template.
+Press `<leader>nn` to create a `rough_note.md` in your `1_rough_notes/` based on a chosen template.
 
 
 ## Organizing Notes
