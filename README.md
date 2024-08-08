@@ -1,6 +1,6 @@
 # vimwikiUtils
 > [!NOTE] 
-> This is a work in progress.
+> This is a work in progress and my first time impelenting a plugin for nvim. 
 
 ## Introduction
 This plugin is an extension for [VimWiki](https://github.com/vimwiki/vimwiki), trying to add to its many
@@ -109,5 +109,4 @@ For now, I only implemented `vimwikiUtils_link`.
     require('vimwiki_utils').setup()
 ```
 
-## Customizability
-### (**COMING SOON**) Customizable names for (1_rough_notes, 2_source_material, 3_tags, 4_atomic_notes)
+(**COMING SOON**) Customizable names for (1_rough_notes, 2_source_material, 3_tags, 4_atomic_notes) and custom keymaps etc.
