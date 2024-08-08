@@ -1,4 +1,4 @@
-# vimwikiUtils
+# VimwikiUtils
 > [!NOTE] 
 > This is a work in progress and my first time impelenting a plugin for nvim. 
 
@@ -104,9 +104,8 @@ Make sure to also install [Telescope](https://github.com/nvim-telescope/telescop
 ```
 
 # Getting Started
-For now, I only implemented `vimwikiUtils_link`.
 ```lua
-    require('vimwiki_utils').setup()
+require('vimwiki_utils').setup()
 ```
 
 (**COMING SOON**) Customizable names for (1_rough_notes, 2_source_material, 3_tags, 4_atomic_notes) and custom keymaps etc.
