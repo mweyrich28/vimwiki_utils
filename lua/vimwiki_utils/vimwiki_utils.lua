@@ -84,155 +84,6 @@ function M.vimwiki_utils_rough()
 end
 
 
-function M.ivimwiki_utils_backlinks()
-    local current_file = vim.fn.expand('%:t')
-    -- Remove the .md extension
-    current_file = current_file:gsub("%.md$", "")
-    local search_pattern = "\\[*\\]\\(.*" .. current_file .. "[.md\\)|\\)]"
-
-    -- Create a custom picker
-    pickers.new({}, {
-        prompt_title = "Wiki Backlinks",
-        finder = finders.new_oneshot_job(
-            {"rg", "--vimgrep", "--no-ignore", "--hidden", search_pattern, "."},
-            {
-                entry_maker = function(entry)
-                    -- Format entries to show only the filename and line info
-                    local full_path, lnum, col, text = string.match(entry, "(.-):(%d+):(%d+):(.*)")
-
-                    if full_path and lnum and col and text then
-                        -- Extract just the filename from the full path
-                        local filename = vim.fn.fnamemodify(full_path, ":t")
-                        -- Optionally extract text up to ">"
-                        local formatted_text = text:match("^(.-)>") or text
-
-                        return {
-                            display = filename .. ":" .. lnum .. ": " .. formatted_text,
-                            filename = full_path,
-                            lnum = tonumber(lnum),
-                            col = tonumber(col),
-                            text = text,
-                            ordinal = entry,
-                        }
-                    end
-                end
-            }
-        ),
-        sorter = conf.generic_sorter({}),
-        previewer = previewers.new_buffer_previewer({
-            define_preview = function(self, entry, status)
-                local filename = entry.filename
-                local lnum = entry.lnum or 0
-
-                -- Read the file content
-                local file_content = vim.fn.readfile(filename)
-
-                -- Set the buffer content
-                vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, file_content)
-
-                -- Determine filetype from the filename
-                local file_extension = filename:match("^.+(%..+)$")
-                if file_extension then
-                    -- Set the filetype to enable syntax highlighting
-                    local filetype = vim.fn.fnamemodify(file_extension, ":e")
-                    vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", filetype)
-                end
-
-                -- Center the preview around the matched line
-                vim.api.nvim_buf_call(self.state.bufnr, function()
-                    vim.fn.cursor(lnum, 0)
-                    vim.cmd("normal! zt")
-                end)
-            end
-        }),
-        attach_mappings = function(prompt_bufnr, map)
-            actions.select_default:replace(function()
-                local selection = action_state.get_selected_entry()
-                if selection then
-                    actions.file_edit(prompt_bufnr)
-                end
-            end)
-            return true
-        end,
-    }):find()
-end
-
-function M.vimwiki_utils_backlinks()
-    local current_file = vim.fn.expand('%:t')
-    -- Remove the .md extension
-    current_file = current_file:gsub("%.md$", "")
-    local search_pattern = "\\[*\\]\\(.*" .. current_file .. "[.md\\)|\\)]"
-
-    -- Create a custom picker
-    pickers.new({}, {
-        prompt_title = "Wiki Backlinks",
-        finder = finders.new_oneshot_job(
-            {"rg", "--vimgrep", "--no-ignore", "--hidden", search_pattern, "."},
-            {
-                entry_maker = function(entry)
-                    -- Format entries to show only the filename and line info
-                    local full_path, lnum, col, text = string.match(entry, "(.-):(%d+):(%d+):(.*)")
-
-                    if full_path and lnum and col and text then
-                        -- Extract just the filename from the full path
-                        local filename = vim.fn.fnamemodify(full_path, ":t")
-                        -- Optionally extract text up to ">"
-                        local formatted_text = text:match("^(.-)>") or text
-
-                        return {
-                            display = filename .. ":" .. lnum .. ": " .. formatted_text,
-                            filename = full_path,
-                            lnum = tonumber(lnum),
-                            col = tonumber(col),
-                            text = text,
-                            ordinal = entry,
-                        }
-                    end
-                end
-            }
-        ),
-        sorter = conf.generic_sorter({}),
-        previewer = previewers.new_buffer_previewer({
-            define_preview = function(self, entry, status)
-                local filename = entry.filename
-                local lnum = entry.lnum or 0
-
-                -- Read the file content
-                local file_content = vim.fn.readfile(filename)
-
-                -- Set the buffer content
-                vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, file_content)
-
-                -- Determine filetype from the filename
-                local file_extension = filename:match("^.+(%..+)$")
-                if file_extension then
-                    local filetype = file_extension:match("%.(.+)$") or "text"
-                    -- Set the filetype to enable syntax highlighting
-                    vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", filetype)
-                else
-                    -- Default to "text" if no filetype is detected
-                    vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", "text")
-                end
-
-                -- Center the preview around the matched line
-                vim.api.nvim_buf_call(self.state.bufnr, function()
-                    vim.fn.cursor(lnum, 0)
-                    vim.cmd("normal! zt")
-                end)
-            end
-        }),
-        attach_mappings = function(prompt_bufnr, map)
-            actions.select_default:replace(function()
-                local selection = action_state.get_selected_entry()
-                if selection then
-                    actions.file_edit(prompt_bufnr)
-                end
-            end)
-            return true
-        end,
-    }):find()
-end
-
 function M.vimwiki_utils_backlinks()
     local current_file = vim.fn.expand('%:t')
     current_file = current_file:gsub(".md", "")
@@ -259,7 +110,7 @@ function M.vimwiki_utils_backlinks()
         end,
         attach_mappings = function(prompt_bufnr, map)
 
-            -- press ctrl enter to generate new tag
+            -- press opt enter to generate index
             map('i', '<A-CR>', function()
                 actions.close(prompt_bufnr)
                 utils.generate_index(backlink_pattern)
@@ -291,8 +142,8 @@ function M.setup()
         pattern = 'vimwiki',
         callback = function()
             vim.api.nvim_buf_set_keymap(0, 'i', '<C-b>', '<cmd>VimwikiUtilsLink<CR>', { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(0, 'n', '<leader>nn', '<cmd>VimwikiUtilsRough<CR>', { noremap = true, silent = true })
             vim.api.nvim_buf_set_keymap(0, 'n', '<leader>fb', '<cmd>VimwikiUtilsBacklinks<CR>', { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(0, 'n', '<leader>vr', '<cmd>VimwikiUtilsRough<CR>', { noremap = true, silent = true })
         end,
     })
 end

@@ -41,8 +41,11 @@ It currently only supports one wiki (the first wiki you define in your `vimwiki_
 ```
 
 # Features
-## Linking/Finding Notes And Creating New Notes
+
+## Linking And Creating New Notes
+
 ### `VimwikiUtilsLink` 
+
 Allows you to quickly link to an existing file or to create a new file based on a `template`:
 
 Press `<enter>` to create a `.md` link for the selected note or press `<C-b>` while in `insert` to create a new note. 
@@ -51,24 +54,36 @@ created in your designated notes directory with a `template`, which you can crea
 `templates` support a `HEADER` token, which gets replaced with the formatted name of your newly created note, and a `DATE` token, 
 which gets replaced by the current date.
 
-### (**COMING SOON**) `VimwikiUtilsBacklinks`
-Find parent files linking to the currently opened file.
+### `VimwikiUtilsBacklinks`
+Find parent files linking to the currently opened file by pressing `<leader>fb`.
+Currently implemented pretty janky: The function calls `telescope.live_grep()` and inserts a formatted backlink pattern into the prompt. 
+While in `VimwikiUtilsBacklinks`, press `<A-CR>` (options + enter) to generate an index containing all files linking to the current note.
+
+### `VimwikiUtilsRough`
+Press `<leader>nn` to create a rough_note.md in your `1_rough_notes/` based on a chosen template.
+
 
 ## Organizing Notes
-### `VimwikiUtilsRough`
-Creates a rough_note.md in your `1_rough_notes/` based on a chosen template.
-#### (**COMING SOON**) `VimwikiUtilsEmbed`
+
+### (**COMING SOON**) `VimwikiUtilsEmbed`
+
 Helps handling notes stored in `1_rough_notes/` by automatically moving the currently opened `rough_note`
 into your `4_atomic_notes/` dir after you added `tags` and maybe created links to other files.
 
+
 ### (**COMING SOON**) `VimwikiUtilsTags`
+
 Easily create or link to existing `tags` in `3_tags/`, which are meant to also structure your wiki. An index can be generated, holding all files tagged by the current tag file.
 
+
 ## Embedding And Editing Of Screenshots
+
 ### (**COMING SOON**) `VimwikiUtilsSc`
+
 Take screenshots on the fly by and embed them into the current markdown file. 
 
 ### (**COMING SOON**) `VimwikiUtilsEditImage`
+
 Hovering over an embedded screenshot opens [KolourPaint](https://apps.kde.org/kolourpaint/), a free and simple program to edit images.
 
 
