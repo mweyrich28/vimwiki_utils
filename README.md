@@ -2,6 +2,8 @@
 > [!NOTE] 
 > This is a work in progress and my first time impelenting a plugin for nvim. 
 
+[[_TOC_]]
+
 ## Introduction
 This plugin is an extension for [VimWiki](https://github.com/vimwiki/vimwiki), trying to add to its many
 capabilities. It also has a predefined wiki structure, which I use in my bioinformatics studies. 
@@ -70,7 +72,6 @@ Press `<leader>nn` to create a rough_note.md in your `1_rough_notes/` based on a
 Helps handling notes stored in `1_rough_notes/` by automatically moving the currently opened `rough_note`
 into your `4_atomic_notes/` dir after you added `tags` and maybe created links to other files.
 
-
 ### (**COMING SOON**) `VimwikiUtilsTags`
 
 Easily create or link to existing `tags` in `3_tags/`, which are meant to also structure your wiki. An index can be generated, holding all files tagged by the current tag file.
@@ -85,7 +86,6 @@ Take screenshots on the fly by and embed them into the current markdown file.
 ### (**COMING SOON**) `VimwikiUtilsEditImage`
 
 Hovering over an embedded screenshot opens [KolourPaint](https://apps.kde.org/kolourpaint/), a free and simple program to edit images.
-
 
 
 # Installation
