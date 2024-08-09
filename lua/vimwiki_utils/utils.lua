@@ -4,8 +4,8 @@ local conf = require("telescope.config").values
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
 
-TEMPLATE_HEADER = "# %s\n> **date:** %s  \n> **tags:** \n> **material:**\n\n"
 TEMPLATE_DIR = "templates"
+DEFAULT_TEMPLATE_HEADER = "# HEADER\n> **date:** DATE  \n\n"
 
 local M = {}
 
@@ -39,14 +39,39 @@ function M.generate_index(search_pattern)
 end
 
 
+---@return string
+function M.get_active_wiki()
+    local current_dir = vim.fn.expand("%:p:h")
+    local vimwiki_list = vim.g.vimwiki_list
+    local best_match = ""
+    local max_length = 0
+    
+    if not current_dir:match("/$") then
+        current_dir = current_dir .. "/"
+    end
+
+    for _, wiki in ipairs(vimwiki_list) do
+        local path = vim.fn.expand(wiki.path)
+        if current_dir:sub(1, #path) == path then
+            if #path > max_length then
+                best_match = path
+                max_length = #path
+            end
+        end
+    end
+
+    return best_match
+end
+
+
 function M.choose_template(callback)
-    local opts = require("telescope.themes").get_dropdown { prompt_title = "Templates" }
+    local opts = require("telescope.themes").get_dropdown { prompt_title = "VimwikiUtilsTemplates" }
 
     local wiki = vim.g.vimwiki_list[1].path
     -- get all templates
     local results = vim.fn.systemlist("find " ..  wiki .. TEMPLATE_DIR .. " -type f -name '*.md'")
 
-    local processed_results_table = M.format_results(TEMPLATE_DIR, wiki, results)
+    local processed_results_table = M.format_results(TEMPLATE_DIR, results)
     local processed_results = processed_results_table[1]
     local file_map = processed_results_table[2]
 
@@ -87,9 +112,9 @@ end
 
 
 ---@param prefix string
----@param wiki string
 ---@param results table
-function M.format_results(prefix, wiki, results)
+function M.format_results(prefix, results)
+    local wiki = M.get_active_wiki()
     local processed_results = {}
     local file_map = {}
     local wiki_suffix = M.get_path_suffix(wiki)
@@ -113,16 +138,22 @@ end
 
 ---@param abs_path_new_file string
 ---@param header_new_file string
----@param template_filename string
+---@param template_filename string|nil
 function M.generate_header(abs_path_new_file, header_new_file, template_filename)
-    local file, err = io.open(template_filename, "r")
-    if file == nil then
-        print("Error opening template file: " .. err)
-        return
+    local template_content = nil
+    
+    if template_filename  == nil then
+        template_content = DEFAULT_TEMPLATE_HEADER
+    else
+        local file, _ = io.open(template_filename, "r")
+        if file == nil then
+            print("Template " .. template_filename .. "does not exist!")
+            return
+        else
+            template_content = file:read("*all")
+            file:close()
+        end
     end
-
-    local template_content = file:read("*all")
-    file:close()
 
     -- replace DATE
     local formatted_date = os.date("%Y-%m-%d")
@@ -131,7 +162,6 @@ function M.generate_header(abs_path_new_file, header_new_file, template_filename
     -- replace HEADER
     local name_formatted = string.gsub(header_new_file, "_", " ")
     template_content = string.gsub(template_content, "HEADER", name_formatted)
-    print(abs_path_new_file)
     file, err = io.open(abs_path_new_file .. ".md", "w+")
     if file == nil then
         print("Error opening new file: " .. err)
@@ -158,9 +188,9 @@ end
 
 ---@param filename string
 ---@return string
-function M.format_rel_md_link(filename, wiki)
+function M.format_rel_md_link(filename)
     local parent_note_abs_path = vim.fn.expand("%:p")
-    local relative_path_prefix = M.gen_rel_prefix(wiki, parent_note_abs_path)
+    local relative_path_prefix = M.gen_rel_prefix(parent_note_abs_path)
     -- formatting identifier for md link: [identifier](path/to/child_note)
     local formatted_name = string.gsub(string.gsub(M.get_path_suffix(filename), ".md", ""), "_", " ")
     return "[" .. formatted_name .. "]" .. "(" ..relative_path_prefix .. filename.. ")"
@@ -177,10 +207,10 @@ end
 
 ---@param parent_note_path string
 ---@param child_note_path string
----@param wiki string
 ---@return boolean
-function M.same_level(parent_note_path, child_note_path, wiki)
-    local parent_note_wiki_path = M.convert_abs_to_rel(wiki, parent_note_path)
+function M.same_level(parent_note_path, child_note_path)
+    local wiki = M.get_active_wiki()
+    local parent_note_wiki_path = M.convert_abs_to_rel(parent_note_path)
     -- check if parent_note is located in same dir as child_note
     -- remove the last part of the file identifier (md)
     local dir_child_note = child_note_path.match(child_note_path, "(.*/)")
@@ -194,10 +224,10 @@ function M.same_level(parent_note_path, child_note_path, wiki)
 end
 
 
----@param wiki string
 ---@param path string
 ---@return string
-function M.convert_abs_to_rel(wiki, path)
+function M.convert_abs_to_rel(path)
+    local wiki = M.get_active_wiki()
     local wiki_suffix = M.get_path_suffix(wiki)
 
     -- gets path based on wiki: /home/usr/wiki/4_atomic_notes/note.md -> 4_atomic_notes/note.md
@@ -206,17 +236,12 @@ function M.convert_abs_to_rel(wiki, path)
 end
 
 
----@param wiki string
 ---@param parent_note_abs_path string
 ---@return string
-function M.gen_rel_prefix(wiki, parent_note_abs_path)
+function M.gen_rel_prefix(parent_note_abs_path)
+    local wiki = M.get_active_wiki()
     local curr_depht = M.get_depth(parent_note_abs_path)
-    local wiki_depth = M.get_depth(wiki)
-
-    -- adjsut depth based on wiki path in vim.g.vimwiki_list
-    if string.sub(wiki, 1, 1) == "~" then
-        wiki_depth = wiki_depth + 1
-    end
+    local wiki_depth = M.get_depth(vim.fn.expand(wiki))
 
     -- Count the number of directories to go up
     local relative_path = ""
@@ -229,12 +254,12 @@ end
 
 
 ---@param child_note_wiki_path string
----@param wiki string
 ---@return string
-function M.link_to_note(child_note_wiki_path, wiki)
+function M.link_to_note(child_note_wiki_path)
+    local wiki = M.get_active_wiki()
     local parent_note_abs_path = vim.fn.expand("%:p")
 
-    if M.same_level(parent_note_abs_path, child_note_wiki_path, wiki) then
+    if M.same_level(parent_note_abs_path, child_note_wiki_path) then
         return M.format_md_link(M.get_path_suffix(child_note_wiki_path))
     end
 
@@ -251,6 +276,15 @@ function M.create_new_note(curr_file)
     M.choose_template(function(template_path)
         M.generate_header(abs_path_new_note, markdown_name, template_path)
     end)
+end
+
+
+---@param tag_name string
+function M.create_new_tag(tag_name, tag_dir)
+    local wiki = M.get_active_wiki()
+    local abs_tag_dir = wiki ..  tag_dir .. "/" .. tag_name
+        
+    M.generate_header(abs_tag_dir, tag_name, nil)
 end
 
 
