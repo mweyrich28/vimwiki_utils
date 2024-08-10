@@ -19,7 +19,7 @@
 
 # VimwikiUtils
 > [!NOTE] 
-> This is a work in progress and my first time impelenting a plugin for nvim. 
+> This is a work in progress and my first time implementing a plugin for nvim. 
 
 ## Introduction
 This plugin is an extension for [VimWiki](https://github.com/vimwiki/vimwiki), trying to add to its many
@@ -84,14 +84,17 @@ Press `<leader>nn` to create a `rough_note.md` in your `1_rough_notes/` based on
 
 ## Organizing Notes
 
+### `VimwikiUtilsTags`
+
+Easily create or link to existing `tags` in `3_tags/`, which are meant to also structure your wiki. An index can be generated, holding all files tagged by the current tag file.
+While in insert mode, press `<C-e>` to open a telescope prompt. Here all your tags will be displayed. Hit `<enter>` to create a link to the selected tag or hit `<A-enter>` to create a new tag 
+(named after what you typed in the promt)
+
 ### (**COMING SOON**) `VimwikiUtilsEmbed`
 
 Helps handling notes stored in `1_rough_notes/` by automatically moving the currently opened `rough_note`
 into your `4_atomic_notes/` dir after you added `tags` and maybe created links to other files.
 
-### (**COMING SOON**) `VimwikiUtilsTags`
-
-Easily create or link to existing `tags` in `3_tags/`, which are meant to also structure your wiki. An index can be generated, holding all files tagged by the current tag file.
 
 
 ## Embedding And Editing Of Screenshots
