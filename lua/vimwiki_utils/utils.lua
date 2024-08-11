@@ -191,8 +191,14 @@ end
 function M.format_rel_md_link(filename)
     local parent_note_abs_path = vim.fn.expand("%:p")
     local relative_path_prefix = M.gen_rel_prefix(parent_note_abs_path)
-    -- formatting identifier for md link: [identifier](path/to/child_note)
-    local formatted_name = string.gsub(string.gsub(M.get_path_suffix(filename), ".md", ""), "_", " ")
+    -- formatting identifier for md link: [identifier](path/to/child_note) (also removing unwanted suffixes)
+    local formatted_name = string.gsub(
+        string.gsub(
+            string.gsub(M.get_path_suffix(filename), "%.md$", ""),
+            "%.png$", ""
+            ),
+        "_", " "
+    )
     return "[" .. formatted_name .. "]" .. "(" ..relative_path_prefix .. filename.. ")"
 end
 

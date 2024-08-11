@@ -5,11 +5,14 @@ local conf = require("telescope.config").values
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
 local utils = require('vimwiki_utils.utils')
+local job = require('plenary.job')
 
-
+-- NOTE: these paths can be altered but shouldn't end with '/'
+-- TODO: FIX the above
 local ROUGH_NOTES_DIR = "1_rough_notes"
 local TAG_DIR = "3_tags"
 local ATOMIC_NOTES_DIR = "4_atomic_notes"
+local SCREENSHOT_DIR = "assets/SCREENSHOTS"
 
 local M = {}
 
@@ -116,38 +119,6 @@ function M.vimwiki_utils_backlinks()
 end
 
 
--- local function get_tag(file_name)
---     -- get fist wiki (like this it only works for the first defined wiki in vimwiki_list) TODO
---     local vault_path = vim.g.vimwiki_list[1].path
---     local current_file_path = vim.fn.expand("%:p")
---     
---     -- tag dir
---     local tag_dir = "3_tags/"
---
---     local curr_depht = get_depth(current_file_path)
---     local vault_depth = get_depth(vault_path)
---
---     -- Count the number of directories to go up
---     local relative_path = ""
---     for i=3, curr_depht - vault_depth,1 do
---         relative_path = relative_path .. "../"
---     end
---
---     -- Append the path to the markdown file
---     relative_path = relative_path .. tag_dir .. file_name
---     local wiki_link = "[".. string.gsub(file_name, ".md", "") .."]" .. "(" .. relative_path .. ")"
---
---     return wiki_link
--- end
---
--- local function generate_new_tag(tag_name)
---     Job:new({
---         command = "/home/malte/.config/scripts/vimwiki_link.sh",
---     args = { "/home/malte/documents/zettelkasten/3_tags/" .. tag_name, tag_name},
---     }):start()
--- end
---
---
 function M.vimwiki_utils_tags()
     local opts = require("telescope.themes").get_dropdown { prompt_title = "VimwikiUtilsTags" }
     local wiki = utils.get_active_wiki()
@@ -189,6 +160,25 @@ function M.vimwiki_utils_tags()
     }):find()
 end
 
+function M.vimwiki_utils_sc()
+
+    local image_name = vim.fn.input('Image name: ')
+    local plugin_dir = vim.fn.stdpath('data') .. "/site/pack/packer/start/vimwiki_utils"
+    local wiki = utils.get_active_wiki()
+    local sc_dir = wiki .. "/" .. SCREENSHOT_DIR
+    local script_path = plugin_dir .. '/scripts/vimwiki_better_sc.sh'
+
+
+    if image_name ~= "" then
+        job:new({
+            command = script_path,
+            args = { image_name, sc_dir},
+        }):start()
+
+        local link_to_sc = utils.format_rel_md_link(SCREENSHOT_DIR .. "/" .. image_name .. ".png")
+        vim.api.nvim_put({ link_to_sc }, "", true, true)
+    end
+end
 
 function M.setup()
 
@@ -208,8 +198,12 @@ function M.setup()
         M.vimwiki_utils_tags()
     end, {})
     
+    vim.api.nvim_create_user_command('VimwikiUtilsSc', function()
+        M.vimwiki_utils_sc()
+    end, {})
+    
     vim.api.nvim_create_user_command('VimwikiUtilsTest', function()
-        
+        M.vimwiki_utils_sc()
     end, {})
 
     vim.api.nvim_create_autocmd('FileType', {
@@ -219,6 +213,7 @@ function M.setup()
             vim.api.nvim_buf_set_keymap(0, 'i', '<C-e>', '<cmd>VimwikiUtilsTags<CR>', { noremap = true, silent = true })
             vim.api.nvim_buf_set_keymap(0, 'n', '<leader>nn', '<cmd>VimwikiUtilsRough<CR>', { noremap = true, silent = true })
             vim.api.nvim_buf_set_keymap(0, 'n', '<leader>fb', '<cmd>VimwikiUtilsBacklinks<CR>', { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sc', '<cmd>VimwikiUtilsc<CR>', { noremap = true, silent = true })
         end,
     })
 end

@@ -7,8 +7,8 @@
         - [`VimwikiUtilsBacklinks`](#vimwikiutilsbacklinks)
         - [`VimwikiUtilsRough`](#vimwikiutilsrough)
     - [Organizing Notes](#organizing-notes)
+        - [`VimwikiUtilsTags`](#vimwikiutilstags)
         - [(**COMING SOON**) `VimwikiUtilsEmbed`](#coming-soon-vimwikiutilsembed)
-        - [(**COMING SOON**) `VimwikiUtilsTags`](#coming-soon-vimwikiutilstags)
     - [Embedding And Editing Of Screenshots](#embedding-and-editing-of-screenshots)
         - [(**COMING SOON**) `VimwikiUtilsSc`](#coming-soon-vimwikiutilssc)
         - [(**COMING SOON**) `VimwikiUtilsEditImage`](#coming-soon-vimwikiutilseditimage)
@@ -96,10 +96,11 @@ Helps handling notes stored in `1_rough_notes/` by automatically moving the curr
 into your `4_atomic_notes/` dir after you added `tags` and maybe created links to other files.
 
 
-
 ## Embedding And Editing Of Screenshots
 
-### (**COMING SOON**) `VimwikiUtilsSc`
+### `VimwikiUtilsSc`
+> [!NOTE]
+> This funcion calls a `bash` script which calls `gnome-screenshot` but you can replace it with any other script. 
 
 Take screenshots on the fly by and embed them into the current markdown file. 
 
@@ -109,9 +110,6 @@ Hovering over an embedded screenshot opens [KolourPaint](https://apps.kde.org/ko
 
 
 # Installation
-## Prerequisites
-Make sure to also install [Telescope](https://github.com/nvim-telescope/telescope.nvim) and (obviously) [VimWiki](https://github.com/vimwiki/vimwiki).
-
 ## Packer
 ```lua
     use {
