@@ -175,7 +175,7 @@ function M.vimwiki_utils_sc()
             args = { image_name, sc_dir},
         }):start()
 
-        local link_to_sc = utils.format_rel_md_link(SCREENSHOT_DIR .. "/" .. image_name .. ".png")
+        local link_to_sc = "!" .. utils.format_rel_md_link(SCREENSHOT_DIR .. "/" .. image_name .. ".png")
         vim.api.nvim_put({ link_to_sc }, "", true, true)
     end
 end
@@ -185,11 +185,11 @@ function M.setup()
     vim.api.nvim_create_user_command('VimwikiUtilsLink', function()
         M.vimwiki_utils_link()
     end, {})
-    
+
     vim.api.nvim_create_user_command('VimwikiUtilsRough', function()
         M.vimwiki_utils_rough()
     end, {})
-    
+
     vim.api.nvim_create_user_command('VimwikiUtilsBacklinks', function()
         M.vimwiki_utils_backlinks()
     end, {})
@@ -197,11 +197,11 @@ function M.setup()
     vim.api.nvim_create_user_command('VimwikiUtilsTags', function()
         M.vimwiki_utils_tags()
     end, {})
-    
+
     vim.api.nvim_create_user_command('VimwikiUtilsSc', function()
         M.vimwiki_utils_sc()
     end, {})
-    
+
     vim.api.nvim_create_user_command('VimwikiUtilsTest', function()
         M.vimwiki_utils_sc()
     end, {})
