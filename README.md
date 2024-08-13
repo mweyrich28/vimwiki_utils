@@ -65,11 +65,10 @@ It currently only supports one wiki (the first wiki you define in your `vimwiki_
 
 ### `VimwikiUtilsLink` 
 
-Allows you to quickly link to an existing file or to create a new file based on a `template`:
+Allows you to quickly link to an existing file or to create a new file based on a `template` by pressing `<C-b>` in `insert` mode:
 
-Press `<enter>` to create a `.md` link for the selected note or press `<C-b>` while in `insert` to create a new note. 
-Based on what you typed into the `Telescope` prompt, the new note will be named after the input provided and automatically 
-created in your designated notes directory with a `template`, which you can create in your `templates/` dir. For now,
+Either hit `<CR>` on an existing note to link to it, or press `<A-CR>` to create a new note, which will be named after what you typed into the promt.
+Choose a `template`, which you can create in your `templates/` dir. For now,
 `templates` support a `HEADER` token, which gets replaced with the formatted name of your newly created note, and a `DATE` token, 
 which gets replaced by the current date.
 
@@ -106,8 +105,18 @@ Take screenshots on the fly by and embed them into the current markdown file.
 
 ### (**COMING SOON**) `VimwikiUtilsEditImage`
 
-Hovering over an embedded screenshot opens [KolourPaint](https://apps.kde.org/kolourpaint/), a free and simple program to edit images.
+Hovering over an embedded screenshot  and pressing `<leader>ii`opens [KolourPaint](https://apps.kde.org/kolourpaint/), a free and simple program for editing images.
 
+
+# Default Key mappings
+
+| Keymap              | Function                                            |
+|---------------------|-----------------------------------------------------|
+| INSERT `<C-b>`      | [`VimwikiUtilsLink`](#`VimwikiUtilsLink`)           |
+| NORMAL `<leader>nn` | [`VimwikiUtilsRough`](#`VimwikiUtilsRough`)         |
+| INSERT `<C-e>`      | [`VimwikiUtilsTags`](#`VimwikiUtilsTags`)           |
+| NORMAL `<leader>fb` | [`VimwikiUtilsBacklinks`](#`VimwikiUtilsBacklinks`) |
+| NORMAL `<leader>sc` | [`VimwikiUtilsSc`](#`VimwikiUtilsSc`)               |
 
 # Installation
 ## Packer
