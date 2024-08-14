@@ -10,7 +10,7 @@
         - [`VimwikiUtilsTags`](#vimwikiutilstags)
         - [(**COMING SOON**) `VimwikiUtilsEmbed`](#coming-soon-vimwikiutilsembed)
     - [Embedding And Editing Of Screenshots](#embedding-and-editing-of-screenshots)
-        - [(**COMING SOON**) `VimwikiUtilsSc`](#coming-soon-vimwikiutilssc)
+        - [`VimwikiUtilsSc`](#coming-soon-vimwikiutilssc)
         - [(**COMING SOON**) `VimwikiUtilsEditImage`](#coming-soon-vimwikiutilseditimage)
 - [Installation](#installation)
     - [Prerequisites](#prerequisites)
@@ -112,11 +112,11 @@ Hovering over an embedded screenshot  and pressing `<leader>ii`opens [KolourPain
 
 | Keymap              | Function                                            |
 |---------------------|-----------------------------------------------------|
-| INSERT `<C-b>`      | [`VimwikiUtilsLink`](#`VimwikiUtilsLink`)           |
-| NORMAL `<leader>nn` | [`VimwikiUtilsRough`](#`VimwikiUtilsRough`)         |
-| INSERT `<C-e>`      | [`VimwikiUtilsTags`](#`VimwikiUtilsTags`)           |
-| NORMAL `<leader>fb` | [`VimwikiUtilsBacklinks`](#`VimwikiUtilsBacklinks`) |
-| NORMAL `<leader>sc` | [`VimwikiUtilsSc`](#`VimwikiUtilsSc`)               |
+| INSERT `<C-b>`      | [`VimwikiUtilsLink`](#Vimwikiutilslink)           |
+| NORMAL `<leader>nn` | [`VimwikiUtilsRough`](#vimwikiutilsrough)         |
+| INSERT `<C-e>`      | [`VimwikiUtilsTags`](#vimwikiutilstags)           |
+| NORMAL `<leader>fb` | [`VimwikiUtilsBacklinks`](#vimwikiutilsbacklinks) |
+| NORMAL `<leader>sc` | [`VimwikiUtilsSc`](#vimwikiutilssc)               |
 
 # Installation
 ## Packer
