@@ -25,7 +25,7 @@
 This plugin is an extension for [VimWiki](https://github.com/vimwiki/vimwiki), trying to add to its many
 capabilities. It also has a predefined wiki structure, which I use in my bioinformatics studies. 
 The wiki structure was inspired by this [YouTube video](https://www.youtube.com/watch?v=hSTy_BInQs8&list=WL&index=1&t=1507s). 
-It currently only supports one wiki (the first wiki you define in your `vimwiki_list`).
+
 ```bash
 /home/usr/zettelkasten/
 .
@@ -64,10 +64,10 @@ It currently only supports one wiki (the first wiki you define in your `vimwiki_
 ## Linking And Creating New Notes
 
 ### `VimwikiUtilsLink` 
-
-Allows you to quickly link to an existing file or to create a new file based on a `template` by pressing `<C-b>` in `insert` mode:
-
-Either hit `<CR>` on an existing note to link to it, or press `<A-CR>` to create a new note, which will be named after what you typed into the promt.
+Allows you to quickly link to an existing file or to create a new file based on a `template`. 
+Pressing `<C-b>` in `insert` mode opens a `telescope prompt` showing all files in `4_atomic_notes`.
+Either hit `<CR>` on an existing `note` (creating a link to it), or press `<A-CR>` to create a new note (in `4_atomic_notes`), 
+which will be named after what you typed into the promt. This helps you to dynamically create new notes or link to already existing notes.
 Choose a `template`, which you can create in your `templates/` dir. For now,
 `templates` support a `HEADER` token, which gets replaced with the formatted name of your newly created note, and a `DATE` token, 
 which gets replaced by the current date.
@@ -112,27 +112,25 @@ Hovering over an embedded screenshot  and pressing `<leader>ii`opens [KolourPain
 
 | Keymap              | Function                                            |
 |---------------------|-----------------------------------------------------|
-| INSERT `<C-b>`      | [`VimwikiUtilsLink`](#Vimwikiutilslink)           |
-| NORMAL `<leader>nn` | [`VimwikiUtilsRough`](#vimwikiutilsrough)         |
-| INSERT `<C-e>`      | [`VimwikiUtilsTags`](#vimwikiutilstags)           |
+| INSERT  `<C-b>`     | [`VimwikiUtilsLink`](#Vimwikiutilslink)             |
+| NORMAL `<leader>nn` | [`VimwikiUtilsRough`](#vimwikiutilsrough)           |
+| INSERT  `<C-e>`     | [`VimwikiUtilsTags`](#vimwikiutilstags)             |
 | NORMAL `<leader>fb` | [`VimwikiUtilsBacklinks`](#vimwikiutilsbacklinks) |
 | NORMAL `<leader>sc` | [`VimwikiUtilsSc`](#vimwikiutilssc)               |
 
 # Installation
 ## Packer
 ```lua
-    use {
-        'mweyrich28/vimwiki_utils',
-        requires = {
-            'nvim-telescope/telescope.nvim',
-            'vimwiki/vimwiki'
-        }
+use {
+    'mweyrich28/vimwiki_utils',
+    requires = {
+        'nvim-telescope/telescope.nvim',
+        'vimwiki/vimwiki'
     }
+}
 ```
 
 # Getting Started
 ```lua
 require('vimwiki_utils').setup()
 ```
-
-(**COMING SOON**) Customizable names for (1_rough_notes, 2_source_material, 3_tags, 4_atomic_notes) and custom keymaps etc.
