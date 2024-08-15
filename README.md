@@ -66,7 +66,7 @@ The wiki structure was inspired by this [YouTube video](https://www.youtube.com/
 ### `VimwikiUtilsLink` 
 Allows you to quickly link to an existing file or to create a new file based on a `template`. 
 Pressing `<C-b>` in `insert` mode opens a `telescope prompt` showing all files in `4_atomic_notes`.
-Either hit `<CR>` on an existing `note` (creating a link to it), or press `<A-CR>` to create a new note (in `4_atomic_notes`), 
+Either hit `<CR>` on an existing `note` (creating a link to it), or press `<A-CR>` (options + enter) to create a new note (in `4_atomic_notes`), 
 which will be named after what you typed into the promt. This helps you to dynamically create new notes or link to already existing notes.
 Choose a `template`, which you can create in your `templates/` dir. For now,
 `templates` support a `HEADER` token, which gets replaced with the formatted name of your newly created note, and a `DATE` token, 
@@ -74,7 +74,7 @@ which gets replaced by the current date.
 
 ### `VimwikiUtilsBacklinks`
 Find parent files linking to the currently opened file by pressing `<leader>fb`.
-Currently implemented pretty janky: The function calls `telescope.live_grep()` and inserts a formatted backlink pattern into the prompt. 
+Currently implemented pretty janky: The function calls `telescope.live_grep()` and inserts a formatted backlink pattern into the `prompt`. 
 While in `VimwikiUtilsBacklinks`, press `<A-CR>` (options + enter) to generate an index containing all files linking to the current note.
 
 ### `VimwikiUtilsRough`
@@ -86,7 +86,7 @@ Press `<leader>nn` to create a `rough_note.md` in your `1_rough_notes/` based on
 ### `VimwikiUtilsTags`
 
 Easily create or link to existing `tags` in `3_tags/`, which are meant to also structure your wiki. An index can be generated, holding all files tagged by the current tag file.
-While in insert mode, press `<C-e>` to open a telescope prompt. Here all your tags will be displayed. Hit `<enter>` to create a link to the selected tag or hit `<A-enter>` to create a new tag 
+While in insert mode, press `<C-e>` to open a `telescope prompt`. Here all your tags will be displayed. Hit `<enter>` to create a link to the selected tag or hit `<A-enter>` to create a new tag 
 (named after what you typed in the promt)
 
 ### (**COMING SOON**) `VimwikiUtilsEmbed`
