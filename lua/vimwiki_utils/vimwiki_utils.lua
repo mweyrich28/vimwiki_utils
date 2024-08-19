@@ -13,6 +13,7 @@ local ROUGH_NOTES_DIR = "1_rough_notes"
 local TAG_DIR = "3_tags"
 local ATOMIC_NOTES_DIR = "4_atomic_notes"
 local SCREENSHOT_DIR = "assets/SCREENSHOTS"
+local KOLOURPAINT = "/snap/bin/kolourpaint "
 
 local M = {}
 
@@ -161,13 +162,11 @@ function M.vimwiki_utils_tags()
 end
 
 function M.vimwiki_utils_sc()
-
     local image_name = vim.fn.input('Image name: ')
     local plugin_dir = vim.fn.stdpath('data') .. "/site/pack/packer/start/vimwiki_utils"
     local wiki = utils.get_active_wiki()
     local sc_dir = wiki .. "/" .. SCREENSHOT_DIR
     local script_path = plugin_dir .. '/scripts/vimwiki_better_sc.sh'
-
 
     if image_name ~= "" then
         job:new({
@@ -178,6 +177,18 @@ function M.vimwiki_utils_sc()
         local link_to_sc = "!" .. utils.format_rel_md_link(SCREENSHOT_DIR .. "/" .. image_name .. ".png")
         vim.api.nvim_put({ link_to_sc }, "", true, true)
     end
+end
+
+function M.vimwiki_utils_edit_image()
+    local win = vim.api.nvim_get_current_win()
+    local buf = vim.api.nvim_win_get_buf(win)
+    local cursor = vim.api.nvim_win_get_cursor(win)
+    local line_number = cursor[1]
+    local line_content = vim.api.nvim_buf_get_lines(buf, line_number - 1, line_number, false)[1]
+    local link_content = line_content:match("%((.-)%)")
+    link_content = link_content:gsub("%.%.%/", "")
+    link_content = utils.get_active_wiki() .. link_content
+    vim.fn.system(KOLOURPAINT .. " " .. link_content)
 end
 
 function M.setup()
@@ -202,8 +213,13 @@ function M.setup()
         M.vimwiki_utils_sc()
     end, {})
 
+
+    vim.api.nvim_create_user_command('VimwikiUtilsEditImage', function()
+        M.vimwiki_utils_edit_image()
+    end, {})
+
     vim.api.nvim_create_user_command('VimwikiUtilsTest', function()
-        M.vimwiki_utils_sc()
+        M.vimwiki_utils_edit_image()
     end, {})
 
     vim.api.nvim_create_autocmd('FileType', {
@@ -213,7 +229,8 @@ function M.setup()
             vim.api.nvim_buf_set_keymap(0, 'i', '<C-e>', '<cmd>VimwikiUtilsTags<CR>', { noremap = true, silent = true })
             vim.api.nvim_buf_set_keymap(0, 'n', '<leader>nn', '<cmd>VimwikiUtilsRough<CR>', { noremap = true, silent = true })
             vim.api.nvim_buf_set_keymap(0, 'n', '<leader>fb', '<cmd>VimwikiUtilsBacklinks<CR>', { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sc', '<cmd>VimwikiUtilsc<CR>', { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sc', '<cmd>VimwikiUtilsSc<CR>', { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(0, 'n', '<leader>ii', '<cmd>VimwikiUtilsEditImage<CR>', { noremap = true, silent = true })
         end,
     })
 end
