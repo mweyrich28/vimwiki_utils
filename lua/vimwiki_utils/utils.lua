@@ -22,7 +22,6 @@ end
 
 ---@param search_pattern string 
 function M.generate_index(search_pattern)
-    local wiki = vim.g.vimwiki_list[1].path
     local results = vim.fn.systemlist("rg --vimgrep " .. vim.fn.shellescape(search_pattern))
 
     table.sort(results, function(a, b)
@@ -33,7 +32,7 @@ function M.generate_index(search_pattern)
     vim.api.nvim_put({ index }, "l", true, true)
     for _, result in ipairs(results) do
         local file_path = string.gsub(result, ":.*", "") -- get path like 4_atomic_notes/MARKDOWN.md
-        local wiki_link = M.format_rel_md_link(file_path, wiki)
+        local wiki_link = M.format_rel_md_link(file_path)
         vim.api.nvim_put({ "- " .. wiki_link }, "l", true, true) -- listing all links
     end
 end
@@ -262,14 +261,13 @@ end
 ---@param child_note_wiki_path string
 ---@return string
 function M.link_to_note(child_note_wiki_path)
-    local wiki = M.get_active_wiki()
     local parent_note_abs_path = vim.fn.expand("%:p")
 
     if M.same_level(parent_note_abs_path, child_note_wiki_path) then
         return M.format_md_link(M.get_path_suffix(child_note_wiki_path))
     end
 
-    return M.format_rel_md_link(child_note_wiki_path, wiki)
+    return M.format_rel_md_link(child_note_wiki_path)
 end
 
 

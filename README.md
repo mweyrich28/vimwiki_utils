@@ -80,17 +80,18 @@ While in `VimwikiUtilsBacklinks`, press `<A-CR>` (options + enter) to generate a
 ### `VimwikiUtilsRough`
 Press `<leader>nn` to create a `rough_note.md` in your `1_rough_notes/` based on a chosen template.
 
+### `VimwikiUtilsSource`
+Using this function you can linkt to your `soure files` (e.g. lectures, papers, etc) stored in `2_source_material`.
+
 
 ## Organizing Notes
 
 ### `VimwikiUtilsTags`
-
 Easily create or link to existing `tags` in `3_tags/`, which are meant to also structure your wiki. An index can be generated, holding all files tagged by the current tag file.
 While in insert mode, press `<C-e>` to open a `telescope prompt`. Here all your tags will be displayed. Hit `<enter>` to create a link to the selected tag or hit `<A-enter>` to create a new tag 
 (named after what you typed in the promt)
 
-### (**COMING SOON**) `VimwikiUtilsEmbed`
-
+### `VimwikiUtilsEmbed`
 Helps handling notes stored in `1_rough_notes/` by automatically moving the currently opened `rough_note`
 into your `4_atomic_notes/` dir after you added `tags` and maybe created links to other files.
 
@@ -119,6 +120,8 @@ You can also replace it with any other light weight image editing program.
 | NORMAL `<leader>fb`  | [`VimwikiUtilsBacklinks`](#vimwikiutilsbacklinks) |
 | NORMAL `<leader>sc`  | [`VimwikiUtilsSc`](#vimwikiutilssc)               |
 | NORMAL `<leader>ii`  | [`VimwikiUtilsEditImage`](#vimwikiutilseditimage) |
+| NORMAL `<leader>sm`  | [`VimwikiUtilsSource`](#vimwikiutilssource)       |
+| NORMAL `<leader>m`   | [`VimwikiUtilsSource`](#vimwikiutilsembed)        |
 
 # Installation
 ## Packer
