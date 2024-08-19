@@ -11,7 +11,7 @@
         - [(**COMING SOON**) `VimwikiUtilsEmbed`](#coming-soon-vimwikiutilsembed)
     - [Embedding And Editing Of Screenshots](#embedding-and-editing-of-screenshots)
         - [`VimwikiUtilsSc`](#coming-soon-vimwikiutilssc)
-        - [(**COMING SOON**) `VimwikiUtilsEditImage`](#coming-soon-vimwikiutilseditimage)
+        - [`VimwikiUtilsEditImage`](#vimwikiutilseditimage)
 - [Installation](#installation)
     - [Prerequisites](#prerequisites)
     - [Packer](#packer)
@@ -99,24 +99,26 @@ into your `4_atomic_notes/` dir after you added `tags` and maybe created links t
 
 ### `VimwikiUtilsSc`
 > [!NOTE]
-> This funcion calls a `bash` script which calls `gnome-screenshot` but you can replace it with any other script. 
+> This function calls a `bash` script which calls `gnome-screenshot` but you can replace it with any other script. 
 
 Take screenshots on the fly by and embed them into the current markdown file. 
 
-### (**COMING SOON**) `VimwikiUtilsEditImage`
+### `VimwikiUtilsEditImage`
 
-Hovering over an embedded screenshot  and pressing `<leader>ii`opens [KolourPaint](https://apps.kde.org/kolourpaint/), a free and simple program for editing images.
+Hovering over an embedded screenshot  and pressing `<leader>ii` opens [KolourPaint](https://apps.kde.org/kolourpaint/), a free and simple program for editing images. 
+You can also replace it with any other light weight image editing program.
 
 
 # Default Key mappings
 
-| Keymap              | Function                                            |
-|---------------------|-----------------------------------------------------|
-| INSERT  `<C-b>`     | [`VimwikiUtilsLink`](#Vimwikiutilslink)             |
-| NORMAL `<leader>nn` | [`VimwikiUtilsRough`](#vimwikiutilsrough)           |
-| INSERT  `<C-e>`     | [`VimwikiUtilsTags`](#vimwikiutilstags)             |
-| NORMAL `<leader>fb` | [`VimwikiUtilsBacklinks`](#vimwikiutilsbacklinks) |
-| NORMAL `<leader>sc` | [`VimwikiUtilsSc`](#vimwikiutilssc)               |
+| Keymap               | Function                                          |
+|----------------------|---------------------------------------------------|
+| INSERT  `<C-b>`      | [`VimwikiUtilsLink`](#Vimwikiutilslink)           |
+| NORMAL `<leader>nn`  | [`VimwikiUtilsRough`](#vimwikiutilsrough)         |
+| INSERT  `<C-e>`      | [`VimwikiUtilsTags`](#vimwikiutilstags)           |
+| NORMAL `<leader>fb`  | [`VimwikiUtilsBacklinks`](#vimwikiutilsbacklinks) |
+| NORMAL `<leader>sc`  | [`VimwikiUtilsSc`](#vimwikiutilssc)               |
+| NORMAL `<leader>ii`  | [`VimwikiUtilsEditImage`](#vimwikiutilseditimage) |
 
 # Installation
 ## Packer
