@@ -88,7 +88,7 @@ Using this function you can linkt to your `soure files` (e.g. lectures, papers, 
 
 ### `VimwikiUtilsTags`
 Easily create or link to existing `tags` in `3_tags/`, which are meant to also structure your wiki. An index can be generated, holding all files tagged by the current tag file.
-While in insert mode, press `<C-e>` to open a `telescope prompt`. Here all your tags will be displayed. Hit `<enter>` to create a link to the selected tag or hit `<A-enter>` to create a new tag 
+While in insert mode, press `<C-e>` to open a `telescope prompt`. Here all your tags will be displayed. Hit `<CR>` to create a link to the selected tag or hit `<A-CR>` (options + enter) to create a new tag 
 (named after what you typed in the promt)
 
 ### `VimwikiUtilsEmbed`
