@@ -111,16 +111,16 @@ You can also replace it with any other light weight image editing program.
 
 # Default Key mappings
 
-| Keymap               | Function                                          |
-|----------------------|---------------------------------------------------|
-| INSERT  `<C-b>`      | [`VimwikiUtilsLink`](#Vimwikiutilslink)           |
-| NORMAL `<leader>nn`  | [`VimwikiUtilsRough`](#vimwikiutilsrough)         |
-| INSERT  `<C-e>`      | [`VimwikiUtilsTags`](#vimwikiutilstags)           |
-| NORMAL `<leader>fb`  | [`VimwikiUtilsBacklinks`](#vimwikiutilsbacklinks) |
-| NORMAL `<leader>sc`  | [`VimwikiUtilsSc`](#vimwikiutilssc)               |
-| NORMAL `<leader>ii`  | [`VimwikiUtilsEditImage`](#vimwikiutilseditimage) |
-| NORMAL `<leader>sm`  | [`VimwikiUtilsSource`](#vimwikiutilssource)       |
-| NORMAL `<leader>m`   | [`VimwikiUtilsSource`](#vimwikiutilsembed)        |
+| **Keymap**            | **Function**                                      |
+|-----------------------|---------------------------------------------------|
+| *INSERT*  `<C-b>`     | [`VimwikiUtilsLink`](#Vimwikiutilslink)           |
+| *INSERT*  `<C-e>`     | [`VimwikiUtilsTags`](#vimwikiutilstags)           |
+| *NORMAL* `<leader>nn` | [`VimwikiUtilsRough`](#vimwikiutilsrough)         |
+| *NORMAL* `<leader>fb` | [`VimwikiUtilsBacklinks`](#vimwikiutilsbacklinks) |
+| *NORMAL* `<leader>sc` | [`VimwikiUtilsSc`](#vimwikiutilssc)               |
+| *NORMAL* `<leader>ii` | [`VimwikiUtilsEditImage`](#vimwikiutilseditimage) |
+| *NORMAL* `<leader>sm` | [`VimwikiUtilsSource`](#vimwikiutilssource)       |
+| *NORMAL* `<leader>em` | [`VimwikiUtilsEmbed`](#vimwikiutilsembed)         |
 
 # Installation
 ## Packer
