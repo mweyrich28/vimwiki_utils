@@ -8,7 +8,7 @@
         - [`VimwikiUtilsRough`](#vimwikiutilsrough)
     - [Organizing Notes](#organizing-notes)
         - [`VimwikiUtilsTags`](#vimwikiutilstags)
-        - [(**COMING SOON**) `VimwikiUtilsEmbed`](#coming-soon-vimwikiutilsembed)
+        - [`VimwikiUtilsEmbed`](#vimwikiutilsembed)
     - [Embedding And Editing Of Screenshots](#embedding-and-editing-of-screenshots)
         - [`VimwikiUtilsSc`](#coming-soon-vimwikiutilssc)
         - [`VimwikiUtilsEditImage`](#vimwikiutilseditimage)
@@ -105,7 +105,6 @@ into your `4_atomic_notes/` dir after you added `tags` and maybe created links t
 Take screenshots on the fly by and embed them into the current markdown file. 
 
 ### `VimwikiUtilsEditImage`
-
 Hovering over an embedded screenshot  and pressing `<leader>ii` opens [KolourPaint](https://apps.kde.org/kolourpaint/), a free and simple program for editing images. 
 You can also replace it with any other light weight image editing program.
 
