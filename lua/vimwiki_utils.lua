@@ -255,8 +255,11 @@ function M.vimwiki_utils_embed()
     local note_name = utils.get_path_suffix(current_file)
     local file_name = vim.fn.fnamemodify(current_file, ':t')
     local new_path = vim.fn.fnamemodify(globals.atomic_notes_dir, ':p') .. file_name
+    if vim.fn.filereadable(new_path) == 1 then
+        print("Error: Cannot embed file '" .. new_path .. "', it already exists!")
+        return
+    end
     local confirm = vim.fn.input("Embed " .. note_name .. " → " .. globals.atomic_notes_dir .. "? (y/n): ")
-
     if confirm:lower() == 'y' then
         vim.fn.rename(current_file, new_path)
         vim.cmd('edit ' .. new_path)
