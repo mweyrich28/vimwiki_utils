@@ -114,7 +114,7 @@ Take screenshots on the fly by and embed them into the current markdown file.
 
 ### `VimwikiUtilsEditImage`
 Hovering over an embedded screenshot  and pressing `<leader>ii` opens [KolourPaint](https://apps.kde.org/kolourpaint/), a free and simple program for editing images. 
-You can also replace it with any other light weight image editing program.
+You can also replace it with any other light weight image editing software.
 
 
 # Default Key mappings
