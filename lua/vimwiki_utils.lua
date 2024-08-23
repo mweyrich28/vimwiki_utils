@@ -294,7 +294,6 @@ function M.setup(opts)
         keymaps[key] = keymaps[key] or default_value
     end
 
-
     vim.api.nvim_create_user_command('VimwikiUtilsLink', function()
         M.vimwiki_utils_link()
     end, {})
