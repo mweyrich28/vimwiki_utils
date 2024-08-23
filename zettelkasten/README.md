@@ -1,4 +1,4 @@
 # Example zettelkasen
 
-## Biochemistry lectures overview
-- [Biochemie III](4_atomic_notes/Biochemie_III.md)
+# Main Indices
+- [biochemie](3_tags/biochemie.md)
