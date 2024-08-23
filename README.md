@@ -9,6 +9,7 @@
     - [Organizing Notes](#organizing-notes)
         - [`VimwikiUtilsTags`](#vimwikiutilstags)
         - [`VimwikiUtilsEmbed`](#vimwikiutilsembed)
+        - [`VimwikiUtilsGenerateIndex`](#vimwikiutilsgenerateindex)
     - [Embedding And Editing Of Screenshots](#embedding-and-editing-of-screenshots)
         - [`VimwikiUtilsSc`](#coming-soon-vimwikiutilssc)
         - [`VimwikiUtilsEditImage`](#vimwikiutilseditimage)
@@ -95,6 +96,9 @@ While in insert mode, press `<C-e>` to open a `telescope prompt`. Here all your 
 Helps handling notes stored in `1_rough_notes/` by automatically moving the currently opened `rough_note`
 into your `4_atomic_notes/` dir after you added `tags` and maybe created links to other files.
 
+### `VimwikiUtilsGenerateIndex`
+Generates a list of all files in `3_tags`. You can put this list into your root README.md / index.md.
+
 
 ## Embedding And Editing Of Screenshots
 
@@ -111,16 +115,17 @@ You can also replace it with any other light weight image editing program.
 
 # Default Key mappings
 
-| **Keymap**            | **Function**                                      |
-|-----------------------|---------------------------------------------------|
-| *INSERT*  `<C-b>`     | [`VimwikiUtilsLink`](#Vimwikiutilslink)           |
-| *INSERT*  `<C-e>`     | [`VimwikiUtilsTags`](#vimwikiutilstags)           |
-| *NORMAL* `<leader>nn` | [`VimwikiUtilsRough`](#vimwikiutilsrough)         |
-| *NORMAL* `<leader>fb` | [`VimwikiUtilsBacklinks`](#vimwikiutilsbacklinks) |
-| *NORMAL* `<leader>sc` | [`VimwikiUtilsSc`](#vimwikiutilssc)               |
-| *NORMAL* `<leader>ii` | [`VimwikiUtilsEditImage`](#vimwikiutilseditimage) |
-| *NORMAL* `<leader>sm` | [`VimwikiUtilsSource`](#vimwikiutilssource)       |
-| *NORMAL* `<leader>em` | [`VimwikiUtilsEmbed`](#vimwikiutilsembed)         |
+| **Keymap**            | **Function**                                              |
+|-----------------------|-----------------------------------------------------------|
+| *INSERT*  `<C-b>`     | [`VimwikiUtilsLink`](#Vimwikiutilslink)                   |
+| *INSERT*  `<C-e>`     | [`VimwikiUtilsTags`](#vimwikiutilstags)                   |
+| *NORMAL* `<leader>nn` | [`VimwikiUtilsRough`](#vimwikiutilsrough)                 |
+| *NORMAL* `<leader>fb` | [`VimwikiUtilsBacklinks`](#vimwikiutilsbacklinks)         |
+| *NORMAL* `<leader>sc` | [`VimwikiUtilsSc`](#vimwikiutilssc)                       |
+| *NORMAL* `<leader>ii` | [`VimwikiUtilsEditImage`](#vimwikiutilseditimage)         |
+| *NORMAL* `<leader>sm` | [`VimwikiUtilsSource`](#vimwikiutilssource)               |
+| *NORMAL* `<leader>em` | [`VimwikiUtilsEmbed`](#vimwikiutilsembed)                 |
+| *NORMAL* `<leader>wm` | [`VimwikiUtilsGenerateIndex`](#vimwikiutilsgenerateindex) |
 
 # Installation
 ## Packer

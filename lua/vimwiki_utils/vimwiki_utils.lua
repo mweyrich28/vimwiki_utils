@@ -110,7 +110,7 @@ function M.vimwiki_utils_backlinks()
             -- press opt enter to generate index
             map('i', '<A-CR>', function()
                 actions.close(prompt_bufnr)
-                utils.generate_index(backlink_pattern)
+                utils.generate_tag_index(backlink_pattern)
             end)
             actions.select_default:replace(function()
                 actions.file_edit(prompt_bufnr)
@@ -246,11 +246,24 @@ function M.vimwiki_utils_embed()
     local new_path = vim.fn.fnamemodify(ATOMIC_NOTES_DIR, ':p') .. file_name
     local confirm = vim.fn.input("Embed " .. note_name .. " → " .. ATOMIC_NOTES_DIR .. "? (y/n): ")
 
-    -- If the user confirms with 'y', proceed with the move
     if confirm:lower() == 'y' then
         vim.fn.rename(current_file, new_path)
         vim.cmd('edit ' .. new_path)
         vim.cmd('bd! ' .. current_file)
+    end
+end
+
+
+function M.vimwiki_utils_generate_index()
+    local wiki = utils.get_active_wiki()
+    local results = vim.fn.systemlist("find " ..  wiki .. TAG_DIR .. " -type f -name '*.md'")
+
+    local index = "# Main Index"
+    vim.api.nvim_put({ index }, "l", true, true)
+    for _, file_path in ipairs(results) do
+        local rel_path = utils.convert_abs_to_rel(file_path)
+        local wiki_link = utils.format_rel_md_link(rel_path)
+        vim.api.nvim_put({ "- " .. wiki_link }, "l", true, true) -- listing all links
     end
 end
 
@@ -289,8 +302,12 @@ function M.setup()
         M.vimwiki_utils_embed()
     end, {})
 
+    vim.api.nvim_create_user_command('VimwikiUtilsGenerateIndex', function()
+        M.vimwiki_utils_generate_index()
+    end, {})
+    
     vim.api.nvim_create_user_command('VimwikiUtilsTest', function()
-        M.vimwiki_utils_embed()
+        M.vimwiki_utils_generate_index()
     end, {})
 
     vim.api.nvim_create_autocmd('FileType', {
@@ -304,6 +321,7 @@ function M.setup()
             vim.api.nvim_buf_set_keymap(0, 'n', '<leader>ii', '<cmd>VimwikiUtilsEditImage<CR>', { noremap = true, silent = true })
             vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sm', '<cmd>VimwikiUtilsSource<CR>', { noremap = true, silent = true })
             vim.api.nvim_buf_set_keymap(0, 'n', '<leader>m', '<cmd>VimwikiUtilsEmbed<CR>', { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(0, 'n', '<leader>wm', '<cmd>VimwikiUtilsGenerateIndex<CR>', { noremap = true, silent = true })
         end,
     })
 end

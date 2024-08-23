@@ -21,7 +21,7 @@ function M.split_path(path)
 end
 
 ---@param search_pattern string 
-function M.generate_index(search_pattern)
+function M.generate_tag_index(search_pattern)
     local results = vim.fn.systemlist("rg --vimgrep " .. vim.fn.shellescape(search_pattern))
 
     table.sort(results, function(a, b)
@@ -214,7 +214,6 @@ end
 ---@param child_note_path string
 ---@return boolean
 function M.same_level(parent_note_path, child_note_path)
-    local wiki = M.get_active_wiki()
     local parent_note_wiki_path = M.convert_abs_to_rel(parent_note_path)
     -- check if parent_note is located in same dir as child_note
     -- remove the last part of the file identifier (md)
