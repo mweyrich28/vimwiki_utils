@@ -12,7 +12,7 @@ local globals = {
     source_dir = "2_source_material",
     tag_dir = "3_tags",
     atomic_notes_dir = "4_atomic_notes",
-    screenshot_dir = "assets/SCREENSHOTS",
+    screenshot_dir = "assets/screenshots",
     kolourpaint = "/snap/bin/kolourpaint "
 }
 
