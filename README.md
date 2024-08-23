@@ -128,7 +128,7 @@ You can also replace it with any other light weight image editing software.
 | *NORMAL* `<leader>sc` | [`VimwikiUtilsSc`](#vimwikiutilssc)                       |
 | *NORMAL* `<leader>ii` | [`VimwikiUtilsEditImage`](#vimwikiutilseditimage)         |
 | *NORMAL* `<leader>sm` | [`VimwikiUtilsSource`](#vimwikiutilssource)               |
-| *NORMAL* `<leader>em` | [`VimwikiUtilsEmbed`](#vimwikiutilsembed)                 |
+| *NORMAL* `<leader>m`  | [`VimwikiUtilsEmbed`](#vimwikiutilsembed)                 |
 | *NORMAL* `<leader>wm` | [`VimwikiUtilsGenerateIndex`](#vimwikiutilsgenerateindex) |
 
 # Installation
@@ -165,9 +165,9 @@ require('vimwiki_utils').setup({
         vimwiki_utils_backlinks_key = '<leader>fb',
         vimwiki_utils_sc_key = '<leader>sc',
         vimwiki_utils_edit_image_key = '<leader>ii',
-        vimwiki_utils_source_key = '<leader>sm>',
-        vimwiki_utils_embed_key = '<leader>m>',
-        vimwiki_utils_generate_index_key = '<leader>wm>'
+        vimwiki_utils_source_key = '<leader>sm',
+        vimwiki_utils_embed_key = '<leader>m',
+        vimwiki_utils_generate_index_key = '<leader>wm'
     }
 })
 ```
