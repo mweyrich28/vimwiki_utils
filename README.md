@@ -171,3 +171,16 @@ require('vimwiki_utils').setup({
     }
 })
 ```
+
+Make sure to create a `wiki` in your `vimwiki.lua` config like so:
+
+```lua
+vim.g.vimwiki_list = {
+	{
+		path = '~/path/to/zettelkasten/',
+		syntax = 'markdown',
+		ext = '.md',
+        index = 'README'
+	}
+}
+```
