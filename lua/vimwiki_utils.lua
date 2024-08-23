@@ -178,7 +178,7 @@ function M.vimwiki_utils_sc()
     local image_name = vim.fn.input('Image name: ')
     local plugin_dir = vim.fn.stdpath('data') .. "/site/pack/packer/start/vimwiki_utils"
     local wiki = utils.get_active_wiki()
-    local sc_dir = wiki .. "/" .. globals.source_dir
+    local sc_dir = wiki .. "/" .. globals.screenshot_dir
     local script_path = plugin_dir .. '/scripts/vimwiki_better_sc.sh'
 
     if image_name ~= "" then
