@@ -14,7 +14,6 @@
         - [`VimwikiUtilsSc`](#coming-soon-vimwikiutilssc)
         - [`VimwikiUtilsEditImage`](#vimwikiutilseditimage)
 - [Installation](#installation)
-    - [Prerequisites](#prerequisites)
     - [Packer](#packer)
 - [Getting Started](#getting-started)
 
