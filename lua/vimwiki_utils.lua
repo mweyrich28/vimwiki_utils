@@ -220,11 +220,8 @@ function M.vimwiki_utils_source()
     local processed_results = processed_results_table[1]
     -- table for actual note paths
     local file_map = processed_results_table[2]
-
-
     local note_name = ""
     local wiki_link = ""
-
     pickers.new(opts, {
 
         finder = finders.new_table({
@@ -277,7 +274,7 @@ function M.vimwiki_utils_generate_index()
     for _, file_path in ipairs(results) do
         local rel_path = utils.convert_abs_to_rel(file_path)
         local wiki_link = utils.format_rel_md_link(rel_path)
-        vim.api.nvim_put({ "- " .. wiki_link }, "l", true, true) -- listing all links
+        vim.api.nvim_put({ "- " .. wiki_link }, "l", true, true) -- listing all tags
     end
 end
 
@@ -291,7 +288,7 @@ function M.setup(opts)
     globals.atomic_notes_dir = opts.global.atomic_notes_dir or globals.atomic_notes_dir
     globals.screenshot_dir = opts.global.screenshot_dir or globals.screenshot_dir
     globals.kolourpaint = opts.global.kolourpaint or globals.kolourpaint
-    
+
     local keymaps = opts.keymaps or {}
     for key, default_value in pairs(default_keymaps) do
         keymaps[key] = keymaps[key] or default_value
