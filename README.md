@@ -67,8 +67,10 @@ The wiki structure was inspired by this [YouTube video](https://www.youtube.com/
 ### `VimwikiUtilsLink` 
 Allows you to quickly link to an existing file or to create a new file based on a `template`. 
 Pressing `<C-b>` in `insert` mode opens a `telescope prompt` showing all files in `4_atomic_notes`.
-Either hit `<CR>` on an existing `note` (creating a link to it), or press `<A-CR>` (options + enter) to create a new note (in `4_atomic_notes`), 
-which will be named after what you typed into the promt. This helps you to dynamically create new notes or link to already existing notes.
+Either hit `<CR>` on an existing `note` (creating a link to it), or press `<A-CR>` (options + enter) to create a new note (based on where you are currently at), 
+which will be named after what you typed into the promt. This helps you to dynamically create new notes or link to already existing notes.  
+If you accidentally create a new `atomic_note` in e.g `2_tags` or at `root` level of your wiki, just use [`VimwikiUtilsEmbed`](#vimwikiutilsembed) in order to move it to `4_atomic_notes`.
+
 Choose a `template`, which you can create in your `templates/` dir. For now,
 `templates` support a `HEADER` token, which gets replaced with the formatted name of your newly created note, and a `DATE` token, 
 which gets replaced by the current date.
@@ -79,10 +81,13 @@ Currently implemented pretty janky: The function calls `telescope.live_grep()` a
 While in `VimwikiUtilsBacklinks`, press `<A-CR>` (options + enter) to generate an index containing all files linking to the current note.
 
 ### `VimwikiUtilsRough`
-Press `<leader>nn` to create a `rough_note.md` in your `1_rough_notes/` based on a chosen template.
+Press `<leader>nn` to create a `rough_note.md` in your `1_rough_notes/` based on a chosen template. I use this for taking notes 
+during the lecture. These notes should only be temperate and serve as additional information when creating an actual 
+`atomic_note`.
 
 ### `VimwikiUtilsSource`
-Using this function you can linkt to your `soure files` (e.g. lectures, papers, etc) stored in `2_source_material`.
+Using this function you can linkt to your `soure files` (e.g lectures, papers, etc) stored in `2_source_material`.
+Make sure to name your sources clearly in order to prevent chaos.
 
 
 ## Organizing Notes
@@ -93,11 +98,11 @@ While in insert mode, press `<C-e>` to open a `telescope prompt`. Here all your 
 (named after what you typed in the promt)
 
 ### `VimwikiUtilsEmbed`
-Helps handling notes stored in `1_rough_notes/` by automatically moving the currently opened `rough_note`
-into your `4_atomic_notes/` dir after you added `tags` and maybe created links to other files.
+Helps handling notes stored in `1_rough_notes/` (or anywhere but `4_atomic_notes/`) by automatically moving the currently opened `note`
+into your `4_atomic_notes/` dir after you abstract and summarize it.
 
 ### `VimwikiUtilsGenerateIndex`
-Generates a list of all files in `3_tags`. You can put this list into your root README.md / index.md.
+Generates a list of all files in `3_tags`. You can put this list into your root `README.md` / `index.md`.
 
 
 ## Embedding And Editing Of Screenshots
@@ -141,5 +146,29 @@ use {
 
 # Getting Started
 ```lua
-require('vimwiki_utils').setup()
+require('vimwiki_utils').setup({})
+```
+Or configure your keymaps and dirs like this:
+```lua
+require('vimwiki_utils').setup({
+    global = {
+        rough_notes_dir = "1_rough_notes",
+        source_dir = "2_source_material",
+        tag_dir = "3_tags",
+        atomic_notes_dir = "4_atomic_notes",
+        screenshot_dir = "assets/SCREENSHOTS",
+        kolourpaint = "/snap/bin/kolourpaint"
+    },
+    keymaps = {
+        vimwiki_utils_link_key = '<C-b>',
+        vimwiki_utils_tags_key = '<C-e>',
+        vimwiki_utils_rough_key = '<leader>nn',
+        vimwiki_utils_backlinks_key = '<leader>fb',
+        vimwiki_utils_sc_key = '<leader>sc',
+        vimwiki_utils_edit_image_key = '<leader>ii>',
+        vimwiki_utils_source_key = '<leader>sm>',
+        vimwiki_utils_embed_key = '<leader>m>',
+        vimwiki_utils_generate_index_key = '<leader>wm>'
+    }
+})
 ```
