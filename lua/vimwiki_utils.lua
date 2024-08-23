@@ -4,27 +4,39 @@ local finders = require "telescope.finders"
 local conf = require("telescope.config").values
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
-local utils = require('vimwiki_utils.utils')
+local utils = require('utils')
 local job = require('plenary.job')
 
--- NOTE: these paths can be altered but shouldn't end with '/'
--- TODO: FIX the above
-local ROUGH_NOTES_DIR = "1_rough_notes"
-local SOURCE_DIR = "2_source_material"
-local TAG_DIR = "3_tags"
-local ATOMIC_NOTES_DIR = "4_atomic_notes"
-local SCREENSHOT_DIR = "assets/SCREENSHOTS"
-local KOLOURPAINT = "/snap/bin/kolourpaint "
+local globals = {
+    rough_notes_dir = "1_rough_notes",
+    source_dir = "2_source_material",
+    tag_dir = "3_tags",
+    atomic_notes_dir = "4_atomic_notes",
+    screenshot_dir = "assets/SCREENSHOTS",
+    kolourpaint = "/snap/bin/kolourpaint "
+}
+
+local default_keymaps = {
+    vimwiki_utils_link_key = '<C-b>',
+    vimwiki_utils_tags_key = '<C-e>',
+    vimwiki_utils_rough_key = '<leader>nn',
+    vimwiki_utils_backlinks_key = '<leader>fb',
+    vimwiki_utils_sc_key = '<leader>sc',
+    vimwiki_utils_edit_image_key = '<leader>ii',
+    vimwiki_utils_source_key = '<leader>sm',
+    vimwiki_utils_embed_key = '<leader>m',
+    vimwiki_utils_generate_index_key = '<leader>wm',
+}
 
 local M = {}
 
 function M.vimwiki_utils_link()
     local opts = require("telescope.themes").get_dropdown { prompt_title = "VimwikiUtilsLink" }
-    opts.file_ignore_patterns = { TAG_DIR }
+    opts.file_ignore_patterns = { globals.tag_dir}
 
     local wiki = utils.get_active_wiki()
     local results = vim.fn.systemlist("find " ..  wiki .. " -type f -name '*.md'")
-    local processed_results_table = utils.format_results(ATOMIC_NOTES_DIR, results)
+    local processed_results_table = utils.format_results(globals.atomic_notes_dir, results)
     -- table for notes to display
     local processed_results = processed_results_table[1]
     -- table for actual note paths
@@ -70,7 +82,7 @@ end
 function M.vimwiki_utils_rough()
     local rough_note_name = vim.fn.input('Create rough note: ')
     local wiki = utils.get_active_wiki()
-    local destination = wiki .. ROUGH_NOTES_DIR .. "/" .. rough_note_name
+    local destination = wiki .. globals.rough_notes_dir .. "/" .. rough_note_name
     utils.choose_template(function(template_path)
         utils.generate_header(destination, rough_note_name, template_path)
         -- delay editing of newly created note to avoid asynchronous file operations      
@@ -124,9 +136,9 @@ end
 function M.vimwiki_utils_tags()
     local opts = require("telescope.themes").get_dropdown { prompt_title = "VimwikiUtilsTags" }
     local wiki = utils.get_active_wiki()
-    local path_to_tags = wiki .. TAG_DIR
+    local path_to_tags = wiki .. globals.tag_dir
     local results = vim.fn.systemlist("find " ..  path_to_tags.. " -type f -name '*.md'")
-    local processed_results_table = utils.format_results(TAG_DIR, results)
+    local processed_results_table = utils.format_results(globals.tag_dir, results)
     local processed_results = processed_results_table[1]
     local file_table = processed_results_table[2]
 
@@ -141,8 +153,8 @@ function M.vimwiki_utils_tags()
                 map('i', '<A-CR>', function()
                     local new_tag_name = action_state.get_current_line()
                     actions.close(prompt_bufnr)
-                    utils.create_new_tag(new_tag_name, TAG_DIR)
-                    local tag_link = utils.format_rel_md_link(TAG_DIR .. "/" .. new_tag_name .. ".md")
+                    utils.create_new_tag(new_tag_name, globals.tag_dir)
+                    local tag_link = utils.format_rel_md_link(globals.tag_dir .. "/" .. new_tag_name .. ".md")
                     vim.api.nvim_put({ tag_link }, "", true, true)
                 end)
 
@@ -156,7 +168,6 @@ function M.vimwiki_utils_tags()
                         vim.api.nvim_put({ tag_link }, "", true, true)
                     end
                 end)
-          
             return true
         end
     }):find()
@@ -167,7 +178,7 @@ function M.vimwiki_utils_sc()
     local image_name = vim.fn.input('Image name: ')
     local plugin_dir = vim.fn.stdpath('data') .. "/site/pack/packer/start/vimwiki_utils"
     local wiki = utils.get_active_wiki()
-    local sc_dir = wiki .. "/" .. SCREENSHOT_DIR
+    local sc_dir = wiki .. "/" .. globals.source_dir
     local script_path = plugin_dir .. '/scripts/vimwiki_better_sc.sh'
 
     if image_name ~= "" then
@@ -176,7 +187,7 @@ function M.vimwiki_utils_sc()
             args = { image_name, sc_dir},
         }):start()
 
-        local link_to_sc = "!" .. utils.format_rel_md_link(SCREENSHOT_DIR .. "/" .. image_name .. ".png")
+        local link_to_sc = "!" .. utils.format_rel_md_link(globals.screenshot_dir .. "/" .. image_name .. ".png")
         vim.api.nvim_put({ link_to_sc }, "", true, true)
     end
 end
@@ -191,7 +202,7 @@ function M.vimwiki_utils_edit_image()
     local link_content = line_content:match("%((.-)%)")
     link_content = link_content:gsub("%.%.%/", "")
     link_content = utils.get_active_wiki() .. link_content
-    vim.fn.system(KOLOURPAINT .. " " .. link_content)
+    vim.fn.system(globals.kolourpaint .. " " .. link_content)
 end
 
 
@@ -201,10 +212,10 @@ function M.vimwiki_utils_source()
         file_ignore_patterns = {},
     }
 
-    local sources  = utils.get_active_wiki() .. SOURCE_DIR
+    local sources  = utils.get_active_wiki() .. globals.source_dir
     -- print(utils.get_active_wiki() .. SOURCE_DIR)
     local results = vim.fn.systemlist("find " ..  sources .. " -type f")
-    local processed_results_table = utils.format_results(SOURCE_DIR, results)
+    local processed_results_table = utils.format_results(globals.source_dir, results)
     -- table for notes to display
     local processed_results = processed_results_table[1]
     -- table for actual note paths
@@ -222,7 +233,7 @@ function M.vimwiki_utils_source()
 
         sorter = conf.file_sorter(opts),
 
-        attach_mappings = function(prompt_bufnr, map)
+        attach_mappings = function(prompt_bufnr, _)
 
             actions.select_default:replace(function()
                 local selection = action_state.get_selected_entry()
@@ -243,8 +254,8 @@ function M.vimwiki_utils_embed()
     local current_file = vim.fn.expand('%:p')
     local note_name = utils.get_path_suffix(current_file)
     local file_name = vim.fn.fnamemodify(current_file, ':t')
-    local new_path = vim.fn.fnamemodify(ATOMIC_NOTES_DIR, ':p') .. file_name
-    local confirm = vim.fn.input("Embed " .. note_name .. " → " .. ATOMIC_NOTES_DIR .. "? (y/n): ")
+    local new_path = vim.fn.fnamemodify(globals.atomic_notes_dir, ':p') .. file_name
+    local confirm = vim.fn.input("Embed " .. note_name .. " → " .. globals.atomic_notes_dir .. "? (y/n): ")
 
     if confirm:lower() == 'y' then
         vim.fn.rename(current_file, new_path)
@@ -256,7 +267,7 @@ end
 
 function M.vimwiki_utils_generate_index()
     local wiki = utils.get_active_wiki()
-    local results = vim.fn.systemlist("find " ..  wiki .. TAG_DIR .. " -type f -name '*.md'")
+    local results = vim.fn.systemlist("find " ..  wiki .. globals.tag_dir .. " -type f -name '*.md'")
 
     local index = "# Main Index"
     vim.api.nvim_put({ index }, "l", true, true)
@@ -268,7 +279,21 @@ function M.vimwiki_utils_generate_index()
 end
 
 
-function M.setup()
+function M.setup(opts)
+    opts = opts or {}
+    opts.global = opts.global or {}
+    globals.rough_notes_dir = opts.global.rough_notes_dir or globals.rough_notes_dir
+    globals.source_dir = opts.global.source_dir or globals.source_dir
+    globals.tag_dir = opts.global.tag_dir or globals.tag_dir
+    globals.atomic_notes_dir = opts.global.atomic_notes_dir or globals.atomic_notes_dir
+    globals.screenshot_dir = opts.global.screenshot_dir or globals.screenshot_dir
+    globals.kolourpaint = opts.global.kolourpaint or globals.kolourpaint
+    
+    local keymaps = opts.keymaps or {}
+    for key, default_value in pairs(default_keymaps) do
+        keymaps[key] = keymaps[key] or default_value
+    end
+
 
     vim.api.nvim_create_user_command('VimwikiUtilsLink', function()
         M.vimwiki_utils_link()
@@ -305,7 +330,7 @@ function M.setup()
     vim.api.nvim_create_user_command('VimwikiUtilsGenerateIndex', function()
         M.vimwiki_utils_generate_index()
     end, {})
-    
+
     vim.api.nvim_create_user_command('VimwikiUtilsTest', function()
         M.vimwiki_utils_generate_index()
     end, {})
@@ -313,15 +338,15 @@ function M.setup()
     vim.api.nvim_create_autocmd('FileType', {
         pattern = 'vimwiki',
         callback = function()
-            vim.api.nvim_buf_set_keymap(0, 'i', '<C-b>', '<cmd>VimwikiUtilsLink<CR>', { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(0, 'i', '<C-e>', '<cmd>VimwikiUtilsTags<CR>', { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(0, 'n', '<leader>nn', '<cmd>VimwikiUtilsRough<CR>', { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(0, 'n', '<leader>fb', '<cmd>VimwikiUtilsBacklinks<CR>', { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sc', '<cmd>VimwikiUtilsSc<CR>', { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(0, 'n', '<leader>ii', '<cmd>VimwikiUtilsEditImage<CR>', { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(0, 'n', '<leader>sm', '<cmd>VimwikiUtilsSource<CR>', { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(0, 'n', '<leader>m', '<cmd>VimwikiUtilsEmbed<CR>', { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(0, 'n', '<leader>wm', '<cmd>VimwikiUtilsGenerateIndex<CR>', { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(0, 'i', keymaps.vimwiki_utils_link_key, '<cmd>VimwikiUtilsLink<CR>', { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(0, 'i', keymaps.vimwiki_utils_tags_key, '<cmd>VimwikiUtilsTags<CR>', { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(0, 'n', keymaps.vimwiki_utils_rough_key, '<cmd>VimwikiUtilsRough<CR>', { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(0, 'n', keymaps.vimwiki_utils_backlinks_key, '<cmd>VimwikiUtilsBacklinks<CR>', { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(0, 'n', keymaps.vimwiki_utils_sc_key, '<cmd>VimwikiUtilsSc<CR>', { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(0, 'n', keymaps.vimwiki_utils_edit_image_key, '<cmd>VimwikiUtilsEditImage<CR>', { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(0, 'n', keymaps.vimwiki_utils_source_key, '<cmd>VimwikiUtilsSource<CR>', { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(0, 'n', keymaps.vimwiki_utils_embed_key, '<cmd>VimwikiUtilsEmbed<CR>', { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(0, 'n', keymaps.vimwiki_utils_generate_index_key, '<cmd>VimwikiUtilsGenerateIndex<CR>', { noremap = true, silent = true })
         end,
     })
 end

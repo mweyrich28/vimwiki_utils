@@ -161,7 +161,7 @@ function M.generate_header(abs_path_new_file, header_new_file, template_filename
     -- replace HEADER
     local name_formatted = string.gsub(header_new_file, "_", " ")
     template_content = string.gsub(template_content, "HEADER", name_formatted)
-    file, err = io.open(abs_path_new_file .. ".md", "w+")
+    local file, err = io.open(abs_path_new_file .. ".md", "w+")
     if file == nil then
         print("Error opening new file: " .. err)
         return
