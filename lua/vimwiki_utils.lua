@@ -61,7 +61,7 @@ function M.vimwiki_utils_link()
                 local selection = action_state.get_selected_entry()
                 actions.close(prompt_bufnr)
                 note_name = selection.value
-                wiki_link = utils.link_to_note(file_map[note_name])
+                wiki_link = utils.format_rel_md_link(file_map[note_name])
                 vim.api.nvim_put({ wiki_link }, "", true, true)
             end)
             -- creates new file based on a selected template 

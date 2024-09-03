@@ -178,15 +178,6 @@ end
 
 ---@param filename string
 ---@return string
-function M.format_md_link(filename)
-    local markdown_name = filename.match(filename, "[^/]+$")
-    local wiki_md_link = "[" .. string.gsub(markdown_name, "_", " ") .. "]" .. "(" .. filename.. ".md)"
-    return wiki_md_link
-end
-
-
----@param filename string
----@return string
 function M.format_rel_md_link(filename)
     local parent_note_abs_path = vim.fn.expand("%:p")
     local relative_path_prefix = M.gen_rel_prefix(parent_note_abs_path)
@@ -254,19 +245,6 @@ function M.gen_rel_prefix(parent_note_abs_path)
     end
 
     return relative_path
-end
-
-
----@param child_note_wiki_path string
----@return string
-function M.link_to_note(child_note_wiki_path)
-    local parent_note_abs_path = vim.fn.expand("%:p")
-
-    if M.same_level(parent_note_abs_path, child_note_wiki_path) then
-        return M.format_md_link(M.get_path_suffix(child_note_wiki_path))
-    end
-
-    return M.format_rel_md_link(child_note_wiki_path)
 end
 
 
