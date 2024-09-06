@@ -64,12 +64,6 @@ The wiki structure was inspired by this [YouTube video](https://www.youtube.com/
 ## Linking And Creating New Notes
 
 ### `VimwikiUtilsLink` 
-
-<video width="640" height="360" controls>
-  <source src="./assets/vimwikiUtilsLink.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
 Allows you to quickly link to an existing file or to create a new file based on a `template`. 
 Pressing `<C-b>` in `insert` mode opens a `telescope prompt` showing all files in `4_atomic_notes`.
 Either hit `<CR>` on an existing `note` (creating a link to it), or press `<A-CR>` (options + enter) to create a new note (based on where you are currently at), 
