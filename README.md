@@ -64,6 +64,12 @@ The wiki structure was inspired by this [YouTube video](https://www.youtube.com/
 ## Linking And Creating New Notes
 
 ### `VimwikiUtilsLink` 
+
+<video width="640" height="360" controls>
+  <source src="./assets/vimwikiUtilsLink.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 Allows you to quickly link to an existing file or to create a new file based on a `template`. 
 Pressing `<C-b>` in `insert` mode opens a `telescope prompt` showing all files in `4_atomic_notes`.
 Either hit `<CR>` on an existing `note` (creating a link to it), or press `<A-CR>` (options + enter) to create a new note (based on where you are currently at), 
@@ -111,6 +117,8 @@ Generates a list of all files in `3_tags`. You can put this list into your root 
 > This function calls a `bash` script which calls `gnome-screenshot` but you can replace it with any other script. 
 
 Take screenshots on the fly by and embed them into the current markdown file. 
+After calling `VimwikiUtilsSc` you need to provide an image name. If that image already exists, nothing will happen, otherwise
+`nvim` will call the screenshot script after a 5 second delay. This way, you have enough time to set everything up.
 
 ### `VimwikiUtilsEditImage`
 Hovering over an embedded screenshot  and pressing `<leader>ii` opens [KolourPaint](https://apps.kde.org/kolourpaint/), a free and simple program for editing images. 
