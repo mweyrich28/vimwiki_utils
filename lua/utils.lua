@@ -178,6 +178,15 @@ end
 
 ---@param filename string
 ---@return string
+function M.format_md_link(filename)
+    local markdown_name = filename.match(filename, "[^/]+$")
+    local wiki_md_link = "[" .. string.gsub(markdown_name, "_", " ") .. "]" .. "(" .. filename.. ".md)"
+    return wiki_md_link
+end
+
+
+---@param filename string
+---@return string
 function M.format_rel_md_link(filename)
     local parent_note_abs_path = vim.fn.expand("%:p")
     local relative_path_prefix = M.gen_rel_prefix(parent_note_abs_path)
@@ -189,13 +198,17 @@ function M.format_rel_md_link(filename)
             ),
         "_", " "
     )
-    return "[" .. formatted_name .. "]" .. "(" ..relative_path_prefix .. filename.. ")"
+    return "[" .. formatted_name .. "]" .. "(" .. relative_path_prefix .. filename .. ")"
 end
 
 
 ---@param path string
 ---@return string
 function M.get_path_suffix(path)
+    if not string.find(path, "/") then
+        return path
+    end
+
     local path_components = M.split_path(path)
     return path_components[#path_components]
 end
@@ -240,7 +253,7 @@ function M.gen_rel_prefix(parent_note_abs_path)
 
     -- Count the number of directories to go up
     local relative_path = ""
-    for _=2, curr_depht - wiki_depth,1 do
+    for _ = 2, curr_depht - wiki_depth, 1 do
         relative_path = relative_path .. "../"
     end
 
