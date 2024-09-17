@@ -42,7 +42,6 @@ function M.vimwiki_utils_link()
     -- table for actual note paths
     local file_map = processed_results_table[2]
 
-
     local note_name = ""
     local wiki_link = ""
 
@@ -68,9 +67,9 @@ function M.vimwiki_utils_link()
             map('i', '<A-CR>', function()
                 actions.close(prompt_bufnr)
                 note_name = action_state.get_current_line()
-                wiki_link = utils.format_md_link(note_name)
+                wiki_link = utils.format_rel_md_link(globals.atomic_notes_dir .. "/" .. note_name)
                 vim.api.nvim_put({ wiki_link }, "", true, true)
-                utils.create_new_note(note_name)
+                utils.create_new_note(note_name, globals.atomic_notes_dir)
             end)
 
             return true
@@ -236,7 +235,7 @@ function M.vimwiki_utils_source()
                 local selection = action_state.get_selected_entry()
                 actions.close(prompt_bufnr)
                 note_name = selection.value
-                wiki_link = utils.link_to_note(file_map[note_name])
+                wiki_link = utils.format_rel_md_link(file_map[note_name])
                 wiki_link = string.gsub(wiki_link, "%(", "(file:")  -- formatting for vimwiki
                 vim.api.nvim_put({ wiki_link }, "", true, true)
             end)

@@ -262,9 +262,10 @@ end
 
 
 ---@param curr_file string 
-function M.create_new_note(curr_file)
-    local current_dir = vim.fn.fnamemodify(vim.fn.expand("%:p"), ":h")
-    local abs_path_new_note = current_dir .. "/" .. curr_file
+---@param atomic_note_dir string 
+function M.create_new_note(curr_file, atomic_note_dir)
+    local curr_wiki = M.get_active_wiki()
+    local abs_path_new_note = curr_wiki .. "/" .. atomic_note_dir .. "/" .. curr_file
     local markdown_name = curr_file.match(curr_file, "[^/]+$")
 
     M.choose_template(function(template_path)
