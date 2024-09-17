@@ -214,23 +214,6 @@ function M.get_path_suffix(path)
 end
 
 
----@param parent_note_path string
----@param child_note_path string
----@return boolean
-function M.same_level(parent_note_path, child_note_path)
-    local parent_note_wiki_path = M.convert_abs_to_rel(parent_note_path)
-    -- check if parent_note is located in same dir as child_note
-    -- remove the last part of the file identifier (md)
-    local dir_child_note = child_note_path.match(child_note_path, "(.*/)")
-    local dir_parent_note = parent_note_path.match(parent_note_wiki_path, "(.*/)")
-
-    if dir_child_note == dir_parent_note then
-        return true
-    end
-
-    return false
-end
-
 
 ---@param path string
 ---@return string
