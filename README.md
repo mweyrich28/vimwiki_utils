@@ -65,14 +65,19 @@ The wiki structure was inspired by this [YouTube video](https://www.youtube.com/
 
 ### `VimwikiUtilsLink` 
 Allows you to quickly link to an existing file or to create a new file based on a `template`. 
-Pressing `<C-b>` in `insert` mode opens a `telescope prompt` showing all files in `4_atomic_notes`.
+Pressing `<C-b>` in `insert` mode opens a `telescope prompt` showing all files in `4_atomic_notes/`.
 Either hit `<CR>` on an existing `note` (creating a link to it), or press `<A-CR>` (options + enter) to create a new note (based on where you are currently at), 
 which will be named after what you typed into the promt. This helps you to dynamically create new notes or link to already existing notes.  
-If you accidentally create a new `atomic_note` in e.g `2_tags` or at `root` level of your wiki, just use [`VimwikiUtilsEmbed`](#vimwikiutilsembed) in order to move it to `4_atomic_notes`.
+If you accidentally create a new `atomic_note` in e.g `3_tags/` or at `root` level of your wiki, just use [`VimwikiUtilsEmbed`](#vimwikiutilsembed) in order to move it to `4_atomic_notes/`.
 
 Choose a `template`, which you can create in your `templates/` dir. For now,
 `templates` support a `HEADER` token, which gets replaced with the formatted name of your newly created note, and a `DATE` token, 
 which gets replaced by the current date.
+
+If you link to a new note (pressing `<A-CR>` while in `VimwikiUtilsLink`) from within a `tag note` (a note which is stored `3_tags/`),
+a link to the corresponding `tag` will automatically be substituted into your template.
+> [!NOTE]
+> This behavior only works, if your `template` contains the following pattern: `> **tags:**`.
 
 ### `VimwikiUtilsBacklinks`
 Find parent files linking to the currently opened file by pressing `<leader>fb`.
