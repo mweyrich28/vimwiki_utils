@@ -45,6 +45,10 @@ function M.vimwiki_utils_link()
     local note_name = ""
     local wiki_link = ""
 
+    -- this captures the actual abs path of the note where the telescope promt is called.
+    -- this is necessary in order to add already existing tags to notes that have a tag as parent note
+    local source_file = vim.fn.expand("%:p")
+
     pickers.new(opts, {
 
         finder = finders.new_table({
@@ -69,7 +73,7 @@ function M.vimwiki_utils_link()
                 note_name = action_state.get_current_line()
                 wiki_link = utils.format_rel_md_link(globals.atomic_notes_dir .. "/" .. note_name)
                 vim.api.nvim_put({ wiki_link }, "", true, true)
-                utils.create_new_note(note_name, globals.atomic_notes_dir)
+                utils.create_new_note(note_name, globals.atomic_notes_dir, globals.tag_dir, source_file)
             end)
 
             return true

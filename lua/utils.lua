@@ -138,7 +138,9 @@ end
 ---@param abs_path_new_file string
 ---@param header_new_file string
 ---@param template_filename string|nil
-function M.generate_header(abs_path_new_file, header_new_file, template_filename)
+---@param tag_dir string|nil
+---@param source_file string|nil
+function M.generate_header(abs_path_new_file, header_new_file, template_filename, tag_dir, source_file)
     local template_content = nil
     
     if template_filename  == nil then
@@ -146,7 +148,7 @@ function M.generate_header(abs_path_new_file, header_new_file, template_filename
     else
         local file, _ = io.open(template_filename, "r")
         if file == nil then
-            print("Template " .. template_filename .. "does not exist!")
+            print("Template " .. template_filename .. " does not exist!")
             return
         else
             template_content = file:read("*all")
@@ -161,12 +163,26 @@ function M.generate_header(abs_path_new_file, header_new_file, template_filename
     -- replace HEADER
     local name_formatted = string.gsub(header_new_file, "_", " ")
     template_content = string.gsub(template_content, "HEADER", name_formatted)
+
+    -- if a note is created from within a tag file, automatically add a link of that tag in the template
+    if source_file ~= nil then
+        local path_components = M.split_path(source_file)
+        local source_note_dir = path_components[#path_components-1]
+        local source_note_name = path_components[#path_components]
+        if source_note_dir == tag_dir then
+            local tag_link = M.format_rel_md_link("../" .. tag_dir .. "/" .. source_note_name)
+            template_content = string.gsub(template_content, "> %*%*tags:%*%*", "> **tags:** " .. tag_link)
+        end
+    end
+
+    -- open new empty note
     local file, err = io.open(abs_path_new_file .. ".md", "w+")
     if file == nil then
         print("Error opening new file: " .. err)
         return
     end
 
+    -- dump template content into new note
     local success, write_err = file:write(template_content)
     if not success then
         print("Error writing to new file: " .. write_err)
@@ -246,23 +262,26 @@ end
 
 ---@param curr_file string 
 ---@param atomic_note_dir string 
-function M.create_new_note(curr_file, atomic_note_dir)
+---@param tag_dir string
+---@param source_file string
+function M.create_new_note(curr_file, atomic_note_dir, tag_dir, source_file)
     local curr_wiki = M.get_active_wiki()
-    local abs_path_new_note = curr_wiki .. "/" .. atomic_note_dir .. "/" .. curr_file
+    local rel_path_new_note = curr_wiki .. "/" .. atomic_note_dir .. "/" .. curr_file
     local markdown_name = curr_file.match(curr_file, "[^/]+$")
 
     M.choose_template(function(template_path)
-        M.generate_header(abs_path_new_note, markdown_name, template_path)
+        M.generate_header(rel_path_new_note, markdown_name, template_path, tag_dir, source_file)
     end)
 end
 
 
 ---@param tag_name string
+---@param tag_dir string
 function M.create_new_tag(tag_name, tag_dir)
     local wiki = M.get_active_wiki()
     local abs_tag_dir = wiki ..  tag_dir .. "/" .. tag_name
         
-    M.generate_header(abs_tag_dir, tag_name, nil)
+    M.generate_header(abs_tag_dir, tag_name, nil, nil, nil)
 end
 
 
