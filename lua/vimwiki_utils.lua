@@ -70,7 +70,7 @@ function M.vimwiki_utils_link()
             map('i', '<A-CR>', function()
                 actions.close(prompt_bufnr)
                 note_name = action_state.get_current_line()
-                wiki_link = utils.format_rel_md_link(globals.atomic_notes_dir .. "/" .. note_name)
+                wiki_link = utils.format_rel_md_link(globals.atomic_notes_dir .. "/" .. note_name .. ".md")
                 vim.api.nvim_put({ wiki_link }, "", true, true)
                 utils.create_new_note(note_name, globals.atomic_notes_dir, globals.tag_dir, source_file)
             end)
@@ -81,14 +81,14 @@ function M.vimwiki_utils_link()
 end
 
 function M.vimwiki_utils_rough()
-    local rough_note_name = vim.fn.input('Create rough note: ')
+    local new_note_name = vim.fn.input('Create rough note: ')
     local wiki = utils.get_active_wiki()
-    local destination = wiki .. globals.rough_notes_dir .. "/" .. rough_note_name
+    local new_note = wiki .. globals.rough_notes_dir .. "/" .. new_note_name
     utils.choose_template(function(template_path)
-        utils.generate_header(destination, rough_note_name, template_path)
+        utils.generate_header(new_note, new_note_name, template_path)
         -- delay editing of newly created note to avoid asynchronous file operations
         vim.defer_fn(function()
-            vim.cmd("edit " .. destination .. ".md")
+            vim.cmd("edit " .. new_note .. ".md")
         end, 100)
     end)
 end

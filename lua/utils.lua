@@ -135,12 +135,12 @@ function M.format_results(prefix, results)
 end
 
 
----@param abs_path_new_file string
----@param header_new_file string
+---@param new_note_path string
+---@param new_note_name string
 ---@param template_filename string|nil
 ---@param tag_dir string|nil
 ---@param source_file string|nil
-function M.generate_header(abs_path_new_file, header_new_file, template_filename, tag_dir, source_file)
+function M.generate_header(new_note_path, new_note_name, template_filename, tag_dir, source_file)
     local template_content = nil
     
     if template_filename  == nil then
@@ -161,7 +161,7 @@ function M.generate_header(abs_path_new_file, header_new_file, template_filename
     template_content = string.gsub(template_content, "DATE", formatted_date)
 
     -- replace HEADER
-    local name_formatted = string.gsub(header_new_file, "_", " ")
+    local name_formatted = string.gsub(new_note_name, "_", " ")
     template_content = string.gsub(template_content, "HEADER", name_formatted)
 
     -- if a note is created from within a tag file, automatically add a link of that tag in the template
@@ -176,7 +176,7 @@ function M.generate_header(abs_path_new_file, header_new_file, template_filename
     end
 
     -- open new empty note
-    local file, err = io.open(abs_path_new_file .. ".md", "w+")
+    local file, err = io.open(new_note_path .. ".md", "w+")
     if file == nil then
         print("Error opening new file: " .. err)
         return
@@ -191,22 +191,13 @@ function M.generate_header(abs_path_new_file, header_new_file, template_filename
     file:close()
 end
 
-
----@param filename string
----@return string
-function M.format_md_link(filename)
-    local markdown_name = filename.match(filename, "[^/]+$")
-    local wiki_md_link = "[" .. string.gsub(markdown_name, "_", " ") .. "]" .. "(" .. filename.. ".md)"
-    return wiki_md_link
-end
-
-
 ---@param filename string
 ---@return string
 function M.format_rel_md_link(filename)
-    local parent_note_abs_path = vim.fn.expand("%:p")
-    local relative_path_prefix = M.gen_rel_prefix(parent_note_abs_path)
-    -- formatting identifier for md link: [identifier](path/to/child_note) (also removing unwanted suffixes)
+    local parent_note = vim.fn.expand("%:p")
+    local relative_path_prefix = M.gen_rel_prefix(parent_note)
+    
+    -- formatting identifier for md link: [identifier](path/to/note) (also removing unwanted suffixes)
     local formatted_name = string.gsub(
         string.gsub(
             string.gsub(M.get_path_suffix(filename), "%.md$", ""),
@@ -243,11 +234,11 @@ function M.convert_abs_to_rel(path)
 end
 
 
----@param parent_note_abs_path string
+---@param parent_note string
 ---@return string
-function M.gen_rel_prefix(parent_note_abs_path)
+function M.gen_rel_prefix(parent_note)
     local wiki = M.get_active_wiki()
-    local curr_depht = M.get_depth(parent_note_abs_path)
+    local curr_depht = M.get_depth(parent_note)
     local wiki_depth = M.get_depth(vim.fn.expand(wiki))
 
     -- Count the number of directories to go up
@@ -260,17 +251,16 @@ function M.gen_rel_prefix(parent_note_abs_path)
 end
 
 
----@param curr_file string 
+---@param new_note_name string 
 ---@param atomic_note_dir string 
 ---@param tag_dir string
----@param source_file string
-function M.create_new_note(curr_file, atomic_note_dir, tag_dir, source_file)
-    local curr_wiki = M.get_active_wiki()
-    local rel_path_new_note = curr_wiki .. "/" .. atomic_note_dir .. "/" .. curr_file
-    local markdown_name = curr_file.match(curr_file, "[^/]+$")
+---@param parent_note string
+function M.create_new_note(new_note_name, atomic_note_dir, tag_dir, parent_note)
+    local aktive_wiki = M.get_active_wiki()
+    local new_note_path = aktive_wiki .. "/" .. atomic_note_dir .. "/" .. new_note_name
 
     M.choose_template(function(template_path)
-        M.generate_header(rel_path_new_note, markdown_name, template_path, tag_dir, source_file)
+        M.generate_header(new_note_path, new_note_name, template_path, tag_dir, parent_note)
     end)
 end
 
@@ -282,15 +272,6 @@ function M.create_new_tag(tag_name, tag_dir)
     local abs_tag_dir = wiki ..  tag_dir .. "/" .. tag_name
         
     M.generate_header(abs_tag_dir, tag_name, nil, nil, nil)
-end
-
-
----@param path string 
----@return string
-function M.normalize_wiki_path(path)
-    local wiki_suffix = M.get_path_suffix(path)
-    local normalized_path = string.match(path,  "(.-" .. wiki_suffix .. ")")
-    return normalized_path
 end
 
 return M
