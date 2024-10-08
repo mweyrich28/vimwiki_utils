@@ -66,7 +66,7 @@ end
 function M.choose_template(callback)
     local opts = require("telescope.themes").get_dropdown { prompt_title = "VimwikiUtilsTemplates" }
 
-    local wiki = vim.g.vimwiki_list[1].path
+    local wiki = M.get_active_wiki()
     -- get all templates
     local results = vim.fn.systemlist("find " ..  wiki .. TEMPLATE_DIR .. " -type f -name '*.md'")
 
