@@ -171,7 +171,7 @@ function M.generate_header(new_note_path, new_note_name, template_filename, tag_
         local source_note_name = path_components[#path_components]
         if source_note_dir == tag_dir then
             local tag_link = M.format_rel_md_link("../" .. tag_dir .. "/" .. source_note_name)
-            template_content = string.gsub(template_content, "> %*%*tags:%*%*", "> **tags:** " .. tag_link)
+            template_content = string.gsub(template_content, "> %*%*tags:%*%*", "> **tags:** " .. tag_link .. "  ")
         end
     end
 
