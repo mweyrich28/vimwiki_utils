@@ -10,6 +10,7 @@
         - [`VimwikiUtilsTags`](#vimwikiutilstags)
         - [`VimwikiUtilsEmbed`](#vimwikiutilsembed)
         - [`VimwikiUtilsGenerateIndex`](#vimwikiutilsgenerateindex)
+        - [`VimwikiUtilsRename`](#vimwikiutilsrename)
     - [Embedding And Editing Of Screenshots](#embedding-and-editing-of-screenshots)
         - [`VimwikiUtilsSc`](#coming-soon-vimwikiutilssc)
         - [`VimwikiUtilsEditImage`](#vimwikiutilseditimage)
@@ -90,7 +91,7 @@ during the lecture. These notes should only be temperate and serve as additional
 `atomic_note`.
 
 ### `VimwikiUtilsSource`
-Using this function you can linkt to your `soure files` (e.g lectures, papers, etc) stored in `2_source_material`.
+Using this function you can linkt to your `soure files` (e.g lectures, papers, etc) stored in `2_source_material/`.
 Make sure to name your sources clearly in order to prevent chaos.
 
 
@@ -107,6 +108,11 @@ into your `4_atomic_notes/` dir after you abstract and summarize it.
 
 ### `VimwikiUtilsGenerateIndex`
 Generates a list of all files in `3_tags`. You can put this list into your root `README.md` / `index.md`.
+
+### `VimwikiUtilsRename`
+Due to the adjusted `wiki structure`, the default `VimwikiRename` doesn't work as expected.
+This `function` fixes said issue, it uses several matching patterns to identify links and
+replaces them using `sed`.
 
 
 ## Embedding And Editing Of Screenshots
@@ -137,6 +143,7 @@ You can also replace it with any other light weight image editing software.
 | *NORMAL* `<leader>sm` | [`VimwikiUtilsSource`](#vimwikiutilssource)               |
 | *NORMAL* `<leader>m`  | [`VimwikiUtilsEmbed`](#vimwikiutilsembed)                 |
 | *NORMAL* `<leader>wm` | [`VimwikiUtilsGenerateIndex`](#vimwikiutilsgenerateindex) |
+| *NORMAL* `<leader>wr` | [`VimwikiUtilsRename`](#vimwikiutilsrename)               |
 
 # Installation
 ## Packer
@@ -175,6 +182,7 @@ require('vimwiki_utils').setup({
         vimwiki_utils_source_key = '<leader>sm',
         vimwiki_utils_embed_key = '<leader>m',
         vimwiki_utils_generate_index_key = '<leader>wm'
+        vimwiki_utils_rename_key  = '<leader>wr'
     }
 })
 ```

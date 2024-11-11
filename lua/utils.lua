@@ -20,7 +20,7 @@ function M.split_path(path)
     return parts
 end
 
----@param search_pattern string 
+---@param search_pattern string
 function M.generate_tag_index(search_pattern)
     local results = vim.fn.systemlist("rg --vimgrep " .. vim.fn.shellescape(search_pattern))
 
@@ -31,12 +31,11 @@ function M.generate_tag_index(search_pattern)
     local index = "# Index"
     vim.api.nvim_put({ index }, "l", true, true)
     for _, result in ipairs(results) do
-        local file_path = string.gsub(result, ":.*", "") -- get path like 4_atomic_notes/MARKDOWN.md
+        local file_path = string.gsub(result, ":.*", "")         -- get path like 4_atomic_notes/MARKDOWN.md
         local wiki_link = M.format_rel_md_link(file_path)
         vim.api.nvim_put({ "- " .. wiki_link }, "l", true, true) -- listing all links
     end
 end
-
 
 ---@return string
 function M.get_active_wiki()
@@ -44,7 +43,7 @@ function M.get_active_wiki()
     local vimwiki_list = vim.g.vimwiki_list
     local best_match = ""
     local max_length = 0
-    
+
     if not current_dir:match("/$") then
         current_dir = current_dir .. "/"
     end
@@ -62,13 +61,12 @@ function M.get_active_wiki()
     return best_match
 end
 
-
 function M.choose_template(callback)
     local opts = require("telescope.themes").get_dropdown { prompt_title = "VimwikiUtilsTemplates" }
 
     local wiki = M.get_active_wiki()
     -- get all templates
-    local results = vim.fn.systemlist("find " ..  wiki .. TEMPLATE_DIR .. " -type f -name '*.md'")
+    local results = vim.fn.systemlist("find " .. wiki .. TEMPLATE_DIR .. " -type f -name '*.md'")
 
     local processed_results_table = M.format_results(TEMPLATE_DIR, results)
     local processed_results = processed_results_table[1]
@@ -94,9 +92,7 @@ function M.choose_template(callback)
             return true
         end
     }):find()
-
 end
-
 
 ---@param path string
 ---@return number
@@ -108,7 +104,6 @@ function M.get_depth(path)
     end
     return depth
 end
-
 
 ---@param prefix string
 ---@param results table
@@ -131,9 +126,8 @@ function M.format_results(prefix, results)
         return a:lower() < b:lower()
     end)
 
-    return {processed_results, file_map}
+    return { processed_results, file_map }
 end
-
 
 ---@param new_note_path string
 ---@param new_note_name string
@@ -142,8 +136,8 @@ end
 ---@param source_file string|nil
 function M.generate_header(new_note_path, new_note_name, template_filename, tag_dir, source_file)
     local template_content = nil
-    
-    if template_filename  == nil then
+
+    if template_filename == nil then
         template_content = DEFAULT_TEMPLATE_HEADER
     else
         local file, _ = io.open(template_filename, "r")
@@ -167,7 +161,7 @@ function M.generate_header(new_note_path, new_note_name, template_filename, tag_
     -- if a note is created from within a tag file, automatically add a link of that tag in the template
     if source_file ~= nil then
         local path_components = M.split_path(source_file)
-        local source_note_dir = path_components[#path_components-1]
+        local source_note_dir = path_components[#path_components - 1]
         local source_note_name = path_components[#path_components]
         if source_note_dir == tag_dir then
             local tag_link = M.format_rel_md_link("../" .. tag_dir .. "/" .. source_note_name)
@@ -196,18 +190,17 @@ end
 function M.format_rel_md_link(filename)
     local parent_note = vim.fn.expand("%:p")
     local relative_path_prefix = M.gen_rel_prefix(parent_note)
-    
+
     -- formatting identifier for md link: [identifier](path/to/note) (also removing unwanted suffixes)
     local formatted_name = string.gsub(
         string.gsub(
             string.gsub(M.get_path_suffix(filename), "%.md$", ""),
             "%.png$", ""
-            ),
+        ),
         "_", " "
     )
     return "[" .. formatted_name .. "]" .. "(" .. relative_path_prefix .. filename .. ")"
 end
-
 
 ---@param path string
 ---@return string
@@ -220,8 +213,6 @@ function M.get_path_suffix(path)
     return path_components[#path_components]
 end
 
-
-
 ---@param path string
 ---@return string
 function M.convert_abs_to_rel(path)
@@ -232,7 +223,6 @@ function M.convert_abs_to_rel(path)
     local parent_note_wiki_path = string.match(path, ".*/" .. wiki_suffix .. "/(.*)")
     return parent_note_wiki_path
 end
-
 
 ---@param parent_note string
 ---@return string
@@ -250,9 +240,8 @@ function M.gen_rel_prefix(parent_note)
     return relative_path
 end
 
-
----@param new_note_name string 
----@param atomic_note_dir string 
+---@param new_note_name string
+---@param atomic_note_dir string
 ---@param tag_dir string
 ---@param parent_note string
 function M.create_new_note(new_note_name, atomic_note_dir, tag_dir, parent_note)
@@ -264,14 +253,21 @@ function M.create_new_note(new_note_name, atomic_note_dir, tag_dir, parent_note)
     end)
 end
 
-
 ---@param tag_name string
 ---@param tag_dir string
 function M.create_new_tag(tag_name, tag_dir)
     local wiki = M.get_active_wiki()
-    local abs_tag_dir = wiki ..  tag_dir .. "/" .. tag_name
-        
+    local abs_tag_dir = wiki .. tag_dir .. "/" .. tag_name
+
     M.generate_header(abs_tag_dir, tag_name, nil, nil, nil)
+end
+
+---@param dir string
+---@param pattern string
+---@param replacement string
+function M.gsub_dir(dir, pattern, replacement)
+    local command = "sed -i '' -e 's/" .. pattern .. "/" .. replacement .. "/g' " .. dir .. "/*.md"
+    vim.fn.system(command)
 end
 
 return M
