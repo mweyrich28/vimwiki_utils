@@ -277,6 +277,9 @@ function M.vimwiki_utils_generate_index()
 end
 
 function M.vimwiki_utils_rename()
+    -- save current buffers
+    vim.cmd("wall")
+
     local old_filepath = vim.fn.expand('%:p')
     local old_filename = utils.get_path_suffix(old_filepath)
     local formatted_old_filename = string.gsub(old_filename, "%.md$", "")
