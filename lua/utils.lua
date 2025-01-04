@@ -28,7 +28,7 @@ function M.generate_tag_index(search_pattern)
         return a:lower() < b:lower()
     end)
 
-    local index = "# Index"
+    local index = "## Index"
     vim.api.nvim_put({ index }, "c", true, true)
     for _, result in ipairs(results) do
         local file_path = string.gsub(result, ":.*", "")         -- get path like 4_atomic_notes/MARKDOWN.md
