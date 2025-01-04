@@ -153,7 +153,7 @@ function M.vimwiki_utils_tags()
                 actions.close(prompt_bufnr)
                 utils.create_new_tag(new_tag_name, globals.tag_dir)
                 local tag_link = utils.format_rel_md_link(globals.tag_dir .. "/" .. new_tag_name .. ".md")
-                vim.api.nvim_put({ tag_link }, "", true, true)
+                vim.api.nvim_put({ tag_link .. "   " }, "", true, true)
             end)
 
             -- or link to already existing tag
@@ -238,7 +238,7 @@ function M.vimwiki_utils_source()
                 note_name = selection.value
                 wiki_link = utils.format_rel_md_link(file_map[note_name])
                 wiki_link = string.gsub(wiki_link, "%(", "(./") -- formatting for vimwiki
-                vim.api.nvim_put({ "!" .. wiki_link }, "", true, true)
+                vim.api.nvim_put({ "!" .. wiki_link .. "   " }, "", true, true)
             end)
 
             return true
@@ -405,10 +405,6 @@ function M.setup(opts)
     end, {})
 
     vim.api.nvim_create_user_command('VimwikiUtilsGenerateIndex', function()
-        M.vimwiki_utils_generate_index()
-    end, {})
-
-    vim.api.nvim_create_user_command('VimwikiUtilsTest', function()
         M.vimwiki_utils_generate_index()
     end, {})
 
