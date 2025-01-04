@@ -268,7 +268,12 @@ function M.vimwiki_utils_generate_index()
     local results = vim.fn.systemlist("find " .. wiki .. globals.tag_dir .. " -type f -name '*.md'")
 
     local index = "# Main Index"
-    vim.api.nvim_put({ index }, "l", true, true)
+
+    table.sort(results, function(a, b)
+        return a:lower() < b:lower()
+    end)
+
+    vim.api.nvim_put({ index }, "c", true, true)
     for _, file_path in ipairs(results) do
         local rel_path = utils.convert_abs_to_rel(file_path)
         local wiki_link = utils.format_rel_md_link(rel_path)
