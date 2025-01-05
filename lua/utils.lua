@@ -32,8 +32,10 @@ function M.generate_tag_index(search_pattern)
     vim.api.nvim_put({ index }, "c", true, true)
     for _, result in ipairs(results) do
         local file_path = string.gsub(result, ":.*", "")         -- get path like 4_atomic_notes/MARKDOWN.md
-        local wiki_link = M.format_rel_md_link(file_path)
-        vim.api.nvim_put({ "- " .. wiki_link }, "l", true, true) -- listing all links
+        if file_path ~= "README.md" then
+            local wiki_link = M.format_rel_md_link(file_path)
+            vim.api.nvim_put({ "- " .. wiki_link }, "l", true, true) -- listing all links
+        end
     end
 end
 
