@@ -59,6 +59,15 @@ function M.vimwiki_utils_link()
         sorter = conf.file_sorter(opts),
 
         attach_mappings = function(prompt_bufnr, map)
+            local function paste_selected_entry()
+                local selection = action_state.get_selected_entry()
+                if selection then
+                    local file_name = selection.value
+                    file_name = file_name:gsub(".md", "")
+                    action_state.get_current_picker(prompt_bufnr):reset_prompt(file_name)
+                end
+            end
+
             -- default action
             actions.select_default:replace(function()
                 local selection = action_state.get_selected_entry()
@@ -74,6 +83,10 @@ function M.vimwiki_utils_link()
                 wiki_link = utils.format_rel_md_link(globals.atomic_notes_dir .. "/" .. note_name .. ".md")
                 vim.api.nvim_put({ wiki_link }, "", true, true)
                 utils.create_new_note(note_name, globals.atomic_notes_dir, globals.tag_dir, source_file)
+            end)
+
+            map('i', '<Tab>', function()
+                paste_selected_entry()
             end)
 
             return true
@@ -292,7 +305,7 @@ function M.vimwiki_utils_rename()
     local confirm = vim.fn.input("Rename " .. string.gsub(old_filename, ".md", "") .. "? (y/n): ")
 
     local dir = nil
-    
+
     if string.find(old_filepath, globals.atomic_notes_dir) then
         dir = globals.atomic_notes_dir
     elseif string.find(old_filepath, globals.tag_dir) then
@@ -313,7 +326,7 @@ function M.vimwiki_utils_rename()
             return
         end
 
-        if new_filename:sub(-3) ~= ".md"  then
+        if new_filename:sub(-3) ~= ".md" then
             new_filename = new_filename .. ".md"
         end
 
@@ -325,37 +338,40 @@ function M.vimwiki_utils_rename()
             return
         end
 
-        local new_filename_identifier = string.gsub(new_filename, ".md" ,"")
+        local new_filename_identifier = string.gsub(new_filename, ".md", "")
 
         -- Strategy: [note name](../path/to/note_name.md) → [new note name](../dir/new_note_name.md)
         -- base case where identifier == gsub(note_name, "_", " ") (the default pattern when creating a new file with VimwikiUtilsLink)
-        local strict_pattern = "\\[".. string.gsub(formatted_old_filename, "_", " ").. "\\](..\\/" .. dir .. "\\/" .. old_filename .. ")"
-        local strict_replacement = "\\[" .. string.gsub(new_filename_identifier, "_", " ") .. "\\](..\\/" .. dir .. "\\/" .. new_filename .. ")"
-        
+        local strict_pattern = "\\[" ..
+            string.gsub(formatted_old_filename, "_", " ") .. "\\](..\\/" .. dir .. "\\/" .. old_filename .. ")"
+        local strict_replacement = "\\[" ..
+            string.gsub(new_filename_identifier, "_", " ") .. "\\](..\\/" .. dir .. "\\/" .. new_filename .. ")"
+
         -- Strategy: [unique identifier](../path/to/note_name.md) → [unique identifier](../dir/new_note_name.md)
         -- Unique identifier + link formatted with "../" prefix
         local uniq_pattern = "\\[\\(.*\\)\\](..\\/" .. dir .. "\\/" .. old_filename .. ")"
         local uniq_replacement = "\\[\\1\\](..\\/" .. dir .. "\\/" .. new_filename .. ")"
-        
+
         -- Strategy: [unique identifier](note_name.md) → [unique identifier](../dir/new_note_name.md)
         -- Unique identifier + link formatted without "../" prefix
         local uniq_pattern_1 = "\\[\\(.*\\)\\](" .. old_filename .. ")"
         local uniq_replacement_1 = "\\[\\1\\](..\\/" .. dir .. "\\/" .. new_filename .. ")"
 
         -- Strategy for files linked from within index/README: [note name](dir/note_name.md) → [new note name](dir/new_note_name.md)
-        local index_pattern =  "\\[.*\\](" .. dir .. "\\/" .. old_filename .. ")"
-        local index_replacement = "\\[" .. string.gsub(new_filename_identifier, "_", " ") .. "\\](" .. dir .. "\\/" .. new_filename .. ")"
+        local index_pattern = "\\[.*\\](" .. dir .. "\\/" .. old_filename .. ")"
+        local index_replacement = "\\[" ..
+            string.gsub(new_filename_identifier, "_", " ") .. "\\](" .. dir .. "\\/" .. new_filename .. ")"
 
         utils.gsub_dir(globals.atomic_notes_dir, strict_pattern, strict_replacement)
         utils.gsub_dir(globals.atomic_notes_dir, uniq_pattern, uniq_replacement)
         utils.gsub_dir(globals.atomic_notes_dir, uniq_pattern_1, uniq_replacement_1)
-        
+
         utils.gsub_dir(globals.tag_dir, strict_pattern, strict_replacement)
         utils.gsub_dir(globals.tag_dir, uniq_pattern, uniq_replacement)
         utils.gsub_dir(globals.tag_dir, uniq_pattern_1, uniq_replacement_1)
 
         utils.gsub_dir(".", index_pattern, index_replacement)
-        
+
 
         vim.fn.rename(old_filepath, new_path)
         vim.cmd('edit ' .. new_path)
@@ -436,7 +452,8 @@ function M.setup(opts)
                 { noremap = true, silent = true })
             vim.api.nvim_buf_set_keymap(0, 'n', keymaps.vimwiki_utils_embed_key, '<cmd>VimwikiUtilsEmbed<CR>',
                 { noremap = true, silent = true })
-            vim.api.nvim_buf_set_keymap(0, 'n', keymaps.vimwiki_utils_generate_index_key, '<cmd>VimwikiUtilsGenerateIndex<CR>',
+            vim.api.nvim_buf_set_keymap(0, 'n', keymaps.vimwiki_utils_generate_index_key,
+                '<cmd>VimwikiUtilsGenerateIndex<CR>',
                 { noremap = true, silent = true })
             vim.api.nvim_buf_set_keymap(0, 'n', keymaps.vimwiki_utils_rename, '<cmd>VimwikiUtilsRename<CR>',
                 { noremap = true, silent = true })
