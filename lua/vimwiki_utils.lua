@@ -74,7 +74,7 @@ function M.vimwiki_utils_link()
                 actions.close(prompt_bufnr)
                 note_name = selection.value
                 wiki_link = utils.format_rel_md_link(file_map[note_name])
-                vim.api.nvim_put({ wiki_link }, "", true, true)
+                vim.api.nvim_put({ wiki_link }, "", false, true)
             end)
             -- creates new file based on a selected template
             map('i', '<A-CR>', function()
@@ -166,7 +166,7 @@ function M.vimwiki_utils_tags()
                 actions.close(prompt_bufnr)
                 utils.create_new_tag(new_tag_name, globals.tag_dir)
                 local tag_link = utils.format_rel_md_link(globals.tag_dir .. "/" .. new_tag_name .. ".md")
-                vim.api.nvim_put({ tag_link .. "   " }, "", true, true)
+                vim.api.nvim_put({ tag_link .. "   " }, "", false, true)
             end)
 
             -- or link to already existing tag
@@ -176,7 +176,7 @@ function M.vimwiki_utils_tags()
                     actions.close(prompt_bufnr)
                     local tag_name = selection.value
                     local tag_link = utils.format_rel_md_link(file_table[tag_name])
-                    vim.api.nvim_put({ tag_link }, "", true, true)
+                    vim.api.nvim_put({ tag_link }, "", false, true)
                 end
             end)
             return true
@@ -204,7 +204,7 @@ function M.vimwiki_utils_sc()
 
         -- Insert the markdown link into the buffer if successful
         local link_to_sc = "!" .. utils.format_rel_md_link(globals.screenshot_dir .. "/" .. image_name .. ".png")
-        vim.api.nvim_put({ link_to_sc }, "", true, true)
+        vim.api.nvim_put({ link_to_sc }, "", false, true)
     end
 end
 
@@ -251,7 +251,7 @@ function M.vimwiki_utils_source()
                 note_name = selection.value
                 wiki_link = utils.format_rel_md_link(file_map[note_name])
                 wiki_link = string.gsub(wiki_link, "%(", "(./") -- formatting for vimwiki
-                vim.api.nvim_put({ "!" .. wiki_link .. "   " }, "", true, true)
+                vim.api.nvim_put({ "!" .. wiki_link .. "   " }, "", false, true)
             end)
 
             return true
@@ -286,11 +286,11 @@ function M.vimwiki_utils_generate_index()
         return a:lower() < b:lower()
     end)
 
-    vim.api.nvim_put({ index }, "c", true, true)
+    vim.api.nvim_put({ index }, "c", false, true)
     for _, file_path in ipairs(results) do
         local rel_path = utils.convert_abs_to_rel(file_path)
         local wiki_link = utils.format_rel_md_link(rel_path)
-        vim.api.nvim_put({ "- " .. wiki_link }, "l", true, true) -- listing all tags
+        vim.api.nvim_put({ "- " .. wiki_link }, "l", false, true) -- listing all tags
     end
 end
 
