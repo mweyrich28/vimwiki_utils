@@ -81,7 +81,7 @@ function M.vimwiki_utils_link()
                 actions.close(prompt_bufnr)
                 note_name = action_state.get_current_line()
                 wiki_link = utils.format_rel_md_link(globals.atomic_notes_dir .. "/" .. note_name .. ".md")
-                vim.api.nvim_put({ wiki_link }, "", true, true)
+                vim.api.nvim_put({ wiki_link }, "", false, true)
                 utils.create_new_note(note_name, globals.atomic_notes_dir, globals.tag_dir, source_file)
             end)
 
