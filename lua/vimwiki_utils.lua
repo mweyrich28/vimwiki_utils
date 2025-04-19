@@ -276,23 +276,27 @@ function M.vimwiki_utils_embed()
     end
 end
 
+
 function M.vimwiki_utils_generate_index()
     local wiki = utils.get_active_wiki()
-    local results = vim.fn.systemlist("find " .. wiki .. globals.tag_dir .. " -type f -name '*.md'")
-
-    local index = "# Main Index"
+    local tag_path = wiki .. globals.tag_dir
+    local results = vim.fn.systemlist("find " .. tag_path .. " -type f -name '*.md'")
 
     table.sort(results, function(a, b)
         return a:lower() < b:lower()
     end)
 
-    vim.api.nvim_put({ index }, "c", false, true)
+    local lines = { "# Main Index" }
+
     for _, file_path in ipairs(results) do
         local rel_path = utils.convert_abs_to_rel(file_path)
         local wiki_link = utils.format_rel_md_link(rel_path)
-        vim.api.nvim_put({ "- " .. wiki_link }, "l", false, true) -- listing all tags
+        table.insert(lines, "- " .. wiki_link)
     end
+
+    vim.api.nvim_put(lines, "c", true, true)
 end
+
 
 function M.vimwiki_utils_rename()
     -- save current buffers
