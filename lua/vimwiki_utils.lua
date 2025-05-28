@@ -71,12 +71,21 @@ function M.vimwiki_utils_link()
             -- default action
             actions.select_default:replace(function()
                 local selection = action_state.get_selected_entry()
-                actions.close(prompt_bufnr)
-                note_name = selection.value
-                wiki_link = utils.format_rel_md_link(file_map[note_name])
-                vim.api.nvim_put({ wiki_link }, "", false, true)
+                if selection then
+                    actions.close(prompt_bufnr)
+                    note_name = selection.value
+                    wiki_link = utils.format_rel_md_link(file_map[note_name])
+                    vim.api.nvim_put({ wiki_link }, "", false, true)
+                else
+                    actions.close(prompt_bufnr)
+                    note_name = action_state.get_current_line()
+                    wiki_link = utils.format_rel_md_link(globals.atomic_notes_dir .. "/" .. note_name .. ".md")
+                    vim.api.nvim_put({ wiki_link }, "", false, true)
+                    utils.create_new_note(note_name, globals.atomic_notes_dir, globals.tag_dir, source_file)
+                end
             end)
-            -- creates new file based on a selected template
+
+            -- or forcefully create new note (even if there's a selection)
             map('i', '<A-CR>', function()
                 actions.close(prompt_bufnr)
                 note_name = action_state.get_current_line()
@@ -88,7 +97,6 @@ function M.vimwiki_utils_link()
             map('i', '<Tab>', function()
                 paste_selected_entry()
             end)
-
             return true
         end
     }):find()
@@ -140,6 +148,7 @@ function M.vimwiki_utils_backlinks()
             actions.select_default:replace(function()
                 actions.file_edit(prompt_bufnr)
             end)
+
             return true
         end,
     })
@@ -160,7 +169,40 @@ function M.vimwiki_utils_tags()
         }),
         sorter = conf.file_sorter(opts),
         attach_mappings = function(prompt_bufnr, map)
-            -- press opt enter to generate new tag (creates empty file with header in TAG_DIR)
+
+            actions.select_default:replace(function()
+                local selection = action_state.get_selected_entry()
+                if selection then
+                    -- link to already existing tag
+                    actions.close(prompt_bufnr)
+                    local tag_name = selection.value
+                    local tag_link = utils.format_rel_md_link(file_table[tag_name])
+                    vim.api.nvim_put({ tag_link }, "", false, true)
+                else
+                    -- or creat new tag
+                    local new_tag_name = action_state.get_current_line()
+                    actions.close(prompt_bufnr)
+                    utils.create_new_tag(new_tag_name, globals.tag_dir)
+                    local tag_link = utils.format_rel_md_link(globals.tag_dir .. "/" .. new_tag_name .. ".md")
+                    vim.api.nvim_put({ tag_link .. "   " }, "", false, true)
+                end
+            end)
+
+            local function paste_selected_entry()
+                local selection = action_state.get_selected_entry()
+                if selection then
+                    local file_name = selection.value
+                    file_name = file_name:gsub(".md", "")
+                    action_state.get_current_picker(prompt_bufnr):reset_prompt(file_name)
+                end
+            end
+
+            map('i', '<Tab>', function()
+                paste_selected_entry()
+            end)
+
+
+            -- or forcefully create new tag (even if there's a selection)
             map('i', '<A-CR>', function()
                 local new_tag_name = action_state.get_current_line()
                 actions.close(prompt_bufnr)
@@ -169,16 +211,6 @@ function M.vimwiki_utils_tags()
                 vim.api.nvim_put({ tag_link .. "   " }, "", false, true)
             end)
 
-            -- or link to already existing tag
-            map('i', '<CR>', function()
-                local selection = action_state.get_selected_entry()
-                if selection then
-                    actions.close(prompt_bufnr)
-                    local tag_name = selection.value
-                    local tag_link = utils.format_rel_md_link(file_table[tag_name])
-                    vim.api.nvim_put({ tag_link }, "", false, true)
-                end
-            end)
             return true
         end
     }):find()
@@ -251,7 +283,7 @@ function M.vimwiki_utils_source()
                 note_name = selection.value
                 wiki_link = utils.format_rel_md_link(file_map[note_name])
                 wiki_link = string.gsub(wiki_link, "%(", "(./") -- formatting for vimwiki
-                vim.api.nvim_put({ "> - !" .. wiki_link}, "l", false, true)
+                vim.api.nvim_put({ "> - !" .. wiki_link }, "l", false, true)
             end)
 
             return true
@@ -276,7 +308,6 @@ function M.vimwiki_utils_embed()
     end
 end
 
-
 function M.vimwiki_utils_generate_index()
     local wiki = utils.get_active_wiki()
     local tag_path = wiki .. globals.tag_dir
@@ -296,7 +327,6 @@ function M.vimwiki_utils_generate_index()
 
     vim.api.nvim_put(lines, "c", true, true)
 end
-
 
 function M.vimwiki_utils_rename()
     -- save current buffers
