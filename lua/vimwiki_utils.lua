@@ -283,7 +283,7 @@ function M.vimwiki_utils_source()
                 note_name = selection.value
                 wiki_link = utils.format_rel_md_link(file_map[note_name])
                 wiki_link = string.gsub(wiki_link, "%(", "(./") -- formatting for vimwiki
-                vim.api.nvim_put({ "> - !" .. wiki_link }, "l", false, true)
+                vim.api.nvim_put({ "!" .. wiki_link }, "l", false, true)
             end)
 
             return true
