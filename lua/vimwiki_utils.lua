@@ -169,7 +169,6 @@ function M.vimwiki_utils_tags()
         }),
         sorter = conf.file_sorter(opts),
         attach_mappings = function(prompt_bufnr, map)
-
             actions.select_default:replace(function()
                 local selection = action_state.get_selected_entry()
                 if selection then
@@ -276,7 +275,7 @@ function M.vimwiki_utils_source()
 
         sorter = conf.file_sorter(opts),
 
-        attach_mappings = function(prompt_bufnr, _)
+        attach_mappings = function(prompt_bufnr, map)
             actions.select_default:replace(function()
                 local selection = action_state.get_selected_entry()
                 actions.close(prompt_bufnr)
@@ -284,6 +283,32 @@ function M.vimwiki_utils_source()
                 wiki_link = utils.format_rel_md_link(file_map[note_name])
                 wiki_link = string.gsub(wiki_link, "%(", "(./") -- formatting for vimwiki
                 vim.api.nvim_put({ "!" .. wiki_link }, "l", false, true)
+            end)
+
+            -- open pdf 
+            map('i', '<S-CR>', function()
+                local selection = action_state.get_selected_entry()
+                if not selection then return end
+                actions.close(prompt_bufnr)
+
+                local note_name = selection.value
+                local pdf_path = file_map[note_name]
+                if pdf_path then
+                    local open_cmd
+                    if vim.fn.has('macunix') == 1 then
+                        open_cmd = "open " .. vim.fn.shellescape(pdf_path)
+                    elseif vim.fn.has('unix') == 1 then
+                        open_cmd = "xdg-open " .. vim.fn.shellescape(pdf_path)
+                    elseif vim.fn.has('win32') == 1 then
+                        open_cmd = "start " .. vim.fn.shellescape(pdf_path)
+                    end
+
+                    if open_cmd then
+                        vim.fn.jobstart(open_cmd, { detach = true })
+                    else
+                        vim.notify("Cannot determine system open command", vim.log.levels.ERROR)
+                    end
+                end
             end)
 
             return true
