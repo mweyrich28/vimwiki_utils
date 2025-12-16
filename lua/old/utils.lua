@@ -136,7 +136,7 @@ end
 ---@param template_filename string|nil
 ---@param tag_dir string|nil
 ---@param source_file string|nil
-function M.generate_header(new_note_path, new_note_name, template_filename, tag_dir, source_file)
+function M.generate_header(new_note_path, new_note_name, template_filename, tag_dir, source_file) -- TODO: remove tag dir of params
     local template_content = nil
 
     if template_filename == nil then
