@@ -9,9 +9,8 @@ end
 
 ---@param filename string
 ---@return string
-function M.format_rel_md_link(filename)
-    local parent_note = vim.fn.expand("%:p")
-    local relative_path_prefix = paths.gen_rel_prefix(parent_note)
+function M.format_rel_md_link(filename, source_file)
+    local relative_path_prefix = paths.gen_rel_prefix(source_file)
 
     -- formatting identifier for md link: [identifier](path/to/note) (also removing unwanted suffixes)
     local formatted_name = string.gsub(

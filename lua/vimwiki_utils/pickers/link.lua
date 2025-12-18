@@ -69,7 +69,8 @@ function M.open()
         end
 
         local file_path = vim.fs.joinpath(globals.atomic_notes_dir, note_name)
-        local wiki_link = links.format_rel_md_link(file_path)
+        local parent_note = vim.fn.expand("%:p")
+        local wiki_link = links.format_rel_md_link(file_path, parent_note)
 
         links.put_link(wiki_link)
       end)
@@ -79,7 +80,8 @@ function M.open()
 
         local note_name = action_state.get_current_line() .. ".md"
         local file_path = vim.fs.joinpath(globals.atomic_notes_dir, note_name)
-        local wiki_link = links.format_rel_md_link(file_path)
+        local parent_note = vim.fn.expand("%:p")
+        local wiki_link = links.format_rel_md_link(file_path, parent_note)
         links.put_link(wiki_link)
 
         notes.create_new_note(

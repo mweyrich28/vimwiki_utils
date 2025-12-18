@@ -55,7 +55,6 @@ function M.gen_rel_prefix(parent_note)
     local curr_depht = M.get_depth(parent_note)
     local wiki_depth = M.get_depth(vim.fn.expand(wiki))
 
-    print(wiki .. ">" .. parent_note .. ">".. curr_depht .. ">" .. wiki_depth) -- FIX: /home/malte/documents/zettelkasten/>>0>4 if tag link is formatted in create header
     -- Count the number of directories to go up
     local relative_path = ""
     local i = 0
