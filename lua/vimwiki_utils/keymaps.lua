@@ -25,6 +25,7 @@ function M.setup(config)
       map("n", km.vimwiki_utils_embed_key, "<cmd>VimwikiUtilsEmbed<CR>")
       map("n", km.vimwiki_utils_generate_index_key, "<cmd>VimwikiUtilsGenerateIndex<CR>")
       map("n", km.vimwiki_utils_rename, "<cmd>VimwikiUtilsRename<CR>")
+      map("x", km.vimwiki_utils_anki_cloze, "<cmd>VimwikiUtilsAnkiCloze<CR>")
     end,
   })
 end

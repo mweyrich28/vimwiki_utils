@@ -28,6 +28,10 @@ function M.vimwiki_utils_embed() end
 function M.vimwiki_utils_generate_index() end
 function M.vimwiki_utils_rename() end
 
+function M.vimwiki_utils_anki_cloze() 
+  require("vimwiki_utils.anki.cloze").open()
+end
+
 function M.setup(opts)
   config.setup(opts)
   commands.setup(M)

@@ -21,6 +21,7 @@ M.defaults = {
         vimwiki_utils_embed_key = "<leader>m",
         vimwiki_utils_generate_index_key = "<leader>wm",
         vimwiki_utils_rename = "<leader>wr",
+        vimwiki_utils_anki_cloze = "<leader>ac",
     },
     templates = {
         dir = "templates",

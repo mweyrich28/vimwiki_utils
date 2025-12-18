@@ -13,6 +13,7 @@ function M.setup(api)
   cmd("VimwikiUtilsEmbed", api.vimwiki_utils_embed, {})
   cmd("VimwikiUtilsGenerateIndex", api.vimwiki_utils_generate_index, {})
   cmd("VimwikiUtilsRename", api.vimwiki_utils_rename, {})
+  cmd("VimwikiUtilsAnkiCloze", api.vimwiki_utils_anki_cloze, {})
 end
 
 return M
