@@ -13,26 +13,20 @@ vim.api.nvim_create_user_command(
   {}
 )
 
--- =====================
--- Your existing API
--- =====================
-
 function M.vimwiki_utils_link()
   require("vimwiki_utils.pickers.link").open()
 end
 function M.vimwiki_utils_tags() end
 function M.vimwiki_utils_rough() end
-function M.vimwiki_utils_backlinks() end
+function M.vimwiki_utils_backlinks()
+  require("vimwiki_utils.pickers.backlink").open()
+end
 function M.vimwiki_utils_sc() end
 function M.vimwiki_utils_edit_image() end
 function M.vimwiki_utils_source() end
 function M.vimwiki_utils_embed() end
 function M.vimwiki_utils_generate_index() end
 function M.vimwiki_utils_rename() end
-
--- =====================
--- Setup
--- =====================
 
 function M.setup(opts)
   config.setup(opts)
