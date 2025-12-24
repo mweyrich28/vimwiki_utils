@@ -128,6 +128,7 @@ function M.generate_index()
     local wiki = paths.get_active_wiki()
     local tag_path = wiki .. config.options.globals.tag_dir
     local results = vim.fn.systemlist("find " .. tag_path .. " -type f -name '*.md'")
+    local parent_note = vim.fn.expand("%:p")
 
     table.sort(results, function(a, b)
         return a:lower() < b:lower()
@@ -137,7 +138,7 @@ function M.generate_index()
 
     for _, file_path in ipairs(results) do
         local rel_path = paths.convert_abs_to_rel(file_path)
-        local wiki_link = links.format_rel_md_link(rel_path)
+        local wiki_link = links.format_rel_md_link(rel_path, parent_note)
         table.insert(lines, "- " .. wiki_link)
     end
 
