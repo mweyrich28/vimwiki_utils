@@ -16,12 +16,18 @@ vim.api.nvim_create_user_command(
 function M.vimwiki_utils_link()
   require("vimwiki_utils.pickers.link").open()
 end
-function M.vimwiki_utils_tags() end
-function M.vimwiki_utils_rough() end
+function M.vimwiki_utils_tags()
+  require("vimwiki_utils.pickers.tag").open()
+end
+function M.vimwiki_utils_rough()
+  require("lua.vimwiki_utils.features.rough").create_rough()
+end
 function M.vimwiki_utils_backlinks()
   require("vimwiki_utils.pickers.backlink").open()
 end
-function M.vimwiki_utils_sc() end
+function M.vimwiki_utils_sc() 
+  require("vimwiki_utils.features.screenshot").take_screenshot()
+end
 function M.vimwiki_utils_edit_image() end
 function M.vimwiki_utils_source() end
 function M.vimwiki_utils_embed() end

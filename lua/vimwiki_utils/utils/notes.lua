@@ -7,9 +7,9 @@ local templates = require("vimwiki_utils.utils.templates")
 ---@param tag_dir string
 function M.create_new_tag(tag_name, tag_dir)
     local wiki = paths.get_active_wiki()
-    local abs_tag_dir = wiki .. tag_dir .. "/" .. tag_name -- TODO: unifiy
+    local abs_tag_dir = wiki .. tag_dir .. "/" .. tag_name .. ".md"-- TODO: unifiy
 
-    M.generate_header(abs_tag_dir, tag_name, nil, nil, nil)
+    templates.generate_header(abs_tag_dir, tag_name, nil, nil, nil)
 end
 
 
