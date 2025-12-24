@@ -1,5 +1,6 @@
 local paths = require("vimwiki_utils.utils.paths")
 local config = require("vimwiki_utils.config")
+local links = require("vimwiki_utils.utils.links")
 
 local M = {}
 
@@ -17,6 +18,7 @@ end
 
 function M.take_screenshot()
     local image_name = vim.fn.input('Image name: ')
+    vim.cmd("redraw") -- clear
     local image_file = image_name .. ".png"
     local wiki = paths.get_active_wiki()
     local image_path = vim.fs.joinpath(wiki, config.options.globals.screenshot_dir, image_file)

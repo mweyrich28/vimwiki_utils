@@ -2,6 +2,7 @@ local paths = require("vimwiki_utils.utils.paths")
 local templates = require("vimwiki_utils.utils.templates")
 local config = require("vimwiki_utils.config")
 local utils = require("vimwiki_utils.utils.general")
+local links = require("vimwiki_utils.utils.links")
 
 local M = {}
 
@@ -102,6 +103,45 @@ function M.rename()
         vim.fn.rename(old_filepath, new_path)
         vim.cmd('edit ' .. new_path)
     end
+end
+
+
+function M.embed_rough_note()
+    local current_file = vim.fn.expand('%:p')
+    local note_name = paths.get_path_suffix(current_file)
+    local file_name = vim.fn.fnamemodify(current_file, ':t')
+    local new_path = vim.fn.fnamemodify(config.options.globals.atomic_notes_dir, ':p') .. file_name
+    if vim.fn.filereadable(new_path) == 1 then
+        print("Error: Cannot embed file '" .. new_path .. "', it already exists!")
+        return
+    end
+    local confirm = vim.fn.input("Embed " .. note_name .. " → " .. config.options.globals.atomic_notes_dir .. "? (y/n): ")
+    if confirm:lower() == 'y' then
+        vim.fn.rename(current_file, new_path)
+        vim.cmd('edit ' .. new_path)
+        vim.cmd('bd! ' .. current_file)
+    end
+end
+
+
+function M.generate_index()
+    local wiki = paths.get_active_wiki()
+    local tag_path = wiki .. config.options.globals.tag_dir
+    local results = vim.fn.systemlist("find " .. tag_path .. " -type f -name '*.md'")
+
+    table.sort(results, function(a, b)
+        return a:lower() < b:lower()
+    end)
+
+    local lines = { "# Main Index" }
+
+    for _, file_path in ipairs(results) do
+        local rel_path = paths.convert_abs_to_rel(file_path)
+        local wiki_link = links.format_rel_md_link(rel_path)
+        table.insert(lines, "- " .. wiki_link)
+    end
+
+    vim.api.nvim_put(lines, "c", true, true)
 end
 
 return M
