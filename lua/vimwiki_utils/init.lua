@@ -4,38 +4,33 @@ local config = require("vimwiki_utils.config")
 local commands = require("vimwiki_utils.commands")
 local keymaps = require("vimwiki_utils.keymaps")
 
-
-vim.api.nvim_create_user_command(
-  "VimwikiUtilsTestLink",
-  function()
-    require("vimwiki_utils.pickers.link").open()
-  end,
-  {}
-)
-
 function M.vimwiki_utils_link()
-  require("vimwiki_utils.pickers.link").open()
+  require("vimwiki_utils.pickers.linking").link_note()
 end
 function M.vimwiki_utils_tags()
-  require("vimwiki_utils.pickers.tag").open()
+  require("vimwiki_utils.pickers.linking").link_tag()
 end
 function M.vimwiki_utils_rough()
   require("lua.vimwiki_utils.features.rough").create_rough()
 end
 function M.vimwiki_utils_backlinks()
-  require("vimwiki_utils.pickers.backlink").open()
+  require("vimwiki_utils.pickers.linking").get_backlinks()
 end
-function M.vimwiki_utils_sc() 
-  require("vimwiki_utils.features.screenshot").take_screenshot()
+function M.vimwiki_utils_sc()
+  require("vimwiki_utils.features.images").take_screenshot()
 end
-function M.vimwiki_utils_edit_image() end
-function M.vimwiki_utils_source() end
+function M.vimwiki_utils_edit_image()
+  require("vimwiki_utils.features.images").edit_image()
+end
+function M.vimwiki_utils_source() 
+  require("vimwiki_utils.pickers.media").link_source()
+end
 function M.vimwiki_utils_embed() end
 function M.vimwiki_utils_generate_index() end
 function M.vimwiki_utils_rename() end
 
-function M.vimwiki_utils_anki_cloze() 
-  require("vimwiki_utils.anki.cloze").open()
+function M.vimwiki_utils_anki_cloze()
+  require("vimwiki_utils.features.anki").create_cloze()
 end
 
 function M.setup(opts)

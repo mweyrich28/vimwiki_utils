@@ -2,7 +2,7 @@ local M = {}
 
 local text = require("vimwiki_utils.utils.text")
 
-function M.open()
+function M.create_cloze()
 
     local selection = text.get_visual_selection()
     local type = vim.fn.input([[

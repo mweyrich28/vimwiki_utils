@@ -1,10 +1,19 @@
-local job = require('plenary.job')
-
 local paths = require("vimwiki_utils.utils.paths")
 local config = require("vimwiki_utils.config")
-local links = require("vimwiki_utils.utils.links")
 
 local M = {}
+
+function M.edit_image()
+    local win = vim.api.nvim_get_current_win()
+    local buf = vim.api.nvim_win_get_buf(win)
+    local cursor = vim.api.nvim_win_get_cursor(win)
+    local line_number = cursor[1]
+    local line_content = vim.api.nvim_buf_get_lines(buf, line_number - 1, line_number, false)[1]
+    local link_content = line_content:match("%((.-)%)")
+    link_content = link_content:gsub("%.%.%/", "")
+    link_content = paths.get_active_wiki() .. link_content
+    vim.fn.system(config.options.globals.kolourpaint .. " " .. link_content)
+end
 
 function M.take_screenshot()
     local image_name = vim.fn.input('Image name: ')
