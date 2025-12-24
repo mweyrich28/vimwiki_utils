@@ -127,24 +127,37 @@ function M.link_note()
         local selection = action_state.get_selected_entry()
         actions.close(prompt_bufnr)
 
-        local note_name
+        local note_name = ""
         if selection then
           note_name = selection.value
         else
-          note_name = action_state.get_current_line()
-          notes.create_new_note(
-            note_name,
-            globals.atomic_notes_dir,
-            globals.tag_dir,
-            source_file
-          )
+          -- note_name = action_state.get_current_line()
+          -- local note_name_filename = action_state.get_current_line() .. ".md" -- TODO: unify
+          -- notes.create_new_note(
+          --   note_name_filename,
+          --   globals.atomic_notes_dir,
+          --   globals.tag_dir,
+          --   source_file
+          -- )
+            -- local file_path = vim.fs.joinpath(globals.atomic_notes_dir, note_name)
+            -- local parent_note = vim.fn.expand("%:p")
+            -- local wiki_link = links.format_rel_md_link(file_path, parent_note)
+
+
+
+            note_name = action_state.get_current_line() .. ".md"
+            local file_path = vim.fs.joinpath(globals.atomic_notes_dir, note_name)
+            local parent_note = vim.fn.expand("%:p")
+            local wiki_link = links.format_rel_md_link(file_path, parent_note)
+            links.put_link(wiki_link)
+
+            notes.create_new_note(
+              note_name,
+              globals.atomic_notes_dir,
+              globals.tag_dir,
+              source_file
+            )
         end
-
-        local file_path = vim.fs.joinpath(globals.atomic_notes_dir, note_name)
-        local parent_note = vim.fn.expand("%:p")
-        local wiki_link = links.format_rel_md_link(file_path, parent_note)
-
-        links.put_link(wiki_link)
       end)
 
       map("i", "<A-CR>", function()
@@ -172,7 +185,7 @@ function M.link_note()
 end
 
 
-function M.get_backlinks()
+function M.display_backlinks()
     local current_file = vim.fn.expand('%:t')
     current_file = current_file:gsub(".md", "")
     local backlink_pattern = "\\[*\\]\\(.*" .. current_file .. "[.md\\)|\\)]"
