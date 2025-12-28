@@ -147,6 +147,56 @@ simple program for editing images. You can also replace it with any other light
 weight image editing software.
 
 
+## Anki Related
+### Anki Cloze
+I personally like to summarize my lectures in `.md` and during so I mark `key
+words` using the `inline code syntax`. Having summarized a lecture, it is
+sometimes tedious to create good [Anki](https://apps.ankiweb.net/) cards
+afterwars. That's why I try to already format my summary into smaller chunks, f.e:
+
+```md
+## Multi-modal registration using MIND
+- **MIND**: `Modality-Independent Non-local descriptor` 
+- Idea: Converting `multi-modal` into `mono-modal` problem
+- For each `image pixel`, a set of `local weights` are calculated over `non-local image patches`
+- These `weights` can be directly compared between images of different `modalities`
+```
+
+If I now want to quickly create a `cloze` type `Anki` card, I can select this
+paragraph in `VISUAL` (block or line) mode and hit `<leader>ac` to call `VimwikiUtilsAnkiCloze`.
+There are three options for converting the paragraph into a `cloze` style `Anki` card:
+
+**Default (`''`)**:  
+All `inline code` parts share the same `cloze` id:
+```md
+## Multi-modal registration using MIND
+- **MIND**: {{c1::`Modality-Independent Non-local descriptor`}} 
+- Idea: Converting {{c1::`multi-modal`}} into {{c1::`mono-modal`}} problem
+- For each {{c1::`image pixel`}}, a set of {{c1::`local weights`}} are calculated over {{c1::`non-local image patches`}}
+- These {{c1::`weights`}} can be directly compared between images of different {{c1::`modalities`}}
+```
+
+**Per word (`'0'`)**:
+```md
+## Multi-modal registration using MIND
+- **MIND**: {{c1::`Modality-Independent Non-local descriptor`}} 
+- Idea: Converting {{c2::`multi-modal`}} into {{c3::`mono-modal`}} problem
+- For each {{c4::`image pixel`}}, a set of {{c5::`local weights`}} are calculated over {{c6::`non-local image patches`}}
+- These {{c7::`weights`}} can be directly compared between images of different {{c8::`modalities`}}
+```
+
+**Per line (`'1'`)**
+```md
+## Multi-modal registration using MIND
+- **MIND**: {{c1::`Modality-Independent Non-local descriptor`}} 
+- Idea: Converting {{c2::`multi-modal`}} into {{c2::`mono-modal`}} problem
+- For each {{c3::`image pixel`}}, a set of {{c3::`local weights`}} are calculated over {{c3::`non-local image patches`}}
+- These {{c4::`weights`}} can be directly compared between images of different {{c4::`modalities`}}
+```
+
+The converted text is saved to your `systems clipboard`.
+
+
 # Default Key mappings
 
 | **Keymap**            | **Function**                                              |
@@ -161,6 +211,7 @@ weight image editing software.
 | *NORMAL* `<leader>m`  | [`VimwikiUtilsEmbed`](#vimwikiutilsembed)                 |
 | *NORMAL* `<leader>wm` | [`VimwikiUtilsGenerateIndex`](#vimwikiutilsgenerateindex) |
 | *NORMAL* `<leader>wr` | [`VimwikiUtilsRename`](#vimwikiutilsrename)               |
+| *VISUAL* `<leader>ac` | [`VimwikiUtilsAnkiCloze`](#vimwikiutilsankicloze)         |
 
 # Installation
 ## Packer
@@ -173,6 +224,21 @@ use {
     }
 }
 ```
+
+## Lazy
+```lua
+return {
+    'mweyrich28/vimwiki_utils',
+    dependencies = {
+        'nvim-telescope/telescope.nvim',
+        'vimwiki/vimwiki',
+    },
+    config = function()
+        require('vimwiki_utils').setup({})
+    end,
+}
+```
+
 
 # Getting Started
 ```lua
