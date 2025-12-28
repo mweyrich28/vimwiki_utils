@@ -12,7 +12,7 @@
         - [`VimwikiUtilsGenerateIndex`](#vimwikiutilsgenerateindex)
         - [`VimwikiUtilsRename`](#vimwikiutilsrename)
     - [Embedding And Editing Of Screenshots](#embedding-and-editing-of-screenshots)
-        - [`VimwikiUtilsSc`](#coming-soon-vimwikiutilssc)
+        - [`VimwikiUtilsSc`](#vimwikiutilssc)
         - [`VimwikiUtilsEditImage`](#vimwikiutilseditimage)
 - [Installation](#installation)
     - [Packer](#packer)
@@ -132,8 +132,8 @@ uses several matching patterns to identify links and replaces them using `sed`.
 ## Embedding And Editing Of Screenshots
 
 ### `VimwikiUtilsSc`
-> [!NOTE] This function calls a `bash` script which calls `gnome-screenshot`
-> but you can replace it with any other script. 
+> [!NOTE] This function currently calls `gnome-screenshot`
+> but I will make it more dynamic soon...
 
 Take screenshots on the fly by and embed them into the current markdown file.
 After calling `VimwikiUtilsSc` you need to provide an image name. If that image
