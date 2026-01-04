@@ -262,7 +262,7 @@ require('vimwiki_utils').setup({
         kolourpaint = "/snap/bin/kolourpaint"
     },
     keymaps = {
-        vimwiki_utils_link_key = '<C-b>',
+        vimwiki_utils_link_key = '<C-f>',
         vimwiki_utils_tags_key = '<C-e>',
         vimwiki_utils_rough_key = '<leader>nn',
         vimwiki_utils_backlinks_key = '<leader>fb',
