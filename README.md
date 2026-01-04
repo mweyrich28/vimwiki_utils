@@ -279,7 +279,7 @@ require('vimwiki_utils').setup({
 Make sure to create a `wiki` in your `vimwiki.lua` config like so:
 
 ```lua
-vim.g.vimwiki_auto_chdir = 1 # this is currently necessary
+vim.g.vimwiki_auto_chdir = 1 -- this is currently necessary
 vim.g.vimwiki_list = {
     {
         path = '~/path/to/zettelkasten/',
