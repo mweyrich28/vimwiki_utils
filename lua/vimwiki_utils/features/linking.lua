@@ -3,6 +3,7 @@ local templates = require("vimwiki_utils.utils.templates")
 local config = require("vimwiki_utils.config")
 local utils = require("vimwiki_utils.utils.general")
 local links = require("vimwiki_utils.utils.links")
+local tags = require("vimwiki_utils.utils.tags")
 
 local M = {}
 
@@ -18,7 +19,6 @@ function M.create_rough()
         end, 100)
     end)
 end
-
 
 function M.rename()
     -- save current buffers
@@ -105,7 +105,6 @@ function M.rename()
     end
 end
 
-
 function M.embed_rough_note()
     local current_file = vim.fn.expand('%:p')
     local note_name = paths.get_path_suffix(current_file)
@@ -123,26 +122,30 @@ function M.embed_rough_note()
     end
 end
 
-
 function M.generate_index()
-    local wiki = paths.get_active_wiki()
-    local tag_path = wiki .. config.options.globals.tag_dir
-    local results = vim.fn.systemlist("find " .. tag_path .. " -type f -name '*.md'")
-    local parent_note = vim.fn.expand("%:p")
+    local current_file = vim.fn.expand('%:t')
+    if current_file == "README.md" then
+        local wiki = paths.get_active_wiki()
+        local tag_path = wiki .. config.options.globals.tag_dir
+        local results = vim.fn.systemlist("find " .. tag_path .. " -type f -name '*.md'")
+        local parent_note = vim.fn.expand("%:p")
 
-    table.sort(results, function(a, b)
-        return a:lower() < b:lower()
-    end)
+        table.sort(results, function(a, b)
+            return a:lower() < b:lower()
+        end)
 
-    local lines = { "# Main Index" }
+        local lines = { "# Main Index" }
 
-    for _, file_path in ipairs(results) do
-        local rel_path = paths.convert_abs_to_rel(file_path)
-        local wiki_link = links.format_rel_md_link(rel_path, parent_note)
-        table.insert(lines, "- " .. wiki_link)
+        for _, file_path in ipairs(results) do
+            local rel_path = paths.convert_abs_to_rel(file_path)
+            local wiki_link = links.format_rel_md_link(rel_path, parent_note)
+            table.insert(lines, "- " .. wiki_link)
+        end
+
+        vim.api.nvim_put(lines, "c", true, true)
+    else
+        tags.generate_tag_index()
     end
-
-    vim.api.nvim_put(lines, "c", true, true)
 end
 
 return M

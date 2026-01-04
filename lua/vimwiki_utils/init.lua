@@ -36,7 +36,7 @@ function M.vimwiki_utils_embed()
   require("vimwiki_utils.features.linking").embed_rough_note()
 end
 
-function M.vimwiki_utils_generate_index() 
+function M.vimwiki_utils_generate_index()
   require("vimwiki_utils.features.linking").generate_index()
 end
 

@@ -184,44 +184,54 @@ function M.link_note()
   }):find()
 end
 
-
 function M.display_backlinks()
-    local current_file = vim.fn.expand('%:t')
-    current_file = current_file:gsub(".md", "")
-    local backlink_pattern = "\\[*\\]\\(.*" .. current_file .. "[.md\\)|\\)]"
+  local current_file = vim.fn.expand("%:t:r")
+  local backlink_pattern =
+    "\\[*\\]\\(.*" .. current_file .. "[.md\\)|\\)]"
 
-    telescope.live_grep({
-        prompt_title = "VimwikiUtilsBacklinks",
-        default_text = backlink_pattern,
-        no_ignore = true,
-        hidden = true,
-        entry_maker = function(entry)
-            local file, lnum, col, text = string.match(entry, "(.-):(%d+):(%d+):(.*)")
-            if file and lnum and col and text then
-                local filename = paths.get_path_suffix(file)
-                return {
-                    display = filename,
-                    filename = file,
-                    lnum = tonumber(lnum),
-                    col = tonumber(col),
-                    text = text,
-                    ordinal = entry,
-                }
-            end
-        end,
-        attach_mappings = function(prompt_bufnr, map) -- TODO: create separate func for this
-            -- press opt enter to generate index
-            map('i', '<A-CR>', function()
-                actions.close(prompt_bufnr)
-                tags.generate_tag_index(backlink_pattern)
-            end)
-            actions.select_default:replace(function()
-                actions.file_edit(prompt_bufnr)
-            end)
+  local results = vim.fn.systemlist(
+    "rg --vimgrep " .. vim.fn.shellescape(backlink_pattern)
+  )
 
-            return true
-        end,
-    })
+  pickers.new({}, {
+    prompt_title = "VimwikiUtilsBacklinks",
+    finder = finders.new_table {
+      results = results,
+      entry_maker = function(entry)
+        local file, lnum, col, text =
+          entry:match("^(.-):(%d+):(%d+):(.*)$")
+
+        if not file then return nil end
+
+        return {
+          value = entry,
+          filename = file,
+          lnum = tonumber(lnum),
+          col = tonumber(col),
+          text = text,
+          display = function()
+            return paths.get_path_suffix(file) .. ": [l." .. lnum .."]"
+          end,
+          ordinal = file .. " " .. text,
+        }
+      end,
+    },
+
+    sorter = conf.generic_sorter({}),
+
+    previewer = conf.grep_previewer({}),
+
+    attach_mappings = function(prompt_bufnr)
+      actions.select_default:replace(function()
+        actions.close(prompt_bufnr)
+        local entry = action_state.get_selected_entry()
+
+        vim.cmd.edit(entry.filename)
+        vim.api.nvim_win_set_cursor(0, { entry.lnum, entry.col - 1 })
+      end)
+      return true
+    end,
+  }):find()
 end
 
 return M
