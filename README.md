@@ -25,7 +25,7 @@
 - [Getting Started](#getting-started)
 
 # VimwikiUtils
-> [!NOTE] 
+> [!INFO] 
 > This is a work in progress and my first time implementing a plugin for nvim. 
 
 ## Introduction
@@ -92,7 +92,8 @@ current date.
 If you link to a new note (pressing `<A-CR>` while in `VimwikiUtilsLink`) from
 within a `tag note` (a note which is stored `3_tags/`), a link to the
 corresponding `tag` will automatically be substituted into your template.
-> [!NOTE] This behavior only works, if your `template` contains the following
+
+> [!INFO] This behavior only works, if your `template` contains the following
 > pattern: `> **tags:**`.
 
 ### `VimwikiUtilsBacklinks` Find parent files linking to the currently opened
@@ -138,7 +139,8 @@ uses several matching patterns to identify links and replaces them using `sed`.
 ## Embedding And Editing Of Screenshots
 
 ### `VimwikiUtilsSc`
-> [!NOTE] This function currently calls `gnome-screenshot`
+
+> [!INFO] This function currently calls `gnome-screenshot`
 > but I will make it more dynamic soon...
 
 Take screenshots on the fly by and embed them into the current markdown file.
