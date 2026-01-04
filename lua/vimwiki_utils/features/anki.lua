@@ -12,10 +12,10 @@ function M.create_cloze()
       1   → line
     Choose: ]])
     local transform = text.cloze_transform(selection, type)
-
-    print("\n\n--------------------------------------------")
-    print(transform)
-    print("--------------------------------------------\n\n")
+    vim.cmd("redraw")
+    -- print("\n\n--------------------------------------------")
+    -- print(transform)
+    -- print("--------------------------------------------\n\n")
     print("Copied to sys clipboard")
     vim.fn.setreg("+", transform)
 end
