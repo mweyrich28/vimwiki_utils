@@ -8,6 +8,19 @@ function M.generate_tag_index()
     local search_pattern = "\\[*\\]\\(.*" .. current_file .. "[.md\\)|\\)]"
     local results = vim.fn.systemlist("rg --vimgrep " .. vim.fn.shellescape(search_pattern))
 
+    local seen = {}
+    local unique = {}
+
+    -- remove duplicates
+    for _, v in ipairs(results) do
+        if not seen[v] then
+            seen[v] = true
+            table.insert(unique, v)
+        end
+    end
+
+    results = unique
+
     table.sort(results, function(a, b)
         return a:lower() < b:lower()
     end)
