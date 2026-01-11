@@ -29,7 +29,7 @@
 > This is a work in progress and my first time implementing a plugin for nvim. 
 
 ## Introduction
-This plugin is an extension for [VimWiki](https://github.com/vimwiki/vimwiki), trying to add to its many
+This plugin is an extension for [Vimwiki](https://github.com/vimwiki/vimwiki), trying to add to its many
 capabilities. It also has a predefined wiki structure, which I use in my bioinformatics studies. 
 The wiki structure was inspired by this [YouTube video](https://www.youtube.com/watch?v=hSTy_BInQs8&list=WL&index=1&t=1507s). 
 
