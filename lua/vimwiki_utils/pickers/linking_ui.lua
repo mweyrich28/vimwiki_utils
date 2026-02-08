@@ -177,7 +177,7 @@ end
 function M.display_backlinks()
     local current_file = vim.fn.expand("%:t:r")
     local backlink_pattern =
-        "\\[*\\]\\(.*" .. current_file .. "[.md\\)|\\)]"
+        "\\[*\\]\\(.*" .. current_file .. ".md"
 
     local results = vim.fn.systemlist(
         "rg --vimgrep " .. vim.fn.shellescape(backlink_pattern)
