@@ -31,6 +31,7 @@ function M.take_screenshot()
         else
             vim.cmd("sleep 3")
 
+            -- TODO: make dynamic
             vim.fn.system({
                 "gnome-screenshot",
                 "-af",
