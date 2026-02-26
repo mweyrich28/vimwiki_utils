@@ -11,7 +11,7 @@ local paths = require('vimwiki_utils.utils.paths')
 local links = require('vimwiki_utils.utils.links')
 
 local TEMPLATE_DIR = config.defaults.templates.dir or "templates"
-local DEFAULT_TEMPLATE_HEADER = config.defaults.templates.default_header or "# HEADER\n> **date:** DATE  \n\n"
+local DEFAULT_TEMPLATE_HEADER = config.defaults.templates.default_header or "# HEADER\n- **date:** DATE  \n\n"
 
 ---@param new_note_path string
 ---@param new_note_name string
@@ -52,7 +52,7 @@ function M.generate_header(new_note_path, new_note_name, template_filename, tag_
             local tag_path = vim.fs.joinpath(tag_dir, source_note_name)
             -- local tag_link = links.format_rel_md_link("../" .. tag_dir .. "/" .. source_note_name)
             local tag_link = links.format_rel_md_link(tag_path, source_file)
-            template_content = string.gsub(template_content, "> %*%*tags:%*%*", "> **tags:** " .. tag_link .. "  ")
+            template_content = string.gsub(template_content, "- %*%*Tags:%*%*", "- **Tags:** " .. tag_link .. "  ")
         end
     end
 

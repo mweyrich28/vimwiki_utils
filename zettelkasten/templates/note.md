@@ -1,3 +1,3 @@
 # HEADER
-> **date:** DATE  
-> **tags:**  
+- **Date:** DATE  
+- **Tags:**  

@@ -1,4 +1,4 @@
 # HEADER
-> **date:** DATE
-> **tags:**
-> **material:**
+- **Date:** DATE
+- **Tags:**
+- **Material:**

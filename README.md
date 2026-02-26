@@ -94,7 +94,7 @@ within a `tag note` (a note which is stored `3_tags/`), a link to the
 corresponding `tag` will automatically be substituted into your template.
 
 > [!INFO] This behavior only works, if your `template` contains the following
-> pattern: `> **tags:**`.
+> pattern: `> **Tags:**`.
 
 ### `VimwikiUtilsBacklinks` 
 Find parent files linking to the currently opened file by pressing `<leader>fb`. 
