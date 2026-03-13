@@ -24,7 +24,7 @@ function M.edit_image()
     end
 
     table.insert(cmd, link_content)
-    vim.fn.system(cmd)
+    vim.system(cmd)
 end
 
 function M.take_screenshot()
@@ -46,7 +46,7 @@ function M.take_screenshot()
             print("Image already exists!")
             return
         else
-            vim.fn.system({
+            vim.system({
                 "flameshot",
                 "gui",
                 "-p",
