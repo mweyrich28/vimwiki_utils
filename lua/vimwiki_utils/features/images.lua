@@ -18,11 +18,13 @@ function M.edit_image()
         return
     end
 
-    vim.fn.system({
-        config.options.images.edit_image_exe,
-        config.options.images.edit_image_args,
-        link_content
-    })
+    local cmd = { config.options.images.edit_image_exe }
+    if config.options.images.edit_image_args ~= nil then
+        vim.list_extend(cmd, config.options.images.edit_image_args)
+    end
+
+    table.insert(cmd, link_content)
+    vim.fn.system(cmd)
 end
 
 function M.take_screenshot()

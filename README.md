@@ -174,7 +174,16 @@ This allows for additional annotation of already existing screenshots.
 You can also replace it with any other light weight image editing software 
 using `edit_image_exe = "<path_to_alt_executable>"`. 
 You can also provide args for the alternative exe using 
-`edit_image_args = "<args>"`.
+`edit_image_args = "<args>"`. Note that `<args>` needs to be 
+a table, e,g:
+
+```
+{
+    images = {
+        edit_image_args = { "--fullscreen", "--delay", "3" }, -- (random args)
+    }
+}
+```
 
 
 ## Anki Related

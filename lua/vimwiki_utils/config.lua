@@ -27,7 +27,7 @@ M.defaults = {
     },
     images = {
         edit_image_exe = "/snap/bin/kolourpaint",
-        edit_image_args = "",
+        edit_image_args = nil,
     }
 }
 
