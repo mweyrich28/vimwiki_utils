@@ -24,8 +24,8 @@ M.defaults = {
         vimwiki_utils_anki_cloze = "<leader>ac",
     },
     templates = {
+        use_templates = false,
         dir = "templates",
-        default_header = "# HEADER\n> **date:** DATE  \n\n",
     }
 }
 

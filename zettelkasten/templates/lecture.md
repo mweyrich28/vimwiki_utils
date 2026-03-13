@@ -1,4 +1,4 @@
 # HEADER
 - **Date:** DATE
-- **Tags:**
+- **Tags:** TAG
 - **Material:**
