@@ -8,7 +8,8 @@ local tags = require("vimwiki_utils.utils.tags")
 local M = {}
 
 function M.create_rough()
-    local new_note_name = vim.fn.input('Create rough note: ') .. ".md" -- TODO: unify
+    local new_note_name = vim.fn.input('Create rough note: ')
+    new_note_name = paths.normalize_suffix(new_note_name)
     local wiki = paths.get_active_wiki()
     local note_path = vim.fs.joinpath(wiki, config.options.globals.rough_notes_dir, new_note_name)
     templates.choose_template(function(template_path)
@@ -52,10 +53,7 @@ function M.rename()
             return
         end
 
-        if new_filename:sub(-3) ~= ".md" then -- TODO: Unify
-            new_filename = new_filename .. ".md"
-        end
-
+        new_filename = paths.normalize_suffix(new_filename)
 
         local new_path = vim.fn.fnamemodify(dir, ':p') .. new_filename
 

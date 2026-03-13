@@ -1,5 +1,15 @@
 local M = {}
 
+---@param note_name string
+function M.normalize_suffix(note_name)
+    if #note_name < 4 then
+        note_name = note_name .. ".md"
+    elseif note_name:sub(-3) ~= ".md" then
+        note_name = note_name .. ".md"
+    end
+    return note_name
+end
+
 ---@param prefix string
 ---@param results table
 function M.format_results(prefix, results)

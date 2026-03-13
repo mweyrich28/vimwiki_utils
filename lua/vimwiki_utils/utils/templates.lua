@@ -15,9 +15,8 @@ local TEMPLATE_DIR = config.defaults.templates.dir or "templates"
 ---@param new_note_path string
 ---@param new_note_name string
 ---@param template_filename string|nil
----@param tag_dir string|nil
 ---@param source_file string|nil
-function M.generate_header(new_note_path, new_note_name, template_filename, tag_dir, source_file)
+function M.generate_header(new_note_path, new_note_name, template_filename, source_file)
     local template_content = ""
 
     if template_filename  then
@@ -45,8 +44,8 @@ function M.generate_header(new_note_path, new_note_name, template_filename, tag_
             local source_note_dir = path_components[#path_components - 1]
             local source_note_name = path_components[#path_components]
 
-            if source_note_dir == tag_dir then
-                local tag_path = vim.fs.joinpath(tag_dir, source_note_name)
+            if source_note_dir == config.options.globals.tag_dir then
+                local tag_path = vim.fs.joinpath(config.options.globals.tag_dir, source_note_name)
                 local tag_link = links.format_rel_md_link(tag_path, source_file)
                 -- replace with source tag
                 template_content = string.gsub(template_content, "TAG", tag_link .. "  ")

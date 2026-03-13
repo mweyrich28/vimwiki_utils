@@ -42,11 +42,11 @@ function M.link_tag()
                 else
                     -- or creat new tag
                     local new_tag_name = action_state.get_current_line()
+                    new_tag_name = paths.normalize_suffix(new_tag_name)
                     actions.close(prompt_bufnr)
-                    notes.create_new_tag(new_tag_name, config.options.globals.tag_dir)
+                    notes.create_new_tag(new_tag_name)
 
-                    local tag_file = new_tag_name .. ".md" -- TODO: maybe add func to dynamically check/add ext
-                    local tag_path = vim.fs.joinpath(config.options.globals.tag_dir, tag_file)
+                    local tag_path = vim.fs.joinpath(config.options.globals.tag_dir, new_tag_name)
                     local tag_link = links.format_rel_md_link(tag_path, parent_note)
                     links.put_link(tag_link)
                 end
@@ -70,10 +70,9 @@ function M.link_tag()
             map('i', '<A-CR>', function()
                 local new_tag_name = action_state.get_current_line()
                 actions.close(prompt_bufnr)
-                notes.create_new_tag(new_tag_name, config.options.globals.tag_dir)
-
-                local tag_file = new_tag_name .. ".md" -- TODO: maybe add func to dynamically check/add ext
-                local tag_path = vim.fs.joinpath(config.options.globals.tag_dir, tag_file)
+                new_tag_name = paths.normalize_suffix(new_tag_name)
+                notes.create_new_tag(new_tag_name)
+                local tag_path = vim.fs.joinpath(config.options.globals.tag_dir, new_tag_name)
                 local tag_link = links.format_rel_md_link(tag_path, parent_note)
                 links.put_link(tag_link)
             end)
@@ -131,8 +130,9 @@ function M.link_note()
                 if selection then
                     note_name = selection.value
                 else
-                    note_name = action_state.get_current_line() .. ".md"
+                    note_name = action_state.get_current_line()
                 end
+                note_name = paths.normalize_suffix(note_name)
 
                 local file_path = vim.fs.joinpath(globals.atomic_notes_dir, note_name)
                 local parent_note = vim.fn.expand("%:p")
@@ -143,8 +143,6 @@ function M.link_note()
                 if not selection then
                     notes.create_new_note(
                         note_name,
-                        globals.atomic_notes_dir,
-                        globals.tag_dir,
                         source_file
                     )
                 end
@@ -153,7 +151,8 @@ function M.link_note()
             map("i", "<A-CR>", function()
                 actions.close(prompt_bufnr)
 
-                local note_name = action_state.get_current_line() .. ".md"
+                local note_name = action_state.get_current_line()
+                note_name = paths.normalize_suffix(note_name)
                 local file_path = vim.fs.joinpath(globals.atomic_notes_dir, note_name)
                 local parent_note = vim.fn.expand("%:p")
                 local wiki_link = links.format_rel_md_link(file_path, parent_note)
@@ -161,8 +160,6 @@ function M.link_note()
 
                 notes.create_new_note(
                     note_name,
-                    globals.atomic_notes_dir,
-                    globals.tag_dir,
                     source_file
                 )
             end)
@@ -176,8 +173,9 @@ end
 
 function M.display_backlinks()
     local current_file = vim.fn.expand("%:t:r")
+    current_file = paths.normalize_suffix(current_file)
     local backlink_pattern =
-        "\\[*\\]\\(.*" .. current_file .. ".md"
+        "\\[*\\]\\(.*" .. current_file
 
     local results = vim.fn.systemlist(
         "rg --vimgrep " .. vim.fn.shellescape(backlink_pattern)
