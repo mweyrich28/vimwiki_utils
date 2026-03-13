@@ -2,6 +2,7 @@
 
 - [VimwikiUtils](#vimwikiutils)
     - [Introduction](#introduction)
+- [Requirements](#requirements)
 - [Features](#features)
     - [Linking And Creating New Notes](#linking-and-creating-new-notes)
         - [`VimwikiUtilsLink`](#vimwikiutilslink)
@@ -66,8 +67,13 @@ The wiki structure was inspired by this [YouTube video](https://www.youtube.com/
 └── README.md
 ```
 
-# Features
+# Requirements
+- [Vimwiki](https://github.com/vimwiki/vimwiki)
+- [Flameshot](https://flameshot.org/)
+- [KolourPaint](https://apps.kde.org/kolourpaint/)
+- [ripgrep](https://github.com/BurntSushi/ripgrep)
 
+# Features
 ## Linking And Creating New Notes
 
 ### `VimwikiUtilsLink` 
@@ -163,8 +169,12 @@ flameshot gui -p <image_path> -d <delay>
 
 
 ### `VimwikiUtilsEditImage` 
-Hovering over an embedded screenshot and pressing `<leader>ii` opens [KolourPaint](https://apps.kde.org/kolourpaint/).
+Hovering over an embedded screenshot and pressing `<leader>ii` opens [KolourPaint](https://apps.kde.org/kolourpaint/) (if installed).
 This allows for additional annotation of already existing screenshots.
+You can also replace it with any other light weight image editing software 
+using `edit_image_exe = "<path_to_alt_executable>"`. 
+You can also provide args for the alternative exe using 
+`edit_image_args = "<args>"`.
 
 
 ## Anki Related
@@ -273,9 +283,7 @@ require('vimwiki_utils').setup({
         tag_dir = "3_tags",
         atomic_notes_dir = "4_atomic_notes",
         screenshot_dir = "assets/screenshots",
-        kolourpaint = "/snap/bin/kolourpaint",
     },
-
     keymaps = {
         vimwiki_utils_link_key = "<C-b>",
         vimwiki_utils_tags_key = "<C-e>",
@@ -290,8 +298,12 @@ require('vimwiki_utils').setup({
         vimwiki_utils_anki_cloze = "<leader>ac",
     },
     templates = {
-        use_templates = true,
+        use_templates = false,
         dir = "templates",
+    },
+    images = {
+        edit_image_exe = "/snap/bin/kolourpaint",
+        edit_image_args = "",
     }
 })
 ```

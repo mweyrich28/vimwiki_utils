@@ -24,6 +24,10 @@ M.defaults = {
     templates = {
         use_templates = false,
         dir = "templates",
+    },
+    images = {
+        edit_image_exe = "/snap/bin/kolourpaint",
+        edit_image_args = "",
     }
 }
 

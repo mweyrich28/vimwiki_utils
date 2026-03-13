@@ -13,11 +13,16 @@ function M.edit_image()
     local link_content = line_content:match("%((.-)%)")
     link_content = link_content:gsub("%.%.%/", "")
     link_content = paths.get_active_wiki() .. link_content
-    if vim.fn.executable(config.options.globals.kolourpaint) ~= 1 then
-        print("kolourpaint is not installed!")
+    if vim.fn.executable(config.options.images.edit_image_exe) ~= 1 then
+        print(config.options.images.edit_image_exe .. " is not installed!")
         return
     end
-    vim.fn.system(config.options.globals.kolourpaint .. " " .. link_content)
+
+    vim.fn.system({
+        config.options.images.edit_image_exe,
+        config.options.images.edit_image_args,
+        link_content
+    })
 end
 
 function M.take_screenshot()
