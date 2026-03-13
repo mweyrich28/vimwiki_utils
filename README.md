@@ -79,22 +79,25 @@ create a new note (based on where you are currently at), which will be named
 after what you typed into the promt. If you type a new note name and there's no
 other similar note in the fuzzy findings of telescope, you can also just hit
 `<CR>` to create the new note. This helps you to dynamically create new notes or
-link to already existing notes.  If you accidentally create a new `atomic_note`
+link to already existing notes. Use `<tab>` to autocomplete your promt with the 
+current selection. If you accidentally create a new `atomic_note`
 in e.g `3_tags/` or at `root` level of your wiki, just use
 [`VimwikiUtilsEmbed`](#vimwikiutilsembed) in order to move it to
 `4_atomic_notes/`.
 
-Choose a `template`, which you can create in your `templates/` dir. For now,
-`templates` support a `HEADER` token, which gets replaced with the formatted
-name of your newly created note, and a `DATE` token, which gets replaced by the
-current date.
-
 If you link to a new note (pressing `<A-CR>` while in `VimwikiUtilsLink`) from
 within a `tag note` (a note which is stored `3_tags/`), a link to the
-corresponding `tag` will automatically be substituted into your template.
+corresponding `tag` will automatically be substituted into your template
+if your template contains a `TAG` token. See template examples in 
+`templates/`
 
-> [!INFO] This behavior only works, if your `template` contains the following
-> pattern: `> **Tags:**`.
+Templates currently support the following tokens:
+- `DATE` -> formats to current date
+- `HEADER` -> formats to name of file (removes any `_`)
+- `TAG` -> links back to tag file (if new note was created from within a tag file)
+
+One can also just disable the templates completely by using `use_templates = false`
+in the config.
 
 ### `VimwikiUtilsBacklinks` 
 Find parent files linking to the currently opened file by pressing `<leader>fb`. 
@@ -103,18 +106,17 @@ picker are by name and line number.
 
 ### `VimwikiUtilsRough` 
 Press `<leader>nn` to create a `rough_note.md` in your
-`1_rough_notes/` based on a chosen template. I use this for taking notes during
-the lecture. These notes should only be temperate and serve as additional
-information when creating an actual `atomic_note`.
+`1_rough_notes/` based on a chosen template. This is not necessary,
+but it is useful when you want to quickly take temporary note or notes that don't 
+belong to any tag yet. After polishing the note you can use [`VimwikiUtilsEmbed`](#vimwikiutilsembed)
+to move the `rough_note` to `4_atomic_notes`.
 
 ### `VimwikiUtilsSource` 
 Using this function you can linkt to your `soure
 files` (e.g lectures, papers, etc) stored in `2_source_material/`. Make sure to
 name your sources clearly in order to prevent chaos.
 
-
 ## Organizing Notes
-
 ### `VimwikiUtilsTags` 
 Easily create or link to existing `tags` in `3_tags/`,
 which are meant to also structure your wiki. An index can be generated, holding
@@ -164,7 +166,7 @@ weight image editing software.
 I personally like to summarize my lectures in `.md` and during so I mark `key
 words` using the `inline code syntax`. Having summarized a lecture, it is
 sometimes tedious to create good [Anki](https://apps.ankiweb.net/) cards
-afterwars. That's why I try to already format my summary into smaller chunks, f.e:
+afterwards. That's why I try to already format my summary into smaller chunks, f.e:
 
 ```md
 ## Multi-modal registration using MIND
@@ -259,25 +261,31 @@ require('vimwiki_utils').setup({})
 Or configure your keymaps and dirs like this:
 ```lua
 require('vimwiki_utils').setup({
-    global = {
+    globals = {
         rough_notes_dir = "1_rough_notes",
         source_dir = "2_source_material",
         tag_dir = "3_tags",
         atomic_notes_dir = "4_atomic_notes",
         screenshot_dir = "assets/screenshots",
-        kolourpaint = "/snap/bin/kolourpaint"
+        kolourpaint = "/snap/bin/kolourpaint",
     },
+
     keymaps = {
-        vimwiki_utils_link_key = '<C-f>',
-        vimwiki_utils_tags_key = '<C-e>',
-        vimwiki_utils_rough_key = '<leader>nn',
-        vimwiki_utils_backlinks_key = '<leader>fb',
-        vimwiki_utils_sc_key = '<leader>sc',
-        vimwiki_utils_edit_image_key = '<leader>ii',
-        vimwiki_utils_source_key = '<leader>sm',
-        vimwiki_utils_embed_key = '<leader>m',
-        vimwiki_utils_generate_index_key = '<leader>wm'
-        vimwiki_utils_rename_key  = '<leader>wr'
+        vimwiki_utils_link_key = "<C-b>",
+        vimwiki_utils_tags_key = "<C-e>",
+        vimwiki_utils_rough_key = "<leader>nn",
+        vimwiki_utils_backlinks_key = "<leader>fb",
+        vimwiki_utils_sc_key = "<leader>sc",
+        vimwiki_utils_edit_image_key = "<leader>ii",
+        vimwiki_utils_source_key = "<leader>sm",
+        vimwiki_utils_embed_key = "<leader>m",
+        vimwiki_utils_generate_index_key = "<leader>wm",
+        vimwiki_utils_rename = "<leader>wr",
+        vimwiki_utils_anki_cloze = "<leader>ac",
+    },
+    templates = {
+        use_templates = true,
+        dir = "templates",
     }
 })
 ```
