@@ -7,9 +7,7 @@ M.defaults = {
         tag_dir = "3_tags",
         atomic_notes_dir = "4_atomic_notes",
         screenshot_dir = "assets/screenshots",
-        kolourpaint = "/snap/bin/kolourpaint",
     },
-
     keymaps = {
         vimwiki_utils_link_key = "<C-b>",
         vimwiki_utils_tags_key = "<C-e>",

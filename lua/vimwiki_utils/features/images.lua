@@ -13,6 +13,10 @@ function M.edit_image()
     local link_content = line_content:match("%((.-)%)")
     link_content = link_content:gsub("%.%.%/", "")
     link_content = paths.get_active_wiki() .. link_content
+    if vim.fn.executable(config.options.globals.kolourpaint) ~= 1 then
+        print("kolourpaint is not installed!")
+        return
+    end
     vim.fn.system(config.options.globals.kolourpaint .. " " .. link_content)
 end
 
@@ -26,18 +30,23 @@ function M.take_screenshot()
     local rel_path = paths.convert_abs_to_rel(image_path)
 
     if image_name ~= "" then
+        if vim.fn.executable("flameshot") ~= 1 then
+            print("Flameshot is not installed!")
+            return
+        end
+
         if vim.fn.filereadable(image_path) == 1 then
             print("Image already exists!")
+            return
         else
-            vim.cmd("sleep 3")
-
-            -- TODO: make dynamic
             vim.fn.system({
-                "gnome-screenshot",
-                "-af",
+                "flameshot",
+                "gui",
+                "-p",
                 image_path,
+                "-d",
+                "4000",
             })
-
             local link_to_sc = "!" .. links.format_rel_md_link(rel_path, parent_note)
             links.put_link(link_to_sc)
         end

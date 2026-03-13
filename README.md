@@ -144,21 +144,27 @@ uses several matching patterns to identify links and replaces them using `sed`.
 
 
 ## Embedding And Editing Of Screenshots
-
 ### `VimwikiUtilsSc`
-> [!INFO] This function currently calls `gnome-screenshot`
-> but I will make it more dynamic soon...
-
 Take screenshots on the fly by and embed them into the current markdown file.
 After calling `VimwikiUtilsSc` you need to provide an image name. If that image
 already exists, nothing will happen, otherwise `nvim` will call the screenshot
 script after a 5 second delay. This way, you have enough time to set everything
-up.
+up. 
+`VimwikiUtilsSc` calls [Flameshot](https://flameshot.org/) with the following parameters:
+```
+flameshot gui -p <image_path> -d <delay>
+```
+, where `<image_path>` points to the image destination `assets/screenshots/<name>.png`.
+
+> [!INFO]
+>
+> In order to hide the hint that gets displayed by `flameshot gui`, disable it 
+> in the internal configuration of `flameshot` (using `flameshot config`)
+
 
 ### `VimwikiUtilsEditImage` 
-Hovering over an embedded screenshot  and pressing `<leader>ii` opens [KolourPaint](https://apps.kde.org/kolourpaint/), a free and
-simple program for editing images. You can also replace it with any other light
-weight image editing software.
+Hovering over an embedded screenshot and pressing `<leader>ii` opens [KolourPaint](https://apps.kde.org/kolourpaint/).
+This allows for additional annotation of already existing screenshots.
 
 
 ## Anki Related
