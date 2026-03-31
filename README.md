@@ -4,14 +4,13 @@
     - [Introduction](#introduction)
 - [Requirements](#requirements)
 - [Features](#features)
-    - [Linking And Creating New Notes](#linking-and-creating-new-notes)
+    - [Linking and Note Organization](#linking-and-note-organization)
         - [`VimwikiUtilsLink`](#vimwikiutilslink)
         - [`VimwikiUtilsBacklinks`](#vimwikiutilsbacklinks)
-        - [`VimwikiUtilsRough`](#vimwikiutilsrough)
         - [`VimwikiUtilsSource`](#vimwikiutilssource)
-    - [Organizing Notes](#organizing-notes)
-        - [`VimwikiUtilsTags`](#vimwikiutilstags)
+        - [`VimwikiUtilsRough`](#vimwikiutilsrough)
         - [`VimwikiUtilsEmbed`](#vimwikiutilsembed)
+        - [`VimwikiUtilsTags`](#vimwikiutilstags)
         - [`VimwikiUtilsGenerateIndex`](#vimwikiutilsgenerateindex)
         - [`VimwikiUtilsRename`](#vimwikiutilsrename)
     - [Embedding And Editing Of Screenshots](#embedding-and-editing-of-screenshots)
@@ -79,7 +78,7 @@ The wiki structure was inspired by this [YouTube video](https://www.youtube.com/
 
 ### `VimwikiUtilsLink` 
 
-![](https://github.com/user-attachments/assets/67b6d6d5-c963-4ca0-b126-b2e7a7eaf549)
+[▶ Watch demo](https://github.com/user-attachments/assets/67b6d6d5-c963-4ca0-b126-b2e7a7eaf549)
 
 Allows you to quickly link to an existing file or to create a new file based on
 a `template`. Pressing `<C-f>` in `insert` mode opens a `telescope prompt`
@@ -111,7 +110,7 @@ in the config.
 
 ### `VimwikiUtilsBacklinks` 
 
-![](https://github.com/user-attachments/assets/427e2ac2-6286-476b-a1f7-a49eba05a3fe)
+[▶ Watch demo](https://github.com/user-attachments/assets/427e2ac2-6286-476b-a1f7-a49eba05a3fe)
 
 Find parent files linking to the currently opened file by pressing `<leader>fb`. 
 Since one file can be referenced by several other files, the files displayed in the 
@@ -126,7 +125,7 @@ a `.md` link.
 
 
 ### `VimwikiUtilsRough` 
-![](https://github.com/user-attachments/assets/225c030d-69d1-4ebe-9189-98d1c62431fa)
+[▶ Watch demo](https://github.com/user-attachments/assets/225c030d-69d1-4ebe-9189-98d1c62431fa)
 
 Press `<leader>nn` to create a `rough_note.md` in your
 `1_rough_notes/` based on a chosen template. This is not necessary,
@@ -142,7 +141,7 @@ anywhere but `4_atomic_notes/`) by automatically moving the currently opened
 
 ### `VimwikiUtilsTags` 
 
-![](https://github.com/user-attachments/assets/78175fd4-4427-412c-93ae-dbfc3705c9c4)
+[▶ Watch demo](https://github.com/user-attachments/assets/78175fd4-4427-412c-93ae-dbfc3705c9c4)
 
 Easily create or link to existing `tags` in `3_tags/`,
 which are meant to also structure your wiki. An index can be generated, holding
@@ -155,13 +154,13 @@ telescope, you can also just hit enter to create the new tag (same behavior as
 [`VimwikiUtilsLink`](#VimwikiUtilsLink)).
 
 
-## `VimwikiUtilsGenerateIndex` 
+### `VimwikiUtilsGenerateIndex` 
 Generates a list of all referencing files formatted as links.
 Useful when in `README.md` or in any `tag` file.
 
-## `VimwikiUtilsRename` 
+### `VimwikiUtilsRename` 
 
-![](https://github.com/user-attachments/assets/5a04906d-e642-4f86-9816-b07e61c28448)
+[▶ Watch demo](https://github.com/user-attachments/assets/5a04906d-e642-4f86-9816-b07e61c28448)
 
 Due to the adjusted `wiki structure`, the default
 `VimwikiRename` doesn't work as expected. This `function` fixes said issue, it
@@ -170,7 +169,7 @@ uses several matching patterns to identify links and replaces them using `sed`.
 
 ## Embedding And Editing Of Screenshots
 
-![](https://github.com/user-attachments/assets/795d64a3-18c0-46b3-8cd8-33ac180a0ecd)
+[▶ Watch demo](https://github.com/user-attachments/assets/795d64a3-18c0-46b3-8cd8-33ac180a0ecd)
 
 ### `VimwikiUtilsSc`
 Take screenshots on the fly by and embed them into the current markdown file.
