@@ -118,9 +118,11 @@ belong to any tag yet. After polishing the note you can use [`VimwikiUtilsEmbed`
 to move the `rough_note` to `4_atomic_notes`.
 
 ### `VimwikiUtilsSource` 
-Using this function you can linkt to your `soure
+Use `<leader>sm` to link to your `source
 files` (e.g lectures, papers, etc) stored in `2_source_material/`. Make sure to
 name your sources clearly in order to prevent chaos.
+Hitting `Shift<CR>` on a selection will open up the pdf instead of creating
+a `.md` link.
 
 ## Organizing Notes
 ### `VimwikiUtilsTags` 
