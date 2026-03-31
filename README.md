@@ -74,9 +74,13 @@ The wiki structure was inspired by this [YouTube video](https://www.youtube.com/
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
 
 # Features
-## Linking And Creating New Notes
+
+## Linking and Note Organization
 
 ### `VimwikiUtilsLink` 
+
+![](https://github.com/user-attachments/assets/67b6d6d5-c963-4ca0-b126-b2e7a7eaf549)
+
 Allows you to quickly link to an existing file or to create a new file based on
 a `template`. Pressing `<C-f>` in `insert` mode opens a `telescope prompt`
 showing all files in `4_atomic_notes/`. Either hit `<CR>` on an existing `note`
@@ -106,16 +110,12 @@ One can also just disable the templates completely by using `use_templates = fal
 in the config.
 
 ### `VimwikiUtilsBacklinks` 
+
+![](https://github.com/user-attachments/assets/427e2ac2-6286-476b-a1f7-a49eba05a3fe)
+
 Find parent files linking to the currently opened file by pressing `<leader>fb`. 
 Since one file can be referenced by several other files, the files displayed in the 
 picker are by name and line number.
-
-### `VimwikiUtilsRough` 
-Press `<leader>nn` to create a `rough_note.md` in your
-`1_rough_notes/` based on a chosen template. This is not necessary,
-but it is useful when you want to quickly take temporary note or notes that don't 
-belong to any tag yet. After polishing the note you can use [`VimwikiUtilsEmbed`](#vimwikiutilsembed)
-to move the `rough_note` to `4_atomic_notes`.
 
 ### `VimwikiUtilsSource` 
 Use `<leader>sm` to link to your `source
@@ -124,8 +124,26 @@ name your sources clearly in order to prevent chaos.
 Hitting `Shift<CR>` on a selection will open up the pdf instead of creating
 a `.md` link.
 
-## Organizing Notes
+
+### `VimwikiUtilsRough` 
+![](https://github.com/user-attachments/assets/225c030d-69d1-4ebe-9189-98d1c62431fa)
+
+Press `<leader>nn` to create a `rough_note.md` in your
+`1_rough_notes/` based on a chosen template. This is not necessary,
+but it is useful when you want to quickly take temporary note or notes that don't 
+belong to any tag yet. After polishing the note you can use [`VimwikiUtilsEmbed`](#vimwikiutilsembed)
+to move the `rough_note` to `4_atomic_notes`.
+
+### `VimwikiUtilsEmbed` 
+Helps handling notes stored in `1_rough_notes/` (or
+anywhere but `4_atomic_notes/`) by automatically moving the currently opened
+`note` into your `4_atomic_notes/` dir after you abstract and summarize it.
+
+
 ### `VimwikiUtilsTags` 
+
+![](https://github.com/user-attachments/assets/78175fd4-4427-412c-93ae-dbfc3705c9c4)
+
 Easily create or link to existing `tags` in `3_tags/`,
 which are meant to also structure your wiki. An index can be generated, holding
 all files tagged by the current tag file. While in insert mode, press `<C-e>`
@@ -136,22 +154,24 @@ type a new tag name and there's no other similar tag in the fuzzy findings of
 telescope, you can also just hit enter to create the new tag (same behavior as
 [`VimwikiUtilsLink`](#VimwikiUtilsLink)).
 
-### `VimwikiUtilsEmbed` 
-Helps handling notes stored in `1_rough_notes/` (or
-anywhere but `4_atomic_notes/`) by automatically moving the currently opened
-`note` into your `4_atomic_notes/` dir after you abstract and summarize it.
 
-### `VimwikiUtilsGenerateIndex` 
+## `VimwikiUtilsGenerateIndex` 
 Generates a list of all referencing files formatted as links.
 Useful when in `README.md` or in any `tag` file.
 
-### `VimwikiUtilsRename` 
+## `VimwikiUtilsRename` 
+
+![](https://github.com/user-attachments/assets/5a04906d-e642-4f86-9816-b07e61c28448)
+
 Due to the adjusted `wiki structure`, the default
 `VimwikiRename` doesn't work as expected. This `function` fixes said issue, it
 uses several matching patterns to identify links and replaces them using `sed`.
 
 
 ## Embedding And Editing Of Screenshots
+
+![](https://github.com/user-attachments/assets/795d64a3-18c0-46b3-8cd8-33ac180a0ecd)
+
 ### `VimwikiUtilsSc`
 Take screenshots on the fly by and embed them into the current markdown file.
 After calling `VimwikiUtilsSc` you need to provide an image name. If that image
@@ -257,8 +277,7 @@ The converted text is saved to your `systems clipboard`.
 # Installation
 ## Packer
 ```lua
-use {
-    'mweyrich28/vimwiki_utils',
+use { 'mweyrich28/vimwiki_utils',
     requires = {
         'nvim-telescope/telescope.nvim',
         'vimwiki/vimwiki'
