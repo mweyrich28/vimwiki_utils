@@ -49,9 +49,12 @@ function M.generate_header(new_note_path, new_note_name, template_filename, sour
                 local tag_link = links.format_rel_md_link(tag_path, source_file)
                 -- replace with source tag
                 template_content = string.gsub(template_content, "TAG", tag_link .. "  ")
+            else
+                -- remove TAG token if source file is not a tag
+                template_content = string.gsub(template_content, "TAG", "")
             end
         else
-            -- remove TAG token if source file is not a tag / has no source file
+            -- remove TAG token if source file  as no source file
             template_content = string.gsub(template_content, "TAG", "")
         end
     end
