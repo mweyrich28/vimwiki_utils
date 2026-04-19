@@ -1,11 +1,12 @@
 local M = {}
 
 local links = require('vimwiki_utils.utils.links')
+local config = require('vimwiki_utils.config')
 
 function M.generate_tag_index()
     local current_file = vim.fn.expand('%:t')
-    current_file = current_file:gsub(".md", "")
-    local search_pattern = "\\[*\\]\\(.*" .. current_file .. "[.md\\)|\\)]"
+    local tag_path = vim.fs.joinpath(config.options.globals.tag_dir, current_file)
+    local search_pattern = "\\[*\\]\\(.*" .. tag_path .. "\\)"
     local results = vim.fn.systemlist("rg --vimgrep " .. vim.fn.shellescape(search_pattern))
 
     local seen = {}
