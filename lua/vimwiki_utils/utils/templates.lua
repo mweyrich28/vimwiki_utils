@@ -81,7 +81,8 @@ function M.choose_template(callback)
 
     local wiki = paths.get_active_wiki()
     -- get all templates
-    local results = vim.fn.systemlist("find " .. wiki .. TEMPLATE_DIR .. " -type f -name '*.md'")
+    local path_to_templates = vim.fs.joinpath(wiki, TEMPLATE_DIR)
+    local results = vim.fn.systemlist("find " .. path_to_templates .. " -type f -name '*.md'")
 
     local processed_results_table = paths.format_results(TEMPLATE_DIR, results)
     local processed_results = processed_results_table[1]

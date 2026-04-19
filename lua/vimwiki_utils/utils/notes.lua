@@ -12,7 +12,8 @@ function M.create_new_tag(tag_name)
     templates.generate_header(abs_tag_dir, tag_name , nil, nil)
 end
 
--- TODO: fix params
+---@param new_note_name string
+---@param parent_note string
 function M.create_new_note(new_note_name, parent_note)
     local aktive_wiki = paths.get_active_wiki()
     local new_note_path = vim.fs.joinpath(aktive_wiki, config.options.globals.atomic_notes_dir, new_note_name)
