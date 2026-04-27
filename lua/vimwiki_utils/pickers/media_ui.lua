@@ -37,12 +37,20 @@ function M.link_source()
 
         attach_mappings = function(prompt_bufnr, map)
             actions.select_default:replace(function()
-                local selection = action_state.get_selected_entry()
+                local picker = action_state.get_current_picker(prompt_bufnr)
+                local selections = picker:get_multi_selection()
+                if vim.tbl_isempty(selections) then
+                    table.insert(selections, action_state.get_selected_entry())
+                end
+
                 actions.close(prompt_bufnr)
-                note_name = selection.value
-                wiki_link = links.format_rel_md_link(file_map[note_name], parent_note)
-                wiki_link = "!" .. string.gsub(wiki_link, "%(", "(./") -- formatting for vimwiki
-                links.put_link(wiki_link)
+
+                for _, entry in ipairs(selections) do
+                    local note_name = entry.value
+                    local wiki_link = links.format_rel_md_link(file_map[note_name], parent_note)
+                    wiki_link = "!" .. string.gsub(wiki_link, "%(", "(./") -- formatting for vimwiki
+                    links.put_link(wiki_link, true)
+                end
             end)
 
             -- open pdf 
