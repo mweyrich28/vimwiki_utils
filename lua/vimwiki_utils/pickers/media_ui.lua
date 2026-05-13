@@ -45,11 +45,17 @@ function M.link_source()
 
                 actions.close(prompt_bufnr)
 
+                local is_first = true
                 for _, entry in ipairs(selections) do
                     local note_name = entry.value
                     local wiki_link = links.format_rel_md_link(file_map[note_name], parent_note)
                     wiki_link = "!" .. string.gsub(wiki_link, "%(", "(./") -- formatting for vimwiki
-                    links.put_link(wiki_link, true)
+                    if is_first then
+                        links.put_link(wiki_link, false)
+                        is_first=false
+                    else
+                        links.put_link(wiki_link, true)
+                    end
                 end
             end)
 
